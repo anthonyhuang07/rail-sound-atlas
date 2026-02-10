@@ -46,6 +46,8 @@ main {
   border: none;
   padding: 0;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
 }
 .site-header .breadcrumb {
   display: -webkit-box;
