@@ -22,8 +22,9 @@ const state = {
   systemTheme: null,
   viewBox: null,
   baseViewBox: null,
-  isPanning: false,
+  pointers: new Map(),
   panLast: { x: 0, y: 0 },
+  pinchLastDist: 0,
 };
 
 const stopActiveAudio = () => {
@@ -341,33 +342,89 @@ const applyViewBox = (svg) => {
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
-const startPan = (event, svg) => {
-  if (event.button !== 0) return;
-  // Don't hijack clicks on lines/stations
-  const target = findMapTarget(event);
-  if (target) return;
-  state.isPanning = true;
-  state.panLast = { x: event.clientX, y: event.clientY };
+const clientToSvgPoint = (svg, clientX, clientY) => {
+  const point = svg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  return point.matrixTransform(svg.getScreenCTM().inverse());
+};
+
+const getPointerList = () => Array.from(state.pointers.values());
+
+const handlePointerDown = (event, svg) => {
+  if (event.button !== 0 && event.pointerType !== "touch") return;
+  state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   svg.setPointerCapture(event.pointerId);
-  svg.classList.add("is-panning");
+
+  const pointers = getPointerList();
+  if (pointers.length === 1) {
+    state.panLast = { x: event.clientX, y: event.clientY };
+    svg.classList.add("is-panning");
+  } else if (pointers.length === 2) {
+    const [a, b] = pointers;
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    state.pinchLastDist = Math.hypot(dx, dy);
+  }
 };
 
-const pan = (event, svg) => {
-  if (!state.isPanning) return;
-  const vb = state.viewBox;
-  const scale = vb.width / svg.clientWidth;
-  const dx = (event.clientX - state.panLast.x) * scale;
-  const dy = (event.clientY - state.panLast.y) * scale;
-  state.panLast = { x: event.clientX, y: event.clientY };
-  vb.x -= dx;
-  vb.y -= dy;
-  applyViewBox(svg);
+const handlePointerMove = (event, svg) => {
+  if (!state.pointers.has(event.pointerId)) return;
+  state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  const pointers = getPointerList();
+  if (pointers.length === 1) {
+    const vb = state.viewBox;
+    const scale = vb.width / svg.clientWidth;
+    const dx = (event.clientX - state.panLast.x) * scale;
+    const dy = (event.clientY - state.panLast.y) * scale;
+    state.panLast = { x: event.clientX, y: event.clientY };
+    vb.x -= dx;
+    vb.y -= dy;
+    applyViewBox(svg);
+  } else if (pointers.length === 2) {
+    const vb = state.viewBox;
+    const base = state.baseViewBox;
+    if (!vb || !base) return;
+    const [a, b] = pointers;
+    const dx = a.x - b.x;
+    const dy = a.y - b.y;
+    const dist = Math.hypot(dx, dy);
+    if (!state.pinchLastDist) state.pinchLastDist = dist;
+
+    const centerClientX = (a.x + b.x) / 2;
+    const centerClientY = (a.y + b.y) / 2;
+    const center = clientToSvgPoint(svg, centerClientX, centerClientY);
+
+    const minZoom = 1.0;
+    const maxZoom = 5.0;
+    const minWidth = base.width / maxZoom;
+    const maxWidth = base.width / minZoom;
+    const scaleFactor = state.pinchLastDist / dist;
+    const nextWidth = clamp(vb.width * scaleFactor, minWidth, maxWidth);
+    const ratio = nextWidth / vb.width;
+
+    const nextX = center.x - (center.x - vb.x) * ratio;
+    const nextY = center.y - (center.y - vb.y) * ratio;
+    state.viewBox = { x: nextX, y: nextY, width: nextWidth, height: vb.height * ratio };
+    applyViewBox(svg);
+    state.pinchLastDist = dist;
+  }
 };
 
-const endPan = (svg) => {
-  if (!state.isPanning) return;
-  state.isPanning = false;
-  svg.classList.remove("is-panning");
+const handlePointerUp = (event, svg) => {
+  if (state.pointers.has(event.pointerId)) {
+    state.pointers.delete(event.pointerId);
+  }
+  const pointers = getPointerList();
+  if (pointers.length < 2) {
+    state.pinchLastDist = 0;
+  }
+  if (pointers.length === 1) {
+    state.panLast = { x: pointers[0].x, y: pointers[0].y };
+  }
+  if (pointers.length === 0) {
+    svg.classList.remove("is-panning");
+  }
 };
 
 const loadMap = async (mapPath, theme) => {
@@ -404,10 +461,11 @@ const loadMap = async (mapPath, theme) => {
       if (event.key === "Enter") handleMapClick(event);
     });
 
-    svg.addEventListener("pointerdown", (event) => startPan(event, svg));
-    svg.addEventListener("pointermove", (event) => pan(event, svg));
-    svg.addEventListener("pointerup", () => endPan(svg));
-    svg.addEventListener("pointerleave", () => endPan(svg));
+    svg.addEventListener("pointerdown", (event) => handlePointerDown(event, svg));
+    svg.addEventListener("pointermove", (event) => handlePointerMove(event, svg));
+    svg.addEventListener("pointerup", (event) => handlePointerUp(event, svg));
+    svg.addEventListener("pointercancel", (event) => handlePointerUp(event, svg));
+    svg.addEventListener("pointerleave", (event) => handlePointerUp(event, svg));
 
   } catch (error) {
     mapContainer.innerHTML = `<p style=\"color:#9aa0a6;\">Failed to load map. If you're opening the file directly, run a local server and reload.</p>`;
