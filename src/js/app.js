@@ -353,6 +353,8 @@ const getPointerList = () => Array.from(state.pointers.values());
 
 const handlePointerDown = (event, svg) => {
   if (event.button !== 0 && event.pointerType !== "touch") return;
+  const target = findMapTarget(event);
+  if (target) return;
   state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   svg.setPointerCapture(event.pointerId);
 

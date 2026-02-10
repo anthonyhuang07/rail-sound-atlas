@@ -163,18 +163,20 @@ main {
   max-width: none;
   cursor: -webkit-grab;
   cursor: grab;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 #map-container svg.is-panning {
   cursor: -webkit-grabbing;
   cursor: grabbing;
 }
 #map-container svg .line.is-active {
-  -webkit-filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25));
-          filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25));
-  opacity: 1;
+  -webkit-filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25)) brightness(0.8);
+          filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25)) brightness(0.8);
 }
 #map-container svg .station.is-active {
-  fill: #111;
+  -webkit-filter: brightness(0.25);
+          filter: brightness(0.25);
 }
 #map-container svg .line,
 #map-container svg .line path {

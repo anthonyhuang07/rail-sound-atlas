@@ -159,12 +159,11 @@ main {
     }
 
     .line.is-active {
-      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25));
-      opacity: 1;
+      filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25)) brightness(0.8);
     }
 
     .station.is-active {
-      fill: #111;
+      filter: brightness(0.25);
     }
 
     .line,
