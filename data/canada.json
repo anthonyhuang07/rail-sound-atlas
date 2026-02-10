@@ -1,0 +1,15 @@
+{
+  "country": {
+    "id": "canada",
+    "name": "Canada"
+  },
+  "systems": [
+    {
+      "id": "mtl-metro",
+      "name": "Montréal Metro",
+      "logo": "assets/images/canada/mtl-metro.png",
+      "map": "assets/maps/canada/mtl-metro.svg",
+      "sounds": "data/systems/mtl-metro.json"
+    }
+  ]
+}

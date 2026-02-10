@@ -1,0 +1,10 @@
+{
+  "countries": [
+    {
+      "id": "canada",
+      "name": "Canada",
+      "image": "assets/images/canada/flag.webp",
+      "data": "data/canada.json"
+    }
+  ]
+}

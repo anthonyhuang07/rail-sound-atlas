@@ -1,0 +1,139 @@
+{
+  "system": {
+    "id": "mtl-metro",
+    "name": "Montréal Metro"
+  },
+  "mapTheme": {
+    "lineWidth": 17,
+    "lineColors": {
+      "line-4": "#FDDD04",
+      "line-1": "#00A650"
+    },
+    "station": {
+      "fill": "#ffffff",
+      "radius": 5.5,
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    "transfer": {
+      "fill": "#ffffff",
+      "radius": 9.5,
+      "stroke": "#000000",
+      "strokeWidth": 1.5
+    },
+    "terminus": {
+      "fill": "#ffffff",
+      "radius": 6.5,
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    "labels": {
+      "color": "#9aa0a6",
+      "fontSize": 12
+    }
+  },
+  "sounds": {
+    "lines": {
+      "line-1": {
+        "title": "Ligne Verte",
+        "subtitle": "MPM-10 (Azur), MR-73",
+        "icon": "assets/images/canada/line-1.png",
+        "items": [
+          {
+            "title": "Doors Closing",
+            "description": "MR-73's \"Dou dou dou\"",
+            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          }
+        ]
+      },
+      "line-2": {
+        "title": "Ligne Orange",
+        "subtitle": "MPM-10 (Azur)",
+        "icon": "assets/images/canada/line-2.png",
+        "items": [
+
+        ]
+      },
+      "line-4": {
+        "title": "Ligne Jaune",
+        "subtitle": "MR-73",
+        "icon": "assets/images/canada/line-4.png",
+        "items": [
+          {
+            "title": "Doors Closing",
+            "description": "MR-73's \"Dou dou dou\"",
+            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          }
+        ]
+      }
+    },
+    "stations": {
+      "angrignon": {
+        "lineIds": ["line-1"],
+        "title": "Angrignon",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "monk": {
+        "lineIds": ["line-1"],
+        "title": "Monk",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "jolicoeur": {
+        "lineIds": ["line-1"],
+        "title": "Jolicoeur",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "verdun": {
+        "lineIds": ["line-1"],
+        "title": "Verdun",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "de-leglise": {
+        "lineIds": ["line-1"],
+        "title": "De L'Église",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "lasalle": {
+        "lineIds": ["line-1"],
+        "title": "LaSalle",
+        "subtitle": "Ligne Verte",
+        "items": []
+      },
+      "charlevoix": {
+        "lineIds": ["line-1"],
+        "title": "Charlevoix",
+        "subtitle": "Ligne Verte",
+        "items": []
+      }, 
+      "lionel-groulx": {
+        "lineIds": ["line-1", "line-2"],
+        "title": "Lionel-Groulx",
+        "subtitle": "Ligne Verte, Ligne Orange",
+        "items": []
+      },
+      "berri-uqam": {
+        "lineIds": ["line-1", "line-4"],
+        "title": "Berri-UQAM",
+        "subtitle": "Ligne Verte, Ligne Jaune",
+        "items": []
+      },
+      "jean-drapeau": {
+        "lineIds": ["line-4"],
+        "title": "Jean-Drapeau",
+        "subtitle": "Ligne Jaune",
+        "items": []
+      },
+      "longueuil-udes": {
+        "lineIds": ["line-4"],
+        "title": "Longueuil-Universite-de-Sherbrooke",
+        "subtitle": "Ligne Jaune",
+        "items": []
+      }
+    }
+  }
+}
