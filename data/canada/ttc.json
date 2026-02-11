@@ -51,7 +51,13 @@
       "title": "Line 4 Sheppard",
       "subtitle": "Toronto Rocket",
       "icon": "assets/images/canada/ttc/line-4.png",
-      "items": []
+      "items": [
+        {
+          "title": "Doors Opening (Don Mills)",
+          "description": "Line 4 to Don Mills.",
+          "audio": "assets/audio/canada/ttc/line-4/line-4-don-mills.mp3"
+        }
+      ]
     },
     "line-5":{
       "title": "Line 5 Eglinton",

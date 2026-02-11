@@ -65,6 +65,16 @@
           "title": "Welcome (AZUR)",
           "description": "La STM vous souhaite la bienvenue à bord.",
           "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
+        },
+        {
+          "title": "Welcome (MR-73)",
+          "description": "La STM vous souhaite la bienvenue à bord.",
+          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+        },
+        {
+          "title": "Terminus (MR-73)",
+          "description": "Terminus. Veuillez descendre du train.",
+          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
         }
       ]
     },
@@ -74,7 +84,7 @@
       "icon": "assets/images/canada/mtl-metro/line-2.png",
       "items": [
         {
-          "title": "Welcome (AZUR)",
+          "title": "Welcome",
           "description": "La STM vous souhaite la bienvenue à bord.",
           "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
         }
@@ -86,9 +96,19 @@
       "icon": "assets/images/canada/mtl-metro/line-4.png",
       "items": [
         {
-          "title": "Door Chime (MR-73)",
+          "title": "Door Chime",
           "description": "\"Dou dou dou\"",
           "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+        },
+        {
+          "title": "Welcome",
+          "description": "La STM vous souhaite la bienvenue à bord.",
+          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+        },
+        {
+          "title": "Terminus",
+          "description": "Terminus. Veuillez descendre du train.",
+          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
         }
       ]
     },
@@ -98,9 +118,19 @@
       "icon": "assets/images/canada/mtl-metro/line-5.png",
       "items": [
         {
-          "title": "Door Chime (MR-73)",
+          "title": "Door Chime",
           "description": "\"Dou dou dou\"",
           "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+        },
+        {
+          "title": "Welcome",
+          "description": "La STM vous souhaite la bienvenue à bord.",
+          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+        },
+        {
+          "title": "Terminus",
+          "description": "Terminus. Veuillez descendre du train.",
+          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
         }
       ]
     }
@@ -196,7 +226,7 @@
       "subtitle": "Ligne Verte, Ligne Orange",
       "items": [
         {
-          "title": "Next Station (Ligne Orange)",
+          "title": "Next Station",
           "description": "Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
           "audio": "assets/audio/canada/mtl-metro/line-2/lionel-groulx-prochaine.mp3",
           "lineIds": [
@@ -885,7 +915,24 @@
       },
       "title": "Berri-UQAM",
       "subtitle": "Ligne Verte, Ligne Orange, Ligne Jaune",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Berri-UQAM. Correspondance avec les lignes orange et verte.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/berri-uqam-prochaine.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Berri-UQAM, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/berri-uqam.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
     "jean-drapeau": {
       "lineIds": [
@@ -893,7 +940,23 @@
       ],
       "title": "Jean-Drapeau",
       "subtitle": "Ligne Jaune",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Jean-Drapeau.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/jean-drapeau-prochaine.mp3"
+        },
+        {
+          "title": "Fare Zone Warning",
+          "description": "Attention! Dernière sortie avant d'atteindre la zone tarifaire B. Vous devez détenir un titre de transport tout mode AB, ABC, ou ABCD pour continuer vers la station Longueuil–Université-de-Sherbrooke.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/zone-b-attention.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Jean-Drapeau.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/jean-drapeau.mp3"
+        }
+      ],
       "lineOrder": {
         "line-4": 2
       }
@@ -902,9 +965,20 @@
       "lineIds": [
         "line-4"
       ],
-      "title": "Longueuil-Université-de-Sherbrooke",
+      "title": "Longueuil–Université-de-Sherbrooke",
       "subtitle": "Ligne Jaune",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Longueuil–Université-de-Sherbrooke.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/longueuil-udes-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Longueuil–Université-de-Sherbrooke, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+          "audio": "assets/audio/canada/mtl-metro/line-4/longueuil-udes.mp3"
+        }
+      ],
       "lineOrder": {
         "line-4": 3
       }

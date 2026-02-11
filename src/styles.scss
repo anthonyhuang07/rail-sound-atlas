@@ -425,6 +425,23 @@ body.is-system .system-mode-toggle {
     padding-top: 0.75rem;
   }
 
+  .sound-list.is-grouped {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .popup-block-title {
+    margin: 0 0 0.5rem;
+    font-size: 0.85em;
+    color: $muted;
+  }
+
+  .popup-block-list {
+    display: grid;
+    gap: 0.875rem;
+  }
+
   .sound-card {
     border: 0.0625rem solid #222732;
     border-radius: 0.5rem;

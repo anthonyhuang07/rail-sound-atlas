@@ -477,6 +477,25 @@ body.is-system .system-mode-toggle {
   border-top: 0.0625rem solid #222732;
   padding-top: 0.75rem;
 }
+.map-popup .sound-list.is-grouped {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+}
+.map-popup .popup-block-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.85em;
+  color: #9aa0a6;
+}
+.map-popup .popup-block-list {
+  display: grid;
+  gap: 0.875rem;
+}
 .map-popup .sound-card {
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;

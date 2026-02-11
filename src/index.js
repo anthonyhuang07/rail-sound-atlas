@@ -92,6 +92,50 @@ const renderPanelContent = (titleEl, subtitleEl, listEl, content) => {
   renderSoundCards(listEl, content.items);
 };
 
+const renderStationPopup = (stationData) => {
+  if (!popupSoundList) return;
+  popupTitle.textContent = stationData.title;
+  popupSubtitle.textContent = stationData.subtitle;
+  popupSoundList.innerHTML = "";
+  popupSoundList.classList.remove("is-grouped");
+
+  const stationItems = stationData.items || [];
+  const lineIds = stationData.lineIds || [];
+  if (lineIds.length <= 1) {
+    renderSoundCards(popupSoundList, stationItems);
+    return;
+  }
+
+  let rendered = 0;
+  popupSoundList.classList.add("is-grouped");
+  lineIds.forEach((lineId) => {
+    const lineItems = stationItems.filter((item) => {
+      if (!item.lineIds) return false;
+      return item.lineIds.includes(lineId);
+    });
+    if (!lineItems.length) return;
+    const block = document.createElement("div");
+    block.className = "popup-block";
+
+    const title = document.createElement("h3");
+    title.className = "popup-block-title";
+    title.textContent = state.systemData.lines[lineId]?.title || "";
+
+    const list = document.createElement("div");
+    list.className = "popup-block-list";
+    renderSoundCards(list, lineItems);
+
+    block.append(title, list);
+    popupSoundList.append(block);
+    rendered += lineItems.length;
+  });
+
+  if (!rendered) {
+    popupSoundList.classList.remove("is-grouped");
+    renderSoundCards(popupSoundList, stationItems);
+  }
+};
+
 const openPanel = () => {
   sidePanel.hidden = false;
 };
@@ -321,6 +365,7 @@ const hideMapPopup = () => {
 
 const openMapPopup = (content, lineIds, event, element) => {
   if (!mapPopup) return;
+  popupSoundList.classList.remove("is-grouped");
   renderPanelContent(popupTitle, popupSubtitle, popupSoundList, content);
   updateLineIcons(popupLineIcons, lineIds);
   mapPopup.hidden = false;
@@ -344,7 +389,9 @@ const setStation = (stationId, element) => {
   }
   const stationData = state.systemData.stations[stationId];
   const iconLineIds = stationData.lineIds;
-  openMapPopup(stationData, iconLineIds);
+  renderStationPopup(stationData);
+  updateLineIcons(popupLineIcons, iconLineIds);
+  mapPopup.hidden = false;
 };
 
 const findMapTarget = (event) => {
