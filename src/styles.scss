@@ -148,6 +148,24 @@ body.is-system .system-mode-toggle {
   display: none !important;
 }
 
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 999rem;
+  color: $text;
+  text-decoration: none;
+  flex-shrink: 0;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
 .view {
   display: none;
 

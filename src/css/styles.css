@@ -169,6 +169,30 @@ body.is-system .system-mode-toggle {
   display: none !important;
 }
 
+.github-link {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 999rem;
+  color: #f2f2f2;
+  text-decoration: none;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.github-link svg {
+  width: 1rem;
+  height: 1rem;
+}
+
 .view {
   display: none;
 }
@@ -775,6 +799,10 @@ body.is-system .system-mode-toggle {
 .system-list-view .list-section {
   margin-bottom: 1.25rem;
   width: 100%;
+}
+.system-list-view .line-selector + .list-section {
+  border-top: 0.0625rem solid #222732;
+  padding-top: 1rem;
 }
 .system-list-view .list-block + .list-block {
   margin-top: 1.5rem;
