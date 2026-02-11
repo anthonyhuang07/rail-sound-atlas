@@ -2,7 +2,6 @@ const soundList = document.getElementById("sound-list");
 const panelTitle = document.getElementById("panel-title");
 const panelSubtitle = document.getElementById("panel-subtitle");
 const sidePanel = document.getElementById("side-panel");
-const closePanelButton = document.getElementById("close-panel");
 const countryGrid = document.getElementById("country-grid");
 const systemGrid = document.getElementById("system-grid");
 const mapContainer = document.getElementById("map-container");
@@ -10,21 +9,24 @@ const crumbCountry = document.getElementById("crumb-country");
 const crumbSystem = document.getElementById("crumb-system");
 const countryTitle = document.getElementById("country-title");
 const panelLineIcons = document.getElementById("panel-line-icons");
+const panelBack = document.getElementById("panel-back");
+const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
+
+const stationTooltip = document.createElement("div");
+stationTooltip.className = "station-tooltip";
 
 const state = {
-  data: null,
-  audioContext: null,
   activeAudio: null,
   view: "home",
-  country: null,
-  system: null,
-  systemSounds: null,
-  systemTheme: null,
+  systemData: null,
   viewBox: null,
   baseViewBox: null,
   pointers: new Map(),
   panLast: { x: 0, y: 0 },
   pinchLastDist: 0,
+  moved: false,
+  panActive: false,
+  suppressClick: false,
 };
 
 const stopActiveAudio = () => {
@@ -47,7 +49,7 @@ const renderList = (content) => {
   panelSubtitle.textContent = content.subtitle;
   soundList.innerHTML = "";
 
-  content.items.forEach((item, index) => {
+  content.items.forEach((item) => {
     const card = document.createElement("div");
     card.className = "sound-card";
     card.setAttribute("role", "listitem");
@@ -78,6 +80,32 @@ const closePanel = () => {
   clearActive();
 };
 
+const setPanelMode = (mode) => {
+  if (!panelBack) return;
+  panelBack.hidden = mode !== "detail";
+};
+
+const showSystemPanel = () => {
+  if (!state.systemData) return;
+  clearActive();
+  panelTitle.textContent = state.systemData.system.name;
+  panelSubtitle.textContent = state.systemData.systemSounds.subtitle;
+  updatePanelIcons(Object.keys(state.systemData.lines));
+  renderList(state.systemData.systemSounds);
+  setPanelMode("system");
+  openPanel();
+};
+
+const resetInteractions = () => {
+  state.pointers.clear();
+  state.pinchLastDist = 0;
+  state.moved = false;
+  state.panActive = false;
+  state.suppressClick = false;
+  const svg = mapContainer.querySelector("svg");
+  if (svg) svg.classList.remove("is-panning");
+};
+
 const clearActive = () => {
   document.querySelectorAll(".line.is-active, .station.is-active").forEach((el) => {
     el.classList.remove("is-active");
@@ -87,7 +115,7 @@ const clearActive = () => {
 const updatePanelIcons = (lineIds) => {
   panelLineIcons.innerHTML = "";
   lineIds.forEach((id) => {
-    const iconUrl = state.systemSounds.lines[id].icon;
+    const iconUrl = state.systemData.lines[id].icon;
     const img = document.createElement("img");
     img.className = "line-icon";
     img.alt = `${id} icon`;
@@ -104,9 +132,10 @@ const setLine = (lineId, element) => {
   if (element) {
     element.classList.add("is-active");
   }
-  const lineData = state.systemSounds.lines[lineId];
+  const lineData = state.systemData.lines[lineId];
   updatePanelIcons([lineId]);
   renderList(lineData);
+  setPanelMode("detail");
   openPanel();
 };
 
@@ -115,29 +144,36 @@ const setStation = (stationId, element) => {
   if (element) {
     element.classList.add("is-active");
   }
-  const stationData = state.systemSounds.stations[stationId];
+  const stationData = state.systemData.stations[stationId];
   const iconLineIds = stationData.lineIds;
   updatePanelIcons(iconLineIds);
   renderList(stationData);
+  setPanelMode("detail");
   openPanel();
 };
 
 const findMapTarget = (event) => {
   const path = event.composedPath ? event.composedPath() : [];
-  const selector =
-    "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
   for (const node of path) {
-    if (node && node.matches && node.matches(selector)) return node;
+    if (node && node.matches && node.matches(mapSelector)) return node;
   }
   if (event.target && event.target.closest) {
-    return event.target.closest(selector);
+    return event.target.closest(mapSelector);
   }
   return null;
 };
 
 const handleMapClick = (event) => {
+  if (state.suppressClick) {
+    state.suppressClick = false;
+    return;
+  }
+  if (state.panActive || state.moved) return;
   const target = findMapTarget(event);
-  if (!target || !mapContainer.contains(target)) return;
+  if (!target || !mapContainer.contains(target)) {
+    if (state.view === "system") showSystemPanel();
+    return;
+  }
 
   const scope = target.dataset.scope;
   const lineId = target.dataset.line || target.dataset.lineId;
@@ -181,6 +217,7 @@ const setView = (viewId) => {
   document.querySelectorAll(".view").forEach((view) => {
     view.classList.toggle("is-active", view.id === `view-${viewId}`);
   });
+  document.body.classList.toggle("is-system", viewId === "system");
   updateBreadcrumb();
   if (viewId !== "system") {
     closePanel();
@@ -189,13 +226,10 @@ const setView = (viewId) => {
 };
 
 const makeSvgFocusable = (svg) => {
-  // Make stations/lines keyboard accessible
-  svg
-    .querySelectorAll("[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]")
-    .forEach((el) => {
-      el.setAttribute("tabindex", "0");
-      el.classList.add("is-focusable");
-    });
+  svg.querySelectorAll(mapSelector).forEach((el) => {
+    el.setAttribute("tabindex", "0");
+    el.classList.add("is-focusable");
+  });
 };
 
 const bringStationsToFront = (svg) => {
@@ -275,7 +309,7 @@ const applyMapTheme = (svg, theme) => {
     });
   }
 
-  // Station sizes/styles from mapTheme.station / mapTheme.transfer / mapTheme.terminus
+  // Station sizes/styles from theme.station / theme.transfer / theme.terminus
   svg.querySelectorAll(".station").forEach((stationEl) => {
     const classes = stationEl.classList;
     const variant = classes.contains("transfer")
@@ -316,7 +350,7 @@ const applyMapTheme = (svg, theme) => {
   });
 };
 
-const initViewBox = (svg) => {
+const initViewBox = (svg, scaleValue) => {
   let vb = svg.viewBox && svg.viewBox.baseVal ? svg.viewBox.baseVal : null;
   if (!vb || vb.width === 0 || vb.height === 0) {
     const raw = svg.getAttribute("viewBox");
@@ -330,7 +364,16 @@ const initViewBox = (svg) => {
     }
   }
 
-  state.baseViewBox = { x: vb.x, y: vb.y, width: vb.width, height: vb.height };
+  const parsedScale = Number(scaleValue);
+  const scale = Number.isFinite(parsedScale) && parsedScale > 1 ? parsedScale : 1;
+  const width = vb.width / scale;
+  const height = vb.height / scale;
+  state.baseViewBox = {
+    x: vb.x + (vb.width - width) / 2,
+    y: vb.y + (vb.height - height) / 2,
+    width,
+    height,
+  };
   state.viewBox = { ...state.baseViewBox };
   applyViewBox(svg);
 };
@@ -341,6 +384,25 @@ const applyViewBox = (svg) => {
 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+const clampViewBox = (vb, base) => {
+  if (vb.width >= base.width || vb.height >= base.height) {
+    return {
+      x: base.x - (vb.width - base.width) / 2,
+      y: base.y - (vb.height - base.height) / 2,
+      width: vb.width,
+      height: vb.height,
+    };
+  }
+  const maxX = base.x + base.width - vb.width;
+  const maxY = base.y + base.height - vb.height;
+  return {
+    x: clamp(vb.x, base.x, maxX),
+    y: clamp(vb.y, base.y, maxY),
+    width: vb.width,
+    height: vb.height,
+  };
+};
 
 const clientToSvgPoint = (svg, clientX, clientY) => {
   const point = svg.createSVGPoint();
@@ -355,6 +417,8 @@ const handlePointerDown = (event, svg) => {
   if (event.button !== 0 && event.pointerType !== "touch") return;
   const target = findMapTarget(event);
   if (target) return;
+  state.moved = false;
+  state.panActive = true;
   state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   svg.setPointerCapture(event.pointerId);
 
@@ -376,17 +440,25 @@ const handlePointerMove = (event, svg) => {
   const pointers = getPointerList();
   if (pointers.length === 1) {
     const vb = state.viewBox;
+    const base = state.baseViewBox;
+    if (!vb || !base) return;
+    state.moved = true;
     const scale = vb.width / svg.clientWidth;
     const dx = (event.clientX - state.panLast.x) * scale;
     const dy = (event.clientY - state.panLast.y) * scale;
     state.panLast = { x: event.clientX, y: event.clientY };
-    vb.x -= dx;
-    vb.y -= dy;
+    const next = clampViewBox(
+      { x: vb.x - dx, y: vb.y - dy, width: vb.width, height: vb.height },
+      base
+    );
+    vb.x = next.x;
+    vb.y = next.y;
     applyViewBox(svg);
   } else if (pointers.length === 2) {
     const vb = state.viewBox;
     const base = state.baseViewBox;
     if (!vb || !base) return;
+    state.moved = true;
     const [a, b] = pointers;
     const dx = a.x - b.x;
     const dy = a.y - b.y;
@@ -405,9 +477,16 @@ const handlePointerMove = (event, svg) => {
     const nextWidth = clamp(vb.width * scaleFactor, minWidth, maxWidth);
     const ratio = nextWidth / vb.width;
 
-    const nextX = center.x - (center.x - vb.x) * ratio;
-    const nextY = center.y - (center.y - vb.y) * ratio;
-    state.viewBox = { x: nextX, y: nextY, width: nextWidth, height: vb.height * ratio };
+    const next = clampViewBox(
+      {
+        x: center.x - (center.x - vb.x) * ratio,
+        y: center.y - (center.y - vb.y) * ratio,
+        width: nextWidth,
+        height: vb.height * ratio,
+      },
+      base
+    );
+    state.viewBox = next;
     applyViewBox(svg);
     state.pinchLastDist = dist;
   }
@@ -426,6 +505,9 @@ const handlePointerUp = (event, svg) => {
   }
   if (pointers.length === 0) {
     svg.classList.remove("is-panning");
+    state.suppressClick = state.panActive && state.moved;
+    state.moved = false;
+    state.panActive = false;
   }
 };
 
@@ -437,6 +519,7 @@ const loadMap = async (mapPath, theme) => {
       throw new Error(`Map fetch failed: ${response.status}`);
     }
     mapContainer.innerHTML = await response.text();
+    mapContainer.append(stationTooltip);
 
     const svg = mapContainer.querySelector("svg");
     if (!svg) throw new Error("Map SVG missing <svg> root");
@@ -447,7 +530,7 @@ const loadMap = async (mapPath, theme) => {
 
     applyMapTheme(svg, theme);
     bringStationsToFront(svg);
-    initViewBox(svg);
+    initViewBox(svg, theme.scale);
 
     // Make elements tabbable + keyboard “Enter” works
     makeSvgFocusable(svg);
@@ -463,6 +546,38 @@ const loadMap = async (mapPath, theme) => {
       if (event.key === "Enter") handleMapClick(event);
     });
 
+    const showStationTooltip = (event, target) => {
+      if (!target || !target.classList.contains("station")) return;
+      const name = target.dataset.name || target.getAttribute("data-name");
+      if (!name) return;
+      stationTooltip.textContent = name;
+      stationTooltip.classList.add("is-visible");
+      moveStationTooltip(event);
+    };
+
+    const hideStationTooltip = () => {
+      stationTooltip.classList.remove("is-visible");
+    };
+
+    const moveStationTooltip = (event) => {
+      const rect = mapContainer.getBoundingClientRect();
+      stationTooltip.style.left = `${event.clientX - rect.left}px`;
+      stationTooltip.style.top = `${event.clientY - rect.top}px`;
+    };
+
+    svg.addEventListener("pointermove", (event) => {
+      const target = findMapTarget(event);
+      if (target && target.classList.contains("station")) {
+        showStationTooltip(event, target);
+      } else {
+        hideStationTooltip();
+      }
+    });
+
+    svg.addEventListener("pointerleave", () => {
+      hideStationTooltip();
+    });
+
     svg.addEventListener("pointerdown", (event) => handlePointerDown(event, svg));
     svg.addEventListener("pointermove", (event) => handlePointerMove(event, svg));
     svg.addEventListener("pointerup", (event) => handlePointerUp(event, svg));
@@ -471,23 +586,15 @@ const loadMap = async (mapPath, theme) => {
 
   } catch (error) {
     mapContainer.innerHTML = `<p style=\"color:#9aa0a6;\">Failed to load map. If you're opening the file directly, run a local server and reload.</p>`;
-    console.error(error);
   }
 };
 
 const loadSystem = async (system) => {
   const systemData = await fetch(system.sounds).then((res) => res.json());
-  state.system = system;
-  state.systemSounds = systemData.sounds;
-  state.systemTheme = systemData.mapTheme;
+  state.systemData = systemData;
+  showSystemPanel();
 
-  panelTitle.textContent = systemData.system.name;
-  panelSubtitle.textContent = "Select a line or station to view sounds.";
-  updatePanelIcons([]);
-  soundList.innerHTML = "";
-  closePanel();
-
-  await loadMap(system.map, state.systemTheme);
+  await loadMap(system.map, systemData.theme);
   setView("system");
 };
 
@@ -498,16 +605,27 @@ const renderCountries = (countries) => {
     button.type = "button";
     button.className = "card";
     button.dataset.country = country.id;
-    const image = country.image;
-    button.innerHTML = `
-      <span class="card-image">
-        <img src="${image}" alt="${country.name} flag" />
-      </span>
-      <span class="card-title">${country.name}</span>
-    `;
+    if (country.comingSoon === true) {
+      button.dataset.comingSoon = "true";
+    }
+    const imageWrap = document.createElement("span");
+    imageWrap.className = "card-image";
+    const img = document.createElement("img");
+    img.src = country.image;
+    img.alt = `${country.name} flag`;
+    imageWrap.append(img);
+    if (country.comingSoon === true) {
+      const overlay = document.createElement("span");
+      overlay.className = "coming-soon";
+      overlay.textContent = "COMING SOON";
+      imageWrap.append(overlay);
+    }
+    const title = document.createElement("span");
+    title.className = "card-title";
+    title.textContent = country.name;
+    button.append(imageWrap, title);
     button.addEventListener("click", async () => {
       const data = await fetch(country.data).then((res) => res.json());
-      state.country = data;
       crumbCountry.textContent = data.country.name;
       if (countryTitle) {
         countryTitle.textContent = data.country.name;
@@ -525,13 +643,25 @@ const renderSystems = (systems) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "card";
-    const logo = system.logo;
-    button.innerHTML = `
-      <span class="card-image">
-        <img src="${logo}" alt="${system.name} logo" />
-      </span>
-      <span class="card-title">${system.name}</span>
-    `;
+    if (system.comingSoon === true) {
+      button.dataset.comingSoon = "true";
+    }
+    const imageWrap = document.createElement("span");
+    imageWrap.className = "card-image";
+    const img = document.createElement("img");
+    img.src = system.logo;
+    img.alt = `${system.name} logo`;
+    imageWrap.append(img);
+    if (system.comingSoon === true) {
+      const overlay = document.createElement("span");
+      overlay.className = "coming-soon";
+      overlay.textContent = "COMING SOON";
+      imageWrap.append(overlay);
+    }
+    const title = document.createElement("span");
+    title.className = "card-title";
+    title.textContent = system.name;
+    button.append(imageWrap, title);
     button.addEventListener("click", () => {
       crumbSystem.textContent = system.name;
       loadSystem(system);
@@ -550,8 +680,15 @@ const init = async () => {
   document.querySelectorAll(".crumb").forEach((button) => {
     button.addEventListener("click", () => setView(button.dataset.view));
   });
-
-  closePanelButton.addEventListener("click", closePanel);
+  if (panelBack) {
+    panelBack.addEventListener("click", () => {
+      showSystemPanel();
+    });
+  }
+  window.addEventListener("blur", resetInteractions);
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) resetInteractions();
+  });
 
   mapContainer.addEventListener(
     "wheel",
@@ -580,10 +717,17 @@ const init = async () => {
       const nextHeight = (nextWidth / vb.width) * vb.height;
 
       const ratio = nextWidth / vb.width;
-      const nextX = mouseX - (mouseX - vb.x) * ratio;
-      const nextY = mouseY - (mouseY - vb.y) * ratio;
+      const next = clampViewBox(
+        {
+          x: mouseX - (mouseX - vb.x) * ratio,
+          y: mouseY - (mouseY - vb.y) * ratio,
+          width: nextWidth,
+          height: nextHeight,
+        },
+        base
+      );
 
-      state.viewBox = { x: nextX, y: nextY, width: nextWidth, height: nextHeight };
+      state.viewBox = next;
       applyViewBox(svg);
     },
     { passive: false }

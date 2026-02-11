@@ -47,13 +47,15 @@ permalink: /
               <p id="panel-subtitle">Select a line or station to view sounds.</p>
               <div id="panel-line-icons" class="line-icons" hidden></div>
             </div>
-            <button class="close-button" type="button" id="close-panel">×</button>
+            <button class="close-button" id="panel-back" type="button" aria-label="Back to system view">
+              X
+            </button>
           </div>
           <div class="sound-list" id="sound-list" role="list"></div>
         </aside>
       </section>
     </main>
 
-    <script src="src/js/app.js" type="module"></script>
+    <script src="src/index.js" type="module"></script>
   </body>
 </html>
