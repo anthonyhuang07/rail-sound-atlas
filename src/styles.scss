@@ -2,6 +2,7 @@ $bg: #000000;
 $panel: #151922;
 $text: #f2f2f2;
 $muted: #9aa0a6;
+$sound-desc-lines: 3;
 
 *,
 *::before,
@@ -43,6 +44,7 @@ main {
   flex: 1;
   min-height: 0;
   height: 100%;
+  position: relative;
 }
 
 #view-system.is-active {
@@ -171,6 +173,10 @@ body.is-system .system-mode-toggle {
 
 #view-system.is-active.map-mode .system-list-view {
   display: none;
+}
+
+#country-grid {
+  margin-top: 0;
 }
 
 .card-grid {
@@ -397,13 +403,16 @@ body.is-system .system-mode-toggle {
   .sound-list {
     display: grid;
     gap: 0.875rem;
+    border-top: 0.0625rem solid #222732;
+    padding-top: 0.75rem;
   }
 
   .sound-card {
     border: 0.0625rem solid #222732;
     border-radius: 0.5rem;
     padding: 0.75rem;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.625rem;
 
     h3 {
@@ -415,15 +424,27 @@ body.is-system .system-mode-toggle {
       margin: 0;
       color: $muted;
       font-size: 0.8em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: $sound-desc-lines;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     button {
       background: transparent;
       color: $text;
       border: 0.0625rem solid #2b313d;
-      padding: 0.375rem 0.625rem;
+      padding: 0 0.625rem;
       border-radius: 0.375rem;
       cursor: pointer;
+      width: 100%;
+      height: 2.25rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
     }
   }
 }
@@ -522,12 +543,15 @@ body.is-system .system-mode-toggle {
   .sound-list {
     display: grid;
     gap: 0.75rem;
+    border-top: 0.0625rem solid #222732;
+    padding-top: 0.75rem;
 
     .sound-card {
       border: 0.0625rem solid #222732;
       border-radius: 0.5rem;
       padding: 0.75rem;
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 0.5rem;
 
       h3 {
@@ -539,15 +563,27 @@ body.is-system .system-mode-toggle {
         margin: 0;
         color: $muted;
         font-size: 0.8em;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $sound-desc-lines;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       button {
         background: transparent;
         color: $text;
         border: 0.0625rem solid #2b313d;
-        padding: 0.375rem 0.625rem;
+        padding: 0 0.625rem;
         border-radius: 0.375rem;
         cursor: pointer;
+        width: 100%;
+        height: 2.25rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: auto;
       }
     }
   }
@@ -558,7 +594,7 @@ body.is-system .system-mode-toggle {
   min-height: 0;
   overflow: auto;
   padding: 2.5rem 1.25rem 1.25rem;
-  max-width: 62.5rem;
+  max-width: 75rem;
   margin: 0 auto;
   width: 100%;
 
@@ -640,13 +676,18 @@ body.is-system .system-mode-toggle {
     width: 100%;
   }
 
+  .line-selector + .list-section {
+    border-top: 0.0625rem solid #222732;
+    padding-top: 1rem;
+  }
+
   .list-block + .list-block {
     margin-top: 1.5rem;
   }
 
   .list-section-title {
     font-size: 1em;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
   }
 
   .list-section-subtitle {
@@ -665,7 +706,8 @@ body.is-system .system-mode-toggle {
     border: 0.0625rem solid #222732;
     border-radius: 0.5rem;
     padding: 0.75rem;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 0.5rem;
 
     h3 {
@@ -675,16 +717,27 @@ body.is-system .system-mode-toggle {
     p {
       color: $muted;
       font-size: 0.8em;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: $sound-desc-lines;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     button {
       background: transparent;
       color: $text;
       border: 0.0625rem solid #2b313d;
-      padding: 0.375rem 0.625rem;
+      padding: 0 0.625rem;
       border-radius: 0.375rem;
       cursor: pointer;
-      justify-self: start;
+      width: 100%;
+      height: 2.25rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
     }
   }
 
@@ -712,6 +765,9 @@ body.is-system .system-mode-toggle {
   }
 
   .side-panel {
+    position: static;
     width: 100%;
+    max-height: none;
+    border-left: 0.0625rem solid #222732;
   }
 }

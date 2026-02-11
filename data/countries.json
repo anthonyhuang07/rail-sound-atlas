@@ -5,13 +5,6 @@
       "name": "Canada",
       "image": "assets/images/canada/flag.png",
       "data": "data/canada.json"
-    },
-    {
-      "id": "japan",
-      "name": "Japan",
-      "image": "assets/images/japan/flag.webp",
-      "data": "data/japan.json",
-      "comingSoon": true
     }
   ]
 }

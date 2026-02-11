@@ -16,8 +16,7 @@
       "name": "Toronto Subway",
       "logo": "assets/images/canada/ttc/ttc.png",
       "map": "assets/maps/canada/ttc.svg",
-      "sounds": "data/canada/ttc.json",
-      "comingSoon": true
+      "sounds": "data/canada/ttc.json"
     }
   ]
 }

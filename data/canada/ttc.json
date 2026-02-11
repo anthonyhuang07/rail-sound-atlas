@@ -6,9 +6,7 @@
   "theme": {
     "scale": 1.15,
     "lineWidth": 17,
-    "lineColors": {
-
-    },
+    "lineColors": {},
     "station": {
       "fill": "#ffffff",
       "radius": 5.5,
@@ -34,42 +32,124 @@
   },
   "systemSounds": {
     "title": "Toronto Subway",
-    "subtitle": "Toronto Rocket, T1",
+    "subtitle": "est. 1954, 5 lines",
     "items": [
       {
-        "title": "Door Chime",
-        "audio": "assets/audio/canada/mtl-metro/doudoudou.ogg"
+        "title": "Station Announcement",
+        "audio": "assets/audio/canada/ttc/station-ann.mp3"
+      },
+      {
+        "title": "Safety Announcement",
+        "description": "The TTC takes your safety very seriously. In the event of an emergency, speak to a staff member. Use the emergency alarm on board a train, or DWA button or the payphone on the platform. You can also report concerns using the SafeTTC app.",
+        "audio": "assets/audio/canada/ttc/ann-safety.mp3"
       }
     ]
   },
   "lines": {
     "line-1": {
-        "title": "Line 1 Yonge–University",
-        "subtitle": "Toronto Rocket",
-        "icon": "assets/images/canada/ttc/line-1.png",
-        "items": [
-          {
-            "title": "Doors Closing",
-            "description": "MR-73's \"Dou dou dou\"",
-            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
-          }
-        ]
-      },
+      "title": "Line 1 Yonge–University",
+      "subtitle": "Toronto Rocket",
+      "icon": "assets/images/canada/ttc/line-1.png",
+      "items": [
+        {
+          "title": "Doors Opening (Vaughan)",
+          "description": "Line 1 towards Vaughan.",
+          "audio": "assets/audio/canada/ttc/line-1/line-1-vaughan.mp3"
+        },
+        {
+          "title": "Doors Opening (Finch)",
+          "description": "Line 1 towards Finch.",
+          "audio": "assets/audio/canada/ttc/line-1/line-1-finch.mp3"
+        }
+      ]
+    },
     "line-2": {
-        "title": "Line 2 Bloor–Danforth",
-        "subtitle": "T1",
-        "icon": "assets/images/canada/ttc/line-2.png",
-        "items": [
-
-        ]
-}
+      "title": "Line 2 Bloor–Danforth",
+      "subtitle": "T1",
+      "icon": "assets/images/canada/ttc/line-2.png",
+      "items": [
+        {
+          "title": "Doors Opening (Kennedy)",
+          "description": "Line 2 towards Kennedy.",
+          "audio": "assets/audio/canada/ttc/line-2/line-2-kennedy.mp3"
+        }
+      ]
+    },
+    "line-4": {
+      "title": "Line 4 Sheppard",
+      "subtitle": "Toronto Rocket",
+      "icon": "assets/images/canada/ttc/line-4.png",
+      "items": []
+    },
+    "line-5":{
+      "title": "Line 5 Eglinton",
+      "subtitle": "Flexity Freedom",
+      "icon": "assets/images/canada/ttc/line-5.png",
+      "items": []
+    },
+    "line-6": {
+      "title": "Line 6 Finch West",
+      "subtitle": "Citadis Spirit",
+      "icon": "assets/images/canada/ttc/line-6.png",
+      "items": []
+    }
   },
   "stations": {
-    "angrignon": {
-      "lineIds": ["line-1"],
-      "title": "Angrignon",
-      "subtitle": "Ligne Verte",
-      "items": []
+    "vaughan": {
+      "lineIds": [
+        "line-1"
+      ],
+      "title": "Vaughan Metropolitan Centre",
+      "subtitle": "Line 1 Yonge–University",
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-1/vaughan-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-1/vaughan.mp3",
+          "lineIds": [
+            "line-1"
+           ]
+        }
+      ],
+      "lineOrder": {
+          "line-1": 1
+      }
+    },
+    "kipling": {
+      "lineIds": [
+        "line-2"
+      ],
+      "title": "Kipling",
+      "subtitle": "Line 2 Bloor–Danforth",
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is Kipling, Kipling Station.",
+          "audio": "assets/audio/canada/ttc/line-2/kipling-next.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Kipling. Kipling Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-2/kipling.mp3",
+          "lineIds": [
+            "line-2"
+           ]
+        }
+      ],
+      "lineOrder": {
+          "line-2": 1
+      }
     }
   }
 }

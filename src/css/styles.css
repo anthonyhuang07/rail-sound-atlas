@@ -55,6 +55,7 @@ main {
           flex: 1;
   min-height: 0;
   height: 100%;
+  position: relative;
 }
 
 #view-system.is-active {
@@ -196,6 +197,10 @@ body.is-system .system-mode-toggle {
 
 #view-system.is-active.map-mode .system-list-view {
   display: none;
+}
+
+#country-grid {
+  margin-top: 0;
 }
 
 .card-grid {
@@ -445,12 +450,20 @@ body.is-system .system-mode-toggle {
 .map-popup .sound-list {
   display: grid;
   gap: 0.875rem;
+  border-top: 0.0625rem solid #222732;
+  padding-top: 0.75rem;
 }
 .map-popup .sound-card {
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 0.75rem;
-  display: grid;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   gap: 0.625rem;
 }
 .map-popup .sound-card h3 {
@@ -461,14 +474,32 @@ body.is-system .system-mode-toggle {
   margin: 0;
   color: #9aa0a6;
   font-size: 0.8em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .map-popup .sound-card button {
   background: transparent;
   color: #f2f2f2;
   border: 0.0625rem solid #2b313d;
-  padding: 0.375rem 0.625rem;
+  padding: 0 0.625rem;
   border-radius: 0.375rem;
   cursor: pointer;
+  width: 100%;
+  height: 2.25rem;
+  line-height: 1;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: auto;
 }
 
 .side-panel {
@@ -594,12 +625,20 @@ body.is-system .system-mode-toggle {
 .side-panel .sound-list {
   display: grid;
   gap: 0.75rem;
+  border-top: 0.0625rem solid #222732;
+  padding-top: 0.75rem;
 }
 .side-panel .sound-list .sound-card {
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 0.75rem;
-  display: grid;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   gap: 0.5rem;
 }
 .side-panel .sound-list .sound-card h3 {
@@ -610,14 +649,32 @@ body.is-system .system-mode-toggle {
   margin: 0;
   color: #9aa0a6;
   font-size: 0.8em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .side-panel .sound-list .sound-card button {
   background: transparent;
   color: #f2f2f2;
   border: 0.0625rem solid #2b313d;
-  padding: 0.375rem 0.625rem;
+  padding: 0 0.625rem;
   border-radius: 0.375rem;
   cursor: pointer;
+  width: 100%;
+  height: 2.25rem;
+  line-height: 1;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: auto;
 }
 
 .system-list-view {
@@ -627,7 +684,7 @@ body.is-system .system-mode-toggle {
   min-height: 0;
   overflow: auto;
   padding: 2.5rem 1.25rem 1.25rem;
-  max-width: 62.5rem;
+  max-width: 75rem;
   margin: 0 auto;
   width: 100%;
 }
@@ -724,7 +781,7 @@ body.is-system .system-mode-toggle {
 }
 .system-list-view .list-section-title {
   font-size: 1em;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 .system-list-view .list-section-subtitle {
   color: #9aa0a6;
@@ -740,7 +797,13 @@ body.is-system .system-mode-toggle {
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 0.75rem;
-  display: grid;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   gap: 0.5rem;
 }
 .system-list-view .sound-card h3 {
@@ -749,15 +812,32 @@ body.is-system .system-mode-toggle {
 .system-list-view .sound-card p {
   color: #9aa0a6;
   font-size: 0.8em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .system-list-view .sound-card button {
   background: transparent;
   color: #f2f2f2;
   border: 0.0625rem solid #2b313d;
-  padding: 0.375rem 0.625rem;
+  padding: 0 0.625rem;
   border-radius: 0.375rem;
   cursor: pointer;
-  justify-self: start;
+  width: 100%;
+  height: 2.25rem;
+  line-height: 1;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: auto;
 }
 .system-list-view .empty-note {
   color: #9aa0a6;
@@ -792,6 +872,9 @@ body.is-system .system-mode-toggle {
             flex-direction: column;
   }
   .side-panel {
+    position: static;
     width: 100%;
+    max-height: none;
+    border-left: 0.0625rem solid #222732;
   }
 }/*# sourceMappingURL=styles.css.map */

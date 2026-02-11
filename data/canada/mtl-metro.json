@@ -37,469 +37,988 @@
   },
   "systemSounds": {
     "title": "Montréal Metro",
-    "subtitle": "MPM-10 (Azur), MR-73",
+    "subtitle": "est. 1966, 4 lines",
     "items": [
       {
         "title": "Door Chime",
         "description": "\"Dou dou dou\"",
         "audio": "assets/audio/canada/mtl-metro/doudoudou.ogg"
+      },
+      {
+        "title": "Welcome",
+        "description": "La STM vous souhaite la bienvenue à bord.",
+        "audio": "assets/audio/canada/mtl-metro/bienvenue.ogg"
       }
     ]
   },
   "lines": {
     "line-1": {
-        "title": "Ligne Verte",
-        "subtitle": "MPM-10 (Azur), MR-73",
-        "icon": "assets/images/canada/mtl-metro/line-1.png",
-        "items": [
-          {
-            "title": "Doors Closing",
-            "description": "MR-73's \"Dou dou dou\"",
-            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
-          }
-        ]
-      },
+      "title": "Ligne Verte",
+      "subtitle": "MPM-10 (AZUR), MR-73",
+      "icon": "assets/images/canada/mtl-metro/line-1.png",
+      "items": [
+        {
+          "title": "Door Chime (MR-73)",
+          "description": "\"Dou dou dou\"",
+          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+        },
+        {
+          "title": "Welcome (AZUR)",
+          "description": "La STM vous souhaite la bienvenue à bord.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
+        }
+      ]
+    },
     "line-2": {
-        "title": "Ligne Orange",
-        "subtitle": "MPM-10 (Azur)",
-        "icon": "assets/images/canada/mtl-metro/line-2.png",
-        "items": [
-
-        ]
-      },
+      "title": "Ligne Orange",
+      "subtitle": "MPM-10 (AZUR)",
+      "icon": "assets/images/canada/mtl-metro/line-2.png",
+      "items": [
+        {
+          "title": "Welcome (AZUR)",
+          "description": "La STM vous souhaite la bienvenue à bord.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
+        }
+      ]
+    },
     "line-4": {
-        "title": "Ligne Jaune",
-        "subtitle": "MR-73",
-        "icon": "assets/images/canada/mtl-metro/line-4.png",
-        "items": [
-          {
-            "title": "Doors Closing",
-            "description": "MR-73's \"Dou dou dou\"",
-            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
-          }
-        ]
-      },
-      "line-5": {
-        "title": "Ligne Bleue",
-        "subtitle": "MR-73",
-        "icon": "assets/images/canada/mtl-metro/line-5.png",
-        "items": [
-          {
-            "title": "Doors Closing",
-            "description": "MR-73's \"Dou dou dou\"",
-            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
-          }
-        ]
-      }
+      "title": "Ligne Jaune",
+      "subtitle": "MR-73",
+      "icon": "assets/images/canada/mtl-metro/line-4.png",
+      "items": [
+        {
+          "title": "Door Chime (MR-73)",
+          "description": "\"Dou dou dou\"",
+          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+        }
+      ]
+    },
+    "line-5": {
+      "title": "Ligne Bleue",
+      "subtitle": "MR-73",
+      "icon": "assets/images/canada/mtl-metro/line-5.png",
+      "items": [
+        {
+          "title": "Door Chime (MR-73)",
+          "description": "\"Dou dou dou\"",
+          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+        }
+      ]
+    }
   },
   "stations": {
     "angrignon": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Angrignon",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 1
+      }
     },
     "monk": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Monk",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 2
+      }
     },
     "jolicoeur": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Jolicoeur",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 3
+      }
     },
     "verdun": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Verdun",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 4
+      }
     },
     "de-leglise": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "De L'Église",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 5
+      }
     },
     "lasalle": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "LaSalle",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 6
+      }
     },
     "charlevoix": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Charlevoix",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 7
+      }
     },
     "lionel-groulx": {
-      "lineIds": ["line-1", "line-2"],
+      "lineIds": [
+        "line-1",
+        "line-2"
+      ],
+      "lineOrder": {
+        "line-1": 8,
+        "line-2": 11
+      },
       "title": "Lionel-Groulx",
       "subtitle": "Ligne Verte, Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station (Ligne Orange)",
+          "description": "Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/lionel-groulx-prochaine.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Lionel-Groulx. Ouverture des portes de l'autre côté.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/lionel-groulx.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        }
+      ]
     },
     "atwater": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Atwater",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 9
+      }
     },
     "guy-concordia": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Guy-Concordia",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 10
+      }
     },
     "peel": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Peel",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 11
+      }
     },
     "mcgill": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "McGill",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 12
+      }
     },
     "place-des-arts": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Place-des-Arts",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 13
+      }
     },
     "st-laurent": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Saint-Laurent",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 14
+      }
     },
     "beaudry": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Beaudry",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 16
+      }
     },
     "papineau": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Papineau",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 17
+      }
     },
     "frontenac": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Frontenac",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 18
+      }
     },
     "prefontaine": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Préfontaine",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 19
+      }
     },
     "joliette": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Joliette",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 20
+      }
     },
     "pie-ix": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Pie-IX",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 21
+      }
     },
     "viau": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Viau",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 22
+      }
     },
     "assomption": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Assomption",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 23
+      }
     },
     "cadillac": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Cadillac",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 24
+      }
     },
     "langelier": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Langelier",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 25
+      }
     },
     "radisson": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Radisson",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 26
+      }
     },
     "honore-beaugrand": {
-      "lineIds": ["line-1"],
+      "lineIds": [
+        "line-1"
+      ],
       "title": "Honoré-Beaugrand",
       "subtitle": "Ligne Verte",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-1": 27
+      }
     },
     "cote-vertu": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Côte-Vertu",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Côte-Vertu.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/cote-vertu-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Côte-Vertu, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/cote-vertu.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 1
+      }
     },
     "du-college": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Du Collège",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Du Collège.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/du-college-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Du Collège.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/du-college.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 2
+      }
     },
     "de-la-savane": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "De la Savane",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: De la Savane.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/de-la-savane-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station De la Savane.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/de-la-savane.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 3
+      }
     },
     "namur": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Namur",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Namur.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/namur-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Namur.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/namur.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 4
+      }
     },
     "plamondon": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Plamondon",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Plamondon.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/plamondon-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Plamondon.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/plamondon.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 5
+      }
     },
     "cote-ste-catherine": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Côte-Sainte-Catherine",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Côte-Sainte-Catherine.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/cote-ste-catherine-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Côte-Sainte-Catherine.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/cote-ste-catherine.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 6
+      }
     },
     "snowdon": {
-      "lineIds": ["line-2", "line-5"],
+      "lineIds": [
+        "line-2",
+        "line-5"
+      ],
+      "lineOrder": {
+        "line-2": 7,
+        "line-5": 1
+      },
       "title": "Snowdon",
       "subtitle": "Ligne Orange, Ligne Bleue",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Snowdon. Correspondance avec la ligne bleue.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/snowdon-prochaine.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Snowdon.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/snowdon.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        }
+      ]
     },
     "villa-maria": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Villa Maria",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Villa Maria.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/villa-maria-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Villa Maria.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/villa-maria.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 8
+      }
     },
     "vendome": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Vendôme",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Vendôme.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/vendome-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Vendôme.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/vendome.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 9
+      }
     },
     "place-st-henri": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Place-Saint-Henri",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Place-Saint-Henri.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/place-st-henri-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Place-Saint-Henri.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/place-st-henri.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 10
+      }
     },
     "georges-vanier": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Georges-Vanier",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Georges-Vanier.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/georges-vanier-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Georges-Vanier.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/georges-vanier.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 12
+      }
     },
     "lucien-lallier": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Lucien-L'Allier",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Lucien-L'Allier.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/lucien-lallier-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Lucien-L'Allier.",
+          "audio": "assets/audio/canada/mtl-metro/line-2/lucien-lallier.mp3"
+        }
+      ],
+      "lineOrder": {
+        "line-2": 13
+      }
     },
     "bonaventure": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Bonaventure",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 14
+      }
     },
     "square-victoria-oaci": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Square-Victoria-OACI",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 15
+      }
     },
     "place-darmes": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Place-d'Armes",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 16
+      }
     },
     "champ-de-mars": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Champ-de-Mars",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 18
+      }
     },
     "sherbrooke": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Sherbrooke",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 19
+      }
     },
     "mont-royal": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Mont-Royal",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 20
+      }
     },
     "laurier": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Laurier",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 21
+      }
     },
     "rosemont": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Rosemont",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 22
+      }
     },
     "beaubien": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Beaubien",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 23
+      }
     },
     "jean-talon": {
-      "lineIds": ["line-2", "line-5"],
+      "lineIds": [
+        "line-2",
+        "line-5"
+      ],
+      "lineOrder": {
+        "line-2": 24,
+        "line-5": 9
+      },
       "title": "Jean-Talon",
       "subtitle": "Ligne Orange, Ligne Bleue",
       "items": []
     },
     "jarry": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Jarry",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 25
+      }
     },
     "cremazie": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Crémazie",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 26
+      }
     },
     "sauve": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Sauvé",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 27
+      }
     },
     "henri-bourassa": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Henri-Bourassa",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 28
+      }
     },
     "cartier": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Cartier",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 29
+      }
     },
     "de-la-concorde": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "De la Concorde",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 30
+      }
     },
     "montmorency": {
-      "lineIds": ["line-2"],
+      "lineIds": [
+        "line-2"
+      ],
       "title": "Montmorency",
       "subtitle": "Ligne Orange",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-2": 31
+      }
     },
     "berri-uqam": {
-      "lineIds": ["line-1", "line-2", "line-4"],
+      "lineIds": [
+        "line-1",
+        "line-2",
+        "line-4"
+      ],
+      "lineOrder": {
+        "line-1": 15,
+        "line-2": 17,
+        "line-4": 1
+      },
       "title": "Berri-UQAM",
       "subtitle": "Ligne Verte, Ligne Orange, Ligne Jaune",
       "items": []
     },
     "jean-drapeau": {
-      "lineIds": ["line-4"],
+      "lineIds": [
+        "line-4"
+      ],
       "title": "Jean-Drapeau",
       "subtitle": "Ligne Jaune",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-4": 2
+      }
     },
     "longueuil-udes": {
-      "lineIds": ["line-4"],
+      "lineIds": [
+        "line-4"
+      ],
       "title": "Longueuil-Université-de-Sherbrooke",
       "subtitle": "Ligne Jaune",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-4": 3
+      }
     },
-     "cote-des-neiges": {
-      "lineIds": ["line-5"],
+    "cote-des-neiges": {
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Côte-des-Neiges",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 2
+      }
     },
     "udem": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Université-de-Montréal",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 3
+      }
     },
     "edouard-montpetit": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Édouard-Montpetit",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 4
+      }
     },
     "outremont": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Outremont",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 5
+      }
     },
     "acadie": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Acadie",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 6
+      }
     },
     "parc": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Parc",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 7
+      }
     },
     "de-castelnau": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "De Castelnau",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 8
+      }
     },
     "fabre": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Fabre",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 10
+      }
     },
     "diberville": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "D'Iberville",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 11
+      }
     },
     "st-michel": {
-      "lineIds": ["line-5"],
+      "lineIds": [
+        "line-5"
+      ],
       "title": "Saint-Michel",
       "subtitle": "Ligne Bleue",
-      "items": []
+      "items": [],
+      "lineOrder": {
+        "line-5": 12
+      }
     }
   }
 }

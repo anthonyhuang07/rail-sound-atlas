@@ -70,15 +70,18 @@ const renderSoundCards = (container, items) => {
     const title = document.createElement("h3");
     title.textContent = item.title;
 
-    const desc = document.createElement("p");
-    desc.textContent = item.description;
-
     const playButton = document.createElement("button");
     playButton.type = "button";
     playButton.textContent = "Play";
     playButton.addEventListener("click", () => playSound(item.audio));
 
-    card.append(title, desc, playButton);
+    card.append(title);
+    if (item.description && item.description.trim() !== "") {
+      const desc = document.createElement("p");
+      desc.textContent = item.description;
+      card.append(desc);
+    }
+    card.append(playButton);
     container.append(card);
   });
 };
@@ -160,12 +163,27 @@ const renderSystemListView = () => {
   const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
   const stationItems = Object.values(state.systemData.stations)
     .filter((station) => state.selectedLineId && station.lineIds.includes(state.selectedLineId))
+    .sort((a, b) => {
+      const aOrder = a.lineOrder ? a.lineOrder[state.selectedLineId] : undefined;
+      const bOrder = b.lineOrder ? b.lineOrder[state.selectedLineId] : undefined;
+      const aHas = Number.isFinite(aOrder);
+      const bHas = Number.isFinite(bOrder);
+      if (aHas && bHas) return aOrder - bOrder;
+      if (aHas) return -1;
+      if (bHas) return 1;
+      return 0;
+    })
     .flatMap((station) =>
-      station.items.map((item) => ({
-        title: `${station.title} - ${item.title}`,
-        description: item.description,
-        audio: item.audio,
-      }))
+      station.items
+        .filter((item) => {
+          if (!item.lineIds) return true;
+          return item.lineIds.includes(state.selectedLineId);
+        })
+        .map((item) => ({
+          title: `${station.title} - ${item.title}`,
+          description: item.description,
+          audio: item.audio,
+        }))
     );
 
   systemListView.innerHTML = `
@@ -187,7 +205,6 @@ const renderSystemListView = () => {
       </div>
       <div class="list-block">
         <h3 class="list-section-title">Stations</h3>
-        <p class="list-section-subtitle" id="list-station-subtitle">${selectedLine ? `${selectedLine.title} station sounds` : ""}</p>
         <div id="station-sounds-wrap"></div>
       </div>
     </section>
@@ -213,7 +230,7 @@ const renderSystemListView = () => {
     button.append(icon, label);
     button.addEventListener("click", () => {
       stopActiveAudio();
-      state.selectedLineId = lineId;
+      state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
       renderSystemListView();
     });
     lineSelector.append(button);
@@ -287,6 +304,7 @@ const updateLineIcons = (container, lineIds) => {
 const hideMapPopup = () => {
   if (!mapPopup) return;
   mapPopup.hidden = true;
+  clearActive();
   stopActiveAudio();
 };
 
@@ -905,15 +923,7 @@ const init = async () => {
   if (modeListButton) {
     modeListButton.addEventListener("click", () => setSystemMode("list"));
   }
-  if (systemListView) {
-    systemListView.addEventListener("click", (event) => {
-      if (!state.selectedLineId) return;
-      if (event.target.closest(".line-chip, .sound-card, .sound-card button")) return;
-      stopActiveAudio();
-      state.selectedLineId = null;
-      renderSystemListView();
-    });
-  }
+  // List mode line reset is handled by clicking the active line chip again.
   window.addEventListener("blur", resetInteractions);
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) resetInteractions();
