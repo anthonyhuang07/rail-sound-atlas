@@ -75,13 +75,25 @@ const renderSoundCards = (container, items) => {
     playButton.textContent = "Play";
     playButton.addEventListener("click", () => playSound(item.audio));
 
+    const downloadLink = document.createElement("a");
+    downloadLink.className = "download-button";
+    downloadLink.href = item.audio;
+    downloadLink.setAttribute("download", "");
+    downloadLink.setAttribute("aria-label", "Download audio");
+    downloadLink.innerHTML =
+      "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zm-7 14a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z\"/></svg>";
+
+    const actions = document.createElement("div");
+    actions.className = "sound-actions";
+    actions.append(playButton, downloadLink);
+
     card.append(title);
     if (item.description && item.description.trim() !== "") {
       const desc = document.createElement("p");
       desc.textContent = item.description;
       card.append(desc);
     }
-    card.append(playButton);
+    card.append(actions);
     container.append(card);
   });
 };
@@ -183,20 +195,7 @@ const renderListGrid = (container, items, emptyText) => {
 
   const grid = document.createElement("div");
   grid.className = "list-sounds-grid";
-  items.forEach((item) => {
-    const card = document.createElement("article");
-    card.className = "sound-card";
-    const title = document.createElement("h3");
-    title.textContent = item.title;
-    const desc = document.createElement("p");
-    desc.textContent = item.description;
-    const playButton = document.createElement("button");
-    playButton.type = "button";
-    playButton.textContent = "Play";
-    playButton.addEventListener("click", () => playSound(item.audio));
-    card.append(title, desc, playButton);
-    grid.append(card);
-  });
+  renderSoundCards(grid, items);
   container.append(grid);
 };
 
