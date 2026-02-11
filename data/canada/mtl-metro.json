@@ -52,7 +52,7 @@
   },
   "lines": {
     "line-1": {
-      "title": "Ligne Verte",
+      "title": "Ligne 1 - Verte",
       "subtitle": "MPM-10 (AZUR), MR-73",
       "icon": "assets/images/canada/mtl-metro/line-1.png",
       "items": [
@@ -69,7 +69,7 @@
       ]
     },
     "line-2": {
-      "title": "Ligne Orange",
+      "title": "Ligne 2 - Orange",
       "subtitle": "MPM-10 (AZUR)",
       "icon": "assets/images/canada/mtl-metro/line-2.png",
       "items": [
@@ -81,7 +81,7 @@
       ]
     },
     "line-4": {
-      "title": "Ligne Jaune",
+      "title": "Ligne 4 - Jaune",
       "subtitle": "MR-73",
       "icon": "assets/images/canada/mtl-metro/line-4.png",
       "items": [
@@ -93,7 +93,7 @@
       ]
     },
     "line-5": {
-      "title": "Ligne Bleue",
+      "title": "Ligne 5 - Bleue",
       "subtitle": "MR-73",
       "icon": "assets/images/canada/mtl-metro/line-5.png",
       "items": [

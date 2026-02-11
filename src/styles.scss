@@ -621,6 +621,9 @@ body.is-system .system-mode-toggle {
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 0.0625rem solid #2b313d;
   }
 
   .list-head {
@@ -659,7 +662,7 @@ body.is-system .system-mode-toggle {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     justify-content: center;
     width: 100%;
     max-width: 100%;
@@ -695,8 +698,7 @@ body.is-system .system-mode-toggle {
   }
 
   .line-selector + .list-section {
-    border-top: 0.0625rem solid #222732;
-    padding-top: 1rem;
+    padding-top: 0;
   }
 
   .list-block + .list-block {
