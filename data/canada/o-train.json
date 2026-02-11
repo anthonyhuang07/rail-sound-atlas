@@ -1,0 +1,51 @@
+{
+  "system": {
+    "id": "o-train",
+    "name": "O-Train"
+  },
+  "systemSounds": {
+    "subtitle": "est. 2001, 3 lines",
+    "items": [
+    ]
+  },
+  "lines": {
+    "line-1": {
+      "title": "Line 1 (Confederation Line)",
+      "subtitle": "Citadis Spirit",
+      "icon": "assets/images/canada/o-train/line-1.png",
+      "items": [
+        {
+          "title": "Doors Opening",
+          "description": "Doors opening. Ouverture des portes.",
+          "audio": "assets/audio/canada/o-train/line-1/doors-opening.mp3"
+        },
+        {
+          "title": "Doors Closing",
+          "description": "Doors closing. Fermeture des portes.",
+          "audio": "assets/audio/canada/o-train/line-1/doors-closing.mp3"
+        },
+        {
+          "title": "Acceleration",
+          "description": "",
+          "audio": "assets/audio/canada/o-train/line-1/accel.mp3"
+        }
+      ]
+    },
+    "line-2": {
+      "title": "Line 2 (Trillium Line)",
+      "subtitle": "Stadler FLIRT, Alstom Coradia LINT 41",
+      "icon": "assets/images/canada/o-train/line-2.png",
+      "items": [
+      ]
+    },
+    "line-4": {
+      "title": "Line 4 (Airport Line)",
+      "subtitle": "Alstom Coradia LINT 41",
+      "icon": "assets/images/canada/o-train/line-4.png",
+      "items": []
+    }
+  },
+  "stations": {
+
+  }
+}

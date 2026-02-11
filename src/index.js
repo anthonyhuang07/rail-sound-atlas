@@ -115,12 +115,14 @@ const showSystemPanel = () => {
   stopActiveAudio();
   hideMapPopup();
   clearActive();
+  panelTitle.textContent = state.systemData.system.name;
+  panelSubtitle.textContent = state.systemData.systemSounds.subtitle;
   updateLineIcons(panelLineIcons, Object.keys(state.systemData.lines));
   if (panelSystemIcon && state.systemInfo) {
     panelSystemIcon.src = state.systemInfo.logo;
     panelSystemIcon.alt = `${state.systemInfo.name} logo`;
   }
-  renderPanelContent(panelTitle, panelSubtitle, soundList, state.systemData.systemSounds);
+  renderSoundCards(soundList, state.systemData.systemSounds.items);
   setPanelMode("system");
   openPanel();
 };
@@ -157,8 +159,12 @@ const renderListGrid = (container, items, emptyText) => {
 const renderSystemListView = () => {
   if (!state.systemData || !systemListView) return;
   const lineEntries = Object.entries(state.systemData.lines);
+  const noSystemSounds = !state.systemData.systemSounds.items.length;
   if (state.selectedLineId && !state.systemData.lines[state.selectedLineId]) {
     state.selectedLineId = null;
+  }
+  if (noSystemSounds && !state.selectedLineId) {
+    state.selectedLineId = lineEntries[0] ? lineEntries[0][0] : null;
   }
   const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
   const stationItems = Object.values(state.systemData.stations)
@@ -203,7 +209,7 @@ const renderSystemListView = () => {
         <p class="list-section-subtitle" id="list-line-subtitle">${selectedLine ? selectedLine.subtitle : ""}</p>
         <div id="line-sounds-wrap"></div>
       </div>
-      <div class="list-block">
+      <div class="list-block" ${stationItems.length ? "" : "hidden"}>
         <h3 class="list-section-title">Stations</h3>
         <div id="station-sounds-wrap"></div>
       </div>
@@ -230,6 +236,9 @@ const renderSystemListView = () => {
     button.append(icon, label);
     button.addEventListener("click", () => {
       stopActiveAudio();
+      if (noSystemSounds && state.selectedLineId === lineId) {
+        return;
+      }
       state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
       renderSystemListView();
     });
@@ -241,7 +250,9 @@ const renderSystemListView = () => {
       selectedLine.items,
       "No line sounds."
     );
-    renderListGrid(document.getElementById("station-sounds-wrap"), stationItems, "No station sounds.");
+    if (stationItems.length) {
+      renderListGrid(document.getElementById("station-sounds-wrap"), stationItems, "No station sounds.");
+    }
   } else {
     renderListGrid(
       document.getElementById("system-sounds-wrap"),

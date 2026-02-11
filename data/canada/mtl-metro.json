@@ -36,16 +36,15 @@
     }
   },
   "systemSounds": {
-    "title": "Montréal Metro",
     "subtitle": "est. 1966, 4 lines",
     "items": [
       {
-        "title": "Door Chime",
+        "title": "Door Chime (Raw)",
         "description": "\"Dou dou dou\"",
         "audio": "assets/audio/canada/mtl-metro/doudoudou.ogg"
       },
       {
-        "title": "Welcome",
+        "title": "Welcome (Raw)",
         "description": "La STM vous souhaite la bienvenue à bord.",
         "audio": "assets/audio/canada/mtl-metro/bienvenue.ogg"
       }

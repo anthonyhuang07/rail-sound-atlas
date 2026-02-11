@@ -3,35 +3,7 @@
     "id": "ttc",
     "name": "Toronto Subway"
   },
-  "theme": {
-    "scale": 1.15,
-    "lineWidth": 17,
-    "lineColors": {},
-    "station": {
-      "fill": "#ffffff",
-      "radius": 5.5,
-      "stroke": "#000000",
-      "strokeWidth": 0
-    },
-    "transfer": {
-      "fill": "#000",
-      "radius": 9.5,
-      "stroke": "#ffffff",
-      "strokeWidth": 2
-    },
-    "terminus": {
-      "fill": "#ffffff",
-      "radius": 6.5,
-      "stroke": "#000000",
-      "strokeWidth": 0
-    },
-    "labels": {
-      "color": "#9aa0a6",
-      "fontSize": 12
-    }
-  },
   "systemSounds": {
-    "title": "Toronto Subway",
     "subtitle": "est. 1954, 5 lines",
     "items": [
       {
