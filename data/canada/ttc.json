@@ -1,0 +1,75 @@
+{
+  "system": {
+    "id": "ttc",
+    "name": "Toronto Subway"
+  },
+  "theme": {
+    "scale": 1.15,
+    "lineWidth": 17,
+    "lineColors": {
+
+    },
+    "station": {
+      "fill": "#ffffff",
+      "radius": 5.5,
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    "transfer": {
+      "fill": "#000",
+      "radius": 9.5,
+      "stroke": "#ffffff",
+      "strokeWidth": 2
+    },
+    "terminus": {
+      "fill": "#ffffff",
+      "radius": 6.5,
+      "stroke": "#000000",
+      "strokeWidth": 0
+    },
+    "labels": {
+      "color": "#9aa0a6",
+      "fontSize": 12
+    }
+  },
+  "systemSounds": {
+    "title": "Toronto Subway",
+    "subtitle": "Toronto Rocket, T1",
+    "items": [
+      {
+        "title": "Door Chime",
+        "audio": "assets/audio/canada/mtl-metro/doudoudou.ogg"
+      }
+    ]
+  },
+  "lines": {
+    "line-1": {
+        "title": "Line 1 Yonge–University",
+        "subtitle": "Toronto Rocket",
+        "icon": "assets/images/canada/ttc/line-1.png",
+        "items": [
+          {
+            "title": "Doors Closing",
+            "description": "MR-73's \"Dou dou dou\"",
+            "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          }
+        ]
+      },
+    "line-2": {
+        "title": "Line 2 Bloor–Danforth",
+        "subtitle": "T1",
+        "icon": "assets/images/canada/ttc/line-2.png",
+        "items": [
+
+        ]
+}
+  },
+  "stations": {
+    "angrignon": {
+      "lineIds": ["line-1"],
+      "title": "Angrignon",
+      "subtitle": "Ligne Verte",
+      "items": []
+    }
+  }
+}

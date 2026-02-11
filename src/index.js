@@ -10,6 +10,17 @@ const crumbSystem = document.getElementById("crumb-system");
 const countryTitle = document.getElementById("country-title");
 const panelLineIcons = document.getElementById("panel-line-icons");
 const panelBack = document.getElementById("panel-back");
+const panelSystemIcon = document.getElementById("panel-system-icon");
+const mapPopup = document.getElementById("map-popup");
+const popupTitle = document.getElementById("popup-title");
+const popupSubtitle = document.getElementById("popup-subtitle");
+const popupLineIcons = document.getElementById("popup-line-icons");
+const popupSoundList = document.getElementById("popup-sound-list");
+const popupClose = document.getElementById("popup-close");
+const systemModeToggle = document.getElementById("system-mode-toggle");
+const modeMapButton = document.getElementById("mode-map");
+const modeListButton = document.getElementById("mode-list");
+const systemListView = document.getElementById("system-list-view");
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
 
 const stationTooltip = document.createElement("div");
@@ -19,6 +30,8 @@ const state = {
   activeAudio: null,
   view: "home",
   systemData: null,
+  systemInfo: null,
+  mapAvailable: false,
   viewBox: null,
   baseViewBox: null,
   pointers: new Map(),
@@ -27,6 +40,9 @@ const state = {
   moved: false,
   panActive: false,
   suppressClick: false,
+  systemMode: "map",
+  selectedLineId: null,
+  systemLoadToken: 0,
 };
 
 const stopActiveAudio = () => {
@@ -44,12 +60,9 @@ const playSound = async (audioPath) => {
   await audio.play();
 };
 
-const renderList = (content) => {
-  panelTitle.textContent = content.title;
-  panelSubtitle.textContent = content.subtitle;
-  soundList.innerHTML = "";
-
-  content.items.forEach((item) => {
+const renderSoundCards = (container, items) => {
+  container.innerHTML = "";
+  items.forEach((item) => {
     const card = document.createElement("div");
     card.className = "sound-card";
     card.setAttribute("role", "listitem");
@@ -66,8 +79,14 @@ const renderList = (content) => {
     playButton.addEventListener("click", () => playSound(item.audio));
 
     card.append(title, desc, playButton);
-    soundList.append(card);
+    container.append(card);
   });
+};
+
+const renderPanelContent = (titleEl, subtitleEl, listEl, content) => {
+  titleEl.textContent = content.title;
+  subtitleEl.textContent = content.subtitle;
+  renderSoundCards(listEl, content.items);
 };
 
 const openPanel = () => {
@@ -83,17 +102,155 @@ const closePanel = () => {
 const setPanelMode = (mode) => {
   if (!panelBack) return;
   panelBack.hidden = mode !== "detail";
+  if (panelSystemIcon) {
+    panelSystemIcon.hidden = mode !== "system";
+  }
 };
 
 const showSystemPanel = () => {
   if (!state.systemData) return;
+  stopActiveAudio();
+  hideMapPopup();
   clearActive();
-  panelTitle.textContent = state.systemData.system.name;
-  panelSubtitle.textContent = state.systemData.systemSounds.subtitle;
-  updatePanelIcons(Object.keys(state.systemData.lines));
-  renderList(state.systemData.systemSounds);
+  updateLineIcons(panelLineIcons, Object.keys(state.systemData.lines));
+  if (panelSystemIcon && state.systemInfo) {
+    panelSystemIcon.src = state.systemInfo.logo;
+    panelSystemIcon.alt = `${state.systemInfo.name} logo`;
+  }
+  renderPanelContent(panelTitle, panelSubtitle, soundList, state.systemData.systemSounds);
   setPanelMode("system");
   openPanel();
+};
+
+const renderListGrid = (container, items, emptyText) => {
+  container.innerHTML = "";
+  if (!items.length) {
+    const empty = document.createElement("p");
+    empty.className = "empty-note";
+    empty.textContent = emptyText;
+    container.append(empty);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "list-sounds-grid";
+  items.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = "sound-card";
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+    const desc = document.createElement("p");
+    desc.textContent = item.description;
+    const playButton = document.createElement("button");
+    playButton.type = "button";
+    playButton.textContent = "Play";
+    playButton.addEventListener("click", () => playSound(item.audio));
+    card.append(title, desc, playButton);
+    grid.append(card);
+  });
+  container.append(grid);
+};
+
+const renderSystemListView = () => {
+  if (!state.systemData || !systemListView) return;
+  const lineEntries = Object.entries(state.systemData.lines);
+  if (state.selectedLineId && !state.systemData.lines[state.selectedLineId]) {
+    state.selectedLineId = null;
+  }
+  const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
+  const stationItems = Object.values(state.systemData.stations)
+    .filter((station) => state.selectedLineId && station.lineIds.includes(state.selectedLineId))
+    .flatMap((station) =>
+      station.items.map((item) => ({
+        title: `${station.title} - ${item.title}`,
+        description: item.description,
+        audio: item.audio,
+      }))
+    );
+
+  systemListView.innerHTML = `
+    <div class="list-top">
+      <div class="list-head">
+        <div class="list-head-main">
+          <h2 class="list-title">${state.systemData.system.name}</h2>
+          <p class="list-subtitle">${state.systemData.systemSounds.subtitle}</p>
+        </div>
+        <img class="list-head-logo" src="${state.systemInfo.logo}" alt="${state.systemInfo.name} logo" />
+      </div>
+      <div class="line-selector" id="line-selector"></div>
+    </div>
+    <section class="list-section" id="line-detail-section" ${selectedLine ? "" : "hidden"}>
+      <div class="list-block">
+        <h3 class="list-section-title">Line-Specific Sounds</h3>
+        <p class="list-section-subtitle" id="list-line-subtitle">${selectedLine ? selectedLine.subtitle : ""}</p>
+        <div id="line-sounds-wrap"></div>
+      </div>
+      <div class="list-block">
+        <h3 class="list-section-title">Stations</h3>
+        <p class="list-section-subtitle" id="list-station-subtitle">${selectedLine ? `${selectedLine.title} station sounds` : ""}</p>
+        <div id="station-sounds-wrap"></div>
+      </div>
+    </section>
+    <section class="list-section" id="system-sounds-section" ${selectedLine ? "hidden" : ""}>
+      <h3 class="list-section-title">System Sounds</h3>
+      <div id="system-sounds-wrap"></div>
+    </section>
+  `;
+
+  const lineSelector = document.getElementById("line-selector");
+  lineEntries.forEach(([lineId, line]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "line-chip";
+    if (lineId === state.selectedLineId) {
+      button.classList.add("is-active");
+    }
+    const icon = document.createElement("img");
+    icon.src = line.icon;
+    icon.alt = `${line.title} icon`;
+    const label = document.createElement("span");
+    label.textContent = line.title;
+    button.append(icon, label);
+    button.addEventListener("click", () => {
+      stopActiveAudio();
+      state.selectedLineId = lineId;
+      renderSystemListView();
+    });
+    lineSelector.append(button);
+  });
+  if (selectedLine) {
+    renderListGrid(
+      document.getElementById("line-sounds-wrap"),
+      selectedLine.items,
+      "No line sounds."
+    );
+    renderListGrid(document.getElementById("station-sounds-wrap"), stationItems, "No station sounds.");
+  } else {
+    renderListGrid(
+      document.getElementById("system-sounds-wrap"),
+      state.systemData.systemSounds.items,
+      "No system sounds."
+    );
+  }
+};
+
+const setSystemMode = (mode) => {
+  if (mode === "map" && !state.mapAvailable) {
+    mode = "list";
+  }
+  if (state.systemMode !== mode) {
+    stopActiveAudio();
+  }
+  hideMapPopup();
+  state.systemMode = mode;
+  const viewSystem = document.getElementById("view-system");
+  viewSystem.classList.toggle("map-mode", mode === "map");
+  viewSystem.classList.toggle("list-mode", mode === "list");
+  if (modeMapButton) modeMapButton.classList.toggle("is-active", mode === "map");
+  if (modeListButton) modeListButton.classList.toggle("is-active", mode === "list");
+  if (mode === "list") {
+    renderSystemListView();
+  }
 };
 
 const resetInteractions = () => {
@@ -112,8 +269,8 @@ const clearActive = () => {
   });
 };
 
-const updatePanelIcons = (lineIds) => {
-  panelLineIcons.innerHTML = "";
+const updateLineIcons = (container, lineIds) => {
+  container.innerHTML = "";
   lineIds.forEach((id) => {
     const iconUrl = state.systemData.lines[id].icon;
     const img = document.createElement("img");
@@ -122,34 +279,43 @@ const updatePanelIcons = (lineIds) => {
     img.width = 18;
     img.height = 18;
     img.src = iconUrl;
-    panelLineIcons.append(img);
+    container.append(img);
   });
-  panelLineIcons.hidden = lineIds.length === 0;
+  container.hidden = lineIds.length === 0;
+};
+
+const hideMapPopup = () => {
+  if (!mapPopup) return;
+  mapPopup.hidden = true;
+  stopActiveAudio();
+};
+
+const openMapPopup = (content, lineIds, event, element) => {
+  if (!mapPopup) return;
+  renderPanelContent(popupTitle, popupSubtitle, popupSoundList, content);
+  updateLineIcons(popupLineIcons, lineIds);
+  mapPopup.hidden = false;
 };
 
 const setLine = (lineId, element) => {
+  stopActiveAudio();
   clearActive();
   if (element) {
     element.classList.add("is-active");
   }
   const lineData = state.systemData.lines[lineId];
-  updatePanelIcons([lineId]);
-  renderList(lineData);
-  setPanelMode("detail");
-  openPanel();
+  openMapPopup(lineData, [lineId]);
 };
 
 const setStation = (stationId, element) => {
+  stopActiveAudio();
   clearActive();
   if (element) {
     element.classList.add("is-active");
   }
   const stationData = state.systemData.stations[stationId];
   const iconLineIds = stationData.lineIds;
-  updatePanelIcons(iconLineIds);
-  renderList(stationData);
-  setPanelMode("detail");
-  openPanel();
+  openMapPopup(stationData, iconLineIds);
 };
 
 const findMapTarget = (event) => {
@@ -171,7 +337,11 @@ const handleMapClick = (event) => {
   if (state.panActive || state.moved) return;
   const target = findMapTarget(event);
   if (!target || !mapContainer.contains(target)) {
-    if (state.view === "system") showSystemPanel();
+    if (state.view === "system") {
+      clearActive();
+      hideMapPopup();
+      showSystemPanel();
+    }
     return;
   }
 
@@ -213,15 +383,26 @@ const updateBreadcrumb = () => {
 };
 
 const setView = (viewId) => {
+  if (state.view !== viewId) {
+    stopActiveAudio();
+  }
+  if (viewId !== "system") {
+    state.systemLoadToken += 1;
+  }
+  hideMapPopup();
   state.view = viewId;
   document.querySelectorAll(".view").forEach((view) => {
     view.classList.toggle("is-active", view.id === `view-${viewId}`);
   });
   document.body.classList.toggle("is-system", viewId === "system");
+  if (systemModeToggle) {
+    systemModeToggle.hidden = viewId !== "system" || !state.systemData || !state.mapAvailable;
+  }
   updateBreadcrumb();
   if (viewId !== "system") {
     closePanel();
-    stopActiveAudio();
+    const viewSystem = document.getElementById("view-system");
+    viewSystem.classList.remove("map-mode", "list-mode");
   }
 };
 
@@ -583,19 +764,39 @@ const loadMap = async (mapPath, theme) => {
     svg.addEventListener("pointerup", (event) => handlePointerUp(event, svg));
     svg.addEventListener("pointercancel", (event) => handlePointerUp(event, svg));
     svg.addEventListener("pointerleave", (event) => handlePointerUp(event, svg));
-
+    return true;
   } catch (error) {
     mapContainer.innerHTML = `<p style=\"color:#9aa0a6;\">Failed to load map. If you're opening the file directly, run a local server and reload.</p>`;
+    return false;
   }
 };
 
 const loadSystem = async (system) => {
+  const loadToken = ++state.systemLoadToken;
+  stopActiveAudio();
   const systemData = await fetch(system.sounds).then((res) => res.json());
+  if (loadToken !== state.systemLoadToken) return;
+  state.systemInfo = system;
   state.systemData = systemData;
+  state.selectedLineId = null;
+  let mapAvailable = false;
+  if (system.map) {
+    mapAvailable = await loadMap(system.map, systemData.theme);
+    if (loadToken !== state.systemLoadToken) return;
+  } else {
+    mapContainer.innerHTML = "";
+  }
+  state.mapAvailable = mapAvailable;
+  setSystemMode(state.mapAvailable ? "map" : "list");
   showSystemPanel();
-
-  await loadMap(system.map, systemData.theme);
   setView("system");
+  if (state.view !== "system") {
+    if (systemModeToggle) systemModeToggle.hidden = true;
+    return;
+  }
+  if (systemModeToggle) {
+    systemModeToggle.hidden = !state.mapAvailable || state.view !== "system";
+  }
 };
 
 const renderCountries = (countries) => {
@@ -607,6 +808,7 @@ const renderCountries = (countries) => {
     button.dataset.country = country.id;
     if (country.comingSoon === true) {
       button.dataset.comingSoon = "true";
+      button.disabled = true;
     }
     const imageWrap = document.createElement("span");
     imageWrap.className = "card-image";
@@ -624,15 +826,17 @@ const renderCountries = (countries) => {
     title.className = "card-title";
     title.textContent = country.name;
     button.append(imageWrap, title);
-    button.addEventListener("click", async () => {
-      const data = await fetch(country.data).then((res) => res.json());
-      crumbCountry.textContent = data.country.name;
-      if (countryTitle) {
-        countryTitle.textContent = data.country.name;
-      }
-      renderSystems(data.systems);
-      setView("country");
-    });
+    if (!button.disabled) {
+      button.addEventListener("click", async () => {
+        const data = await fetch(country.data).then((res) => res.json());
+        crumbCountry.textContent = data.country.name;
+        if (countryTitle) {
+          countryTitle.textContent = data.country.name;
+        }
+        renderSystems(data.systems);
+        setView("country");
+      });
+    }
     countryGrid.append(button);
   });
 };
@@ -645,6 +849,7 @@ const renderSystems = (systems) => {
     button.className = "card";
     if (system.comingSoon === true) {
       button.dataset.comingSoon = "true";
+      button.disabled = true;
     }
     const imageWrap = document.createElement("span");
     imageWrap.className = "card-image";
@@ -662,10 +867,12 @@ const renderSystems = (systems) => {
     title.className = "card-title";
     title.textContent = system.name;
     button.append(imageWrap, title);
-    button.addEventListener("click", () => {
-      crumbSystem.textContent = system.name;
-      loadSystem(system);
-    });
+    if (!button.disabled) {
+      button.addEventListener("click", () => {
+        crumbSystem.textContent = system.name;
+        loadSystem(system);
+      });
+    }
     systemGrid.append(button);
   });
 };
@@ -683,6 +890,28 @@ const init = async () => {
   if (panelBack) {
     panelBack.addEventListener("click", () => {
       showSystemPanel();
+    });
+  }
+  if (popupClose) {
+    popupClose.addEventListener("click", () => {
+      clearActive();
+      hideMapPopup();
+      showSystemPanel();
+    });
+  }
+  if (modeMapButton) {
+    modeMapButton.addEventListener("click", () => setSystemMode("map"));
+  }
+  if (modeListButton) {
+    modeListButton.addEventListener("click", () => setSystemMode("list"));
+  }
+  if (systemListView) {
+    systemListView.addEventListener("click", (event) => {
+      if (!state.selectedLineId) return;
+      if (event.target.closest(".line-chip, .sound-card, .sound-card button")) return;
+      stopActiveAudio();
+      state.selectedLineId = null;
+      renderSystemListView();
     });
   }
   window.addEventListener("blur", resetInteractions);
