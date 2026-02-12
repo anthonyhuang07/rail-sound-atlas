@@ -781,12 +781,19 @@ body.is-system .system-mode-toggle {
 
   .line-selector {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
-    justify-content: center;
-    width: 100%;
+    width: fit-content;
     max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .line-selector-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
   }
 
   .line-chip {
@@ -805,9 +812,19 @@ body.is-system .system-mode-toggle {
       border-color: $text;
     }
 
+    .line-chip-icons {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.2rem;
+      flex-shrink: 0;
+      min-height: 1rem;
+    }
+
     img {
       width: 1rem;
       height: 1rem;
+      display: block;
       object-fit: contain;
       flex-shrink: 0;
     }

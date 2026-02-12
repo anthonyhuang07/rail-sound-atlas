@@ -264,19 +264,40 @@ const renderSystemListView = () => {
   `;
 
   const lineSelector = document.getElementById("line-selector");
-  lineEntries.forEach(([lineId, line]) => {
+  const rows = [];
+  for (let i = 0; i < lineEntries.length; i += 5) {
+    rows.push(lineEntries.slice(i, i + 5));
+  }
+  rows.forEach((rowEntries) => {
+    const row = document.createElement("div");
+    row.className = "line-selector-row";
+    rowEntries.forEach(([lineId, line]) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "line-chip";
     if (lineId === state.selectedLineId) {
       button.classList.add("is-active");
     }
+    const iconWrap = document.createElement("span");
+    iconWrap.className = "line-chip-icons";
+
     const icon = document.createElement("img");
     icon.src = line.icon;
     icon.alt = `${line.title} icon`;
+    iconWrap.append(icon);
+
+    if (Array.isArray(line.otherIcons)) {
+      line.otherIcons.forEach((iconUrl, index) => {
+        const extraIcon = document.createElement("img");
+        extraIcon.src = iconUrl;
+        extraIcon.alt = `${line.title} extra icon ${index + 1}`;
+        iconWrap.append(extraIcon);
+      });
+    }
+
     const label = document.createElement("span");
     label.textContent = line.title;
-    button.append(icon, label);
+    button.append(iconWrap, label);
     button.addEventListener("click", () => {
       stopActiveAudio();
       if (noSystemSounds && state.selectedLineId === lineId) {
@@ -285,7 +306,9 @@ const renderSystemListView = () => {
       state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
       renderSystemListView();
     });
-    lineSelector.append(button);
+      row.append(button);
+    });
+    lineSelector.append(row);
   });
   if (selectedLine) {
     renderListGrid(

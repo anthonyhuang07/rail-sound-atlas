@@ -1,0 +1,14 @@
+{
+  "country": {
+    "id": "japan",
+    "name": "Japan"
+  },
+  "systems": [
+    {
+      "id": "tokyo-metro",
+      "name": "Tokyo Metro",
+      "logo": "assets/images/japan/tokyo-metro/logo.png",
+      "sounds": "data/japan/tokyo-metro.json"
+    }
+  ]
+}

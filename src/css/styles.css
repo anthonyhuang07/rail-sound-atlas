@@ -939,15 +939,27 @@ body.is-system .system-mode-toggle {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.system-list-view .line-selector-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  width: 100%;
-  max-width: 100%;
 }
 .system-list-view .line-chip {
   border: 0.0625rem solid #2b313d;
@@ -968,9 +980,25 @@ body.is-system .system-mode-toggle {
 .system-list-view .line-chip.is-active {
   border-color: #f2f2f2;
 }
+.system-list-view .line-chip .line-chip-icons {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 0.2rem;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  min-height: 1rem;
+}
 .system-list-view .line-chip img {
   width: 1rem;
   height: 1rem;
+  display: block;
   -o-object-fit: contain;
      object-fit: contain;
   -ms-flex-negative: 0;

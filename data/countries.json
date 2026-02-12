@@ -4,7 +4,13 @@
       "id": "canada",
       "name": "Canada",
       "image": "assets/images/canada/flag.png",
-      "data": "data/canada.json"
+      "data": "data/countries/canada.json"
+    },
+    {
+      "id": "japan",
+      "name": "Japan",
+      "image": "assets/images/japan/flag.webp",
+      "data": "data/countries/japan.json"
     }
   ]
 }
