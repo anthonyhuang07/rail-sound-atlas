@@ -1014,6 +1014,8 @@ body.is-system .system-mode-toggle {
     flex-direction: column;
     min-height: 0;
     height: 100%;
+    --mobile-menu-ratio: 0.5;
+    --mobile-menu-min: 5rem;
   }
 
   #view-system.is-active.map-mode .map-wrap {
@@ -1025,16 +1027,25 @@ body.is-system .system-mode-toggle {
   .side-panel {
     position: static;
     flex: 0 0 auto;
-    margin-top: auto;
     width: 100%;
-    height: auto;
-    max-height: 55vh;
+    height: clamp(var(--mobile-menu-min), calc(var(--mobile-menu-ratio) * 100%), 75%);
+    max-height: none;
     border-left: 0.0625rem solid #222732;
+    transition: height 180ms ease;
+
+    .side-panel-head {
+      touch-action: none;
+      cursor: ns-resize;
+    }
 
     .sound-list {
       padding-bottom: calc(5rem + env(safe-area-inset-bottom));
       scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
     }
+  }
+
+  #view-system.is-active.map-mode.is-resizing-split .side-panel {
+    transition: none;
   }
 
   .map-popup .sound-list,

@@ -21,6 +21,8 @@ const systemModeToggle = document.getElementById("system-mode-toggle");
 const modeMapButton = document.getElementById("mode-map");
 const modeListButton = document.getElementById("mode-list");
 const systemListView = document.getElementById("system-list-view");
+const viewSystem = document.getElementById("view-system");
+const sidePanelHead = sidePanel ? sidePanel.querySelector(".side-panel-head") : null;
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
 
 const stationTooltip = document.createElement("div");
@@ -43,6 +45,10 @@ const state = {
   systemMode: "map",
   selectedLineId: null,
   systemLoadToken: 0,
+  mobileMenuRatio: 0.5,
+  mobileMinMenuRatio: 0.16,
+  splitDragActive: false,
+  splitDragPointerId: null,
 };
 
 const stopActiveAudio = () => {
@@ -338,13 +344,17 @@ const setSystemMode = (mode) => {
   }
   hideMapPopup();
   state.systemMode = mode;
-  const viewSystem = document.getElementById("view-system");
-  viewSystem.classList.toggle("map-mode", mode === "map");
-  viewSystem.classList.toggle("list-mode", mode === "list");
+  if (viewSystem) {
+    viewSystem.classList.toggle("map-mode", mode === "map");
+    viewSystem.classList.toggle("list-mode", mode === "list");
+  }
   if (modeMapButton) modeMapButton.classList.toggle("is-active", mode === "map");
   if (modeListButton) modeListButton.classList.toggle("is-active", mode === "list");
   if (mode === "list") {
     renderSystemListView();
+  } else if (isMobileMapMode()) {
+    refreshMobileMenuMinRatio();
+    applyMobileMenuRatio(state.mobileMenuRatio, { snap: false });
   }
 };
 
@@ -356,6 +366,70 @@ const resetInteractions = () => {
   state.suppressClick = false;
   const svg = mapContainer.querySelector("svg");
   if (svg) svg.classList.remove("is-panning");
+};
+
+const isMobileMapMode = () =>
+  window.matchMedia("(max-width: 720px)").matches &&
+  state.view === "system" &&
+  state.systemMode === "map";
+
+const refreshMobileMenuMinRatio = () => {
+  if (!viewSystem || !sidePanel || !sidePanelHead) return;
+  const totalHeight = viewSystem.clientHeight;
+  if (!totalHeight) return;
+  const headHeight = sidePanelHead.getBoundingClientRect().height || 0;
+  const sidePanelStyles = getComputedStyle(sidePanel);
+  const padTop = parseFloat(sidePanelStyles.paddingTop) || 0;
+  const padBottom = parseFloat(sidePanelStyles.paddingBottom) || 0;
+  const minMenuPx = headHeight + padTop + padBottom;
+  state.mobileMinMenuRatio = clamp(minMenuPx / totalHeight, 0.08, 0.5);
+  viewSystem.style.setProperty("--mobile-menu-min", `${minMenuPx}px`);
+};
+
+const applyMobileMenuRatio = (ratio, { snap = false } = {}) => {
+  if (!viewSystem) return;
+  const nextRatio = snap && Math.abs(ratio - 0.5) <= 0.04 ? 0.5 : ratio;
+  const clamped = clamp(nextRatio, state.mobileMinMenuRatio, 0.75);
+  state.mobileMenuRatio = clamped;
+  viewSystem.style.setProperty("--mobile-menu-ratio", String(clamped));
+};
+
+const resetMobileMenuRatio = () => {
+  refreshMobileMenuMinRatio();
+  applyMobileMenuRatio(0.5, { snap: false });
+};
+
+const onMobileSplitPointerDown = (event) => {
+  if (!isMobileMapMode() || !viewSystem || !sidePanelHead) return;
+  if (event.target.closest("button, a")) return;
+  event.preventDefault();
+  state.splitDragActive = true;
+  state.splitDragPointerId = event.pointerId;
+  viewSystem.classList.add("is-resizing-split");
+  sidePanelHead.setPointerCapture(event.pointerId);
+};
+
+const onMobileSplitPointerMove = (event) => {
+  if (!state.splitDragActive || event.pointerId !== state.splitDragPointerId) return;
+  event.preventDefault();
+  if (!viewSystem) return;
+  const rect = viewSystem.getBoundingClientRect();
+  const menuHeight = rect.bottom - event.clientY;
+  const ratio = menuHeight / rect.height;
+  applyMobileMenuRatio(ratio, { snap: false });
+};
+
+const onMobileSplitPointerUp = (event) => {
+  if (!state.splitDragActive || event.pointerId !== state.splitDragPointerId) return;
+  state.splitDragActive = false;
+  state.splitDragPointerId = null;
+  if (viewSystem) {
+    viewSystem.classList.remove("is-resizing-split");
+  }
+  applyMobileMenuRatio(state.mobileMenuRatio, { snap: true });
+  if (sidePanelHead && sidePanelHead.hasPointerCapture(event.pointerId)) {
+    sidePanelHead.releasePointerCapture(event.pointerId);
+  }
 };
 
 const clearActive = () => {
@@ -972,6 +1046,9 @@ const loadSystem = async (system) => {
   setSystemMode(state.mapAvailable ? "map" : "list");
   showSystemPanel();
   setView("system");
+  if (state.mapAvailable && window.matchMedia("(max-width: 720px)").matches) {
+    resetMobileMenuRatio();
+  }
   if (state.view !== "system") {
     if (systemModeToggle) systemModeToggle.hidden = true;
     return;
@@ -1087,6 +1164,18 @@ const init = async () => {
   if (modeListButton) {
     modeListButton.addEventListener("click", () => setSystemMode("list"));
   }
+  if (sidePanelHead) {
+    sidePanelHead.addEventListener("pointerdown", onMobileSplitPointerDown);
+    sidePanelHead.addEventListener("pointermove", onMobileSplitPointerMove);
+    sidePanelHead.addEventListener("pointerup", onMobileSplitPointerUp);
+    sidePanelHead.addEventListener("pointercancel", onMobileSplitPointerUp);
+  }
+  window.addEventListener("resize", () => {
+    refreshMobileMenuMinRatio();
+    if (isMobileMapMode()) {
+      applyMobileMenuRatio(state.mobileMenuRatio, { snap: false });
+    }
+  });
   // List mode line reset is handled by clicking the active line chip again.
   window.addEventListener("blur", resetInteractions);
   document.addEventListener("visibilitychange", () => {
@@ -1136,6 +1225,7 @@ const init = async () => {
     { passive: false }
   );
 
+  resetMobileMenuRatio();
   setView("home");
 };
 
