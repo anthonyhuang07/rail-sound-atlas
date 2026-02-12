@@ -1101,26 +1101,92 @@ body.is-system .system-mode-toggle {
   font-size: 0.85em;
 }
 
-@media (max-width: 45rem) {
+@media (max-width: 720px) {
+  body.is-system {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
+  body.is-system main {
+    height: 100%;
+    min-height: 0;
+  }
+  .site-header .brand-link {
+    display: none;
+  }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .card-grid .card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1/1;
+  }
   .site-header {
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
-    gap: 0.75rem;
+    -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+            align-items: stretch;
+    gap: 0.35rem;
+    padding: 0.5rem 0.75rem;
+  }
+  .site-header .brand-link {
+    display: none;
   }
   .site-header .header-right {
     width: 100%;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    -webkit-box-align: start;
-        -ms-flex-align: start;
-            align-items: flex-start;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    gap: 0.35rem 0.5rem;
+  }
+  .site-header .breadcrumb {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    min-width: 0;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    gap: 0.35rem;
+    font-size: 0.8em;
+  }
+  .site-header .breadcrumb .crumb {
+    padding: 0.18rem 0.5rem;
+  }
+  .site-header .system-mode-toggle {
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+  .site-header .github-link {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+    margin-left: auto;
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+  .site-header .github-link svg {
+    width: 0.9rem;
+    height: 0.9rem;
   }
   #view-system {
     -webkit-box-orient: vertical;
@@ -1128,10 +1194,56 @@ body.is-system .system-mode-toggle {
         -ms-flex-direction: column;
             flex-direction: column;
   }
+  #view-system.is-active.map-mode {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    min-height: 0;
+    height: 100%;
+  }
+  #view-system.is-active.map-mode .map-wrap {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+  }
   .side-panel {
     position: static;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    margin-top: auto;
     width: 100%;
-    max-height: none;
+    height: auto;
+    max-height: 55vh;
     border-left: 0.0625rem solid #222732;
+  }
+  .side-panel .sound-list {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  .map-popup .sound-list,
+  .system-list-view {
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    scroll-padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+  }
+  .system-list-view {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  .map-popup {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    width: min(20rem, 100% - 1.5rem);
+    max-height: calc(100% - 1.5rem);
   }
 }/*# sourceMappingURL=styles.css.map */

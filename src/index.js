@@ -264,9 +264,10 @@ const renderSystemListView = () => {
   `;
 
   const lineSelector = document.getElementById("line-selector");
+  const maxPerRow = window.matchMedia("(max-width: 720px)").matches ? 2 : 5;
   const rows = [];
-  for (let i = 0; i < lineEntries.length; i += 5) {
-    rows.push(lineEntries.slice(i, i + 5));
+  for (let i = 0; i < lineEntries.length; i += maxPerRow) {
+    rows.push(lineEntries.slice(i, i + maxPerRow));
   }
   rows.forEach((rowEntries) => {
     const row = document.createElement("div");
