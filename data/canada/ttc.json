@@ -65,6 +65,11 @@
           "title": "Doors Opening (Finch)",
           "description": "Line 1 towards Finch.",
           "audio": "assets/audio/canada/ttc/line-1/line-1-finch.mp3"
+        },
+        {
+          "title": "Doors Closing",
+          "description": "Please stand clear of the doors.",
+          "audio": "assets/audio/canada/ttc/doors-closing-rocket.mp3"
         }
       ]
     },
@@ -89,6 +94,16 @@
           "title": "Doors Opening (Don Mills)",
           "description": "Line 4 to Don Mills.",
           "audio": "assets/audio/canada/ttc/line-4/line-4-don-mills.mp3"
+        },
+        {
+          "title": "Doors Opening (Sheppard-Yonge)",
+          "description": "Line 4 to Sheppard-Yonge.",
+          "audio": "assets/audio/canada/ttc/line-4/line-4-sheppard-yonge.mp3"
+        },
+        {
+          "title": "Doors Closing",
+          "description": "Please stand clear of the doors.",
+          "audio": "assets/audio/canada/ttc/doors-closing-rocket.mp3"
         }
       ]
     },
@@ -368,7 +383,24 @@
       ],
       "title": "Union",
       "subtitle": "Line 1 Yonge–University",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Union. Union Station.",
+          "audio": "assets/audio/canada/ttc/line-1/union-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Union. Union Station. Doors will open on the right.",
+          "audio": "assets/audio/canada/ttc/line-1/union.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-1": 22
       }
@@ -567,7 +599,24 @@
       ],
       "title": "Finch",
       "subtitle": "Line 1 Yonge–University",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Finch. Finch Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-1/finch-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Finch. Finch Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-1/finch.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-1": 38
       }
@@ -905,7 +954,24 @@
       ],
       "title": "Bayview",
       "subtitle": "Line 4 Sheppard",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Bayview. Bayview Station.",
+          "audio": "assets/audio/canada/ttc/line-4/bayview-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Bayview. Bayview Station. Doors will open on the left.",
+          "audio": "assets/audio/canada/ttc/line-4/bayview.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-4": 2
       }
@@ -916,7 +982,24 @@
       ],
       "title": "Bessarion",
       "subtitle": "Line 4 Sheppard",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Bessarion. Bessarion Station.",
+          "audio": "assets/audio/canada/ttc/line-4/bessarion-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Bessarion. Bessarion Station. Doors will open on the left.",
+          "audio": "assets/audio/canada/ttc/line-4/bessarion.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-4": 3
       }
@@ -927,7 +1010,24 @@
       ],
       "title": "Leslie",
       "subtitle": "Line 4 Sheppard",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Leslie. Leslie Station.",
+          "audio": "assets/audio/canada/ttc/line-4/leslie-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Leslie. Leslie Station. Doors will open on the left.",
+          "audio": "assets/audio/canada/ttc/line-4/leslie.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-4": 4
       }
@@ -938,7 +1038,24 @@
       ],
       "title": "Don Mills",
       "subtitle": "Line 4 Sheppard",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Next station is: Don Mills. Don Mills Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-4/don-mills-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Arriving at: Don Mills. Don Mills Station. This is a terminal station.",
+          "audio": "assets/audio/canada/ttc/line-4/don-mills.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ],
       "lineOrder": {
         "line-4": 5
       }

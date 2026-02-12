@@ -568,11 +568,18 @@ const applyMapTheme = (svg, theme) => {
   // Station sizes/styles from theme.station / theme.transfer / theme.terminus
   svg.querySelectorAll(".station").forEach((stationEl) => {
     const classes = stationEl.classList;
+    const stationId = stationEl.dataset.stationId || stationEl.getAttribute("data-station-id");
+    const stationData = stationId ? state.systemData?.stations?.[stationId] : null;
+    const hasSounds = !!(stationData && Array.isArray(stationData.items) && stationData.items.length);
     const variant = classes.contains("transfer")
       ? theme.transfer
       : classes.contains("terminus")
         ? theme.terminus
         : theme.station;
+    const strokeWidthValue = Number(variant.strokeWidth);
+    const isStroked = Number.isFinite(strokeWidthValue) && strokeWidthValue > 0;
+    const forcedFill = !hasSounds && !isStroked ? "#222222" : undefined;
+    const forcedStroke = !hasSounds && isStroked ? "#555555" : undefined;
     const radius = variant.radius;
 
     if (stationEl.tagName.toLowerCase() === "circle") {
@@ -581,8 +588,16 @@ const applyMapTheme = (svg, theme) => {
       if (stationEl.r && stationEl.r.baseVal) {
         stationEl.r.baseVal.value = value;
       }
-      if (variant.fill !== undefined) stationEl.style.fill = `${variant.fill}`;
-      if (variant.stroke !== undefined) stationEl.style.stroke = `${variant.stroke}`;
+      if (forcedFill !== undefined) {
+        stationEl.style.fill = forcedFill;
+      } else if (variant.fill !== undefined) {
+        stationEl.style.fill = `${variant.fill}`;
+      }
+      if (forcedStroke !== undefined) {
+        stationEl.style.stroke = forcedStroke;
+      } else if (variant.stroke !== undefined) {
+        stationEl.style.stroke = `${variant.stroke}`;
+      }
       if (variant.strokeWidth !== undefined) {
         stationEl.style.strokeWidth = `${variant.strokeWidth}`;
         if (Number(variant.strokeWidth) === 0) stationEl.style.stroke = "none";
@@ -633,8 +648,16 @@ const applyMapTheme = (svg, theme) => {
         }
       }
 
-      if (variant.fill !== undefined) stationEl.style.fill = `${variant.fill}`;
-      if (variant.stroke !== undefined) stationEl.style.stroke = `${variant.stroke}`;
+      if (forcedFill !== undefined) {
+        stationEl.style.fill = forcedFill;
+      } else if (variant.fill !== undefined) {
+        stationEl.style.fill = `${variant.fill}`;
+      }
+      if (forcedStroke !== undefined) {
+        stationEl.style.stroke = forcedStroke;
+      } else if (variant.stroke !== undefined) {
+        stationEl.style.stroke = `${variant.stroke}`;
+      }
       if (variant.strokeWidth !== undefined) {
         stationEl.style.strokeWidth = `${variant.strokeWidth}`;
         if (Number(variant.strokeWidth) === 0) stationEl.style.stroke = "none";
@@ -648,8 +671,16 @@ const applyMapTheme = (svg, theme) => {
       if (circle.r && circle.r.baseVal) {
         circle.r.baseVal.value = value;
       }
-      if (variant.fill !== undefined) circle.style.fill = `${variant.fill}`;
-      if (variant.stroke !== undefined) circle.style.stroke = `${variant.stroke}`;
+      if (forcedFill !== undefined) {
+        circle.style.fill = forcedFill;
+      } else if (variant.fill !== undefined) {
+        circle.style.fill = `${variant.fill}`;
+      }
+      if (forcedStroke !== undefined) {
+        circle.style.stroke = forcedStroke;
+      } else if (variant.stroke !== undefined) {
+        circle.style.stroke = `${variant.stroke}`;
+      }
       if (variant.strokeWidth !== undefined) {
         circle.style.strokeWidth = `${variant.strokeWidth}`;
         if (Number(variant.strokeWidth) === 0) circle.style.stroke = "none";
