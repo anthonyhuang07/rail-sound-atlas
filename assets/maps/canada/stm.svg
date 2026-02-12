@@ -1,8 +1,8 @@
 <svg viewBox="0 0 1440 1024" xmlns="http://www.w3.org/2000/svg" class="system-map">
-  <path d="M533.5 662.5L708.5 487.5L623.5 402.5L819.5 206.5" class="line" data-line-id="line-5" />
-  <path d="M876.5 491.5H1033.5L1073.5 451.5" class="line" data-line-id="line-4" />
-  <path d="M362.5 491.5L684.5 813.5L941.5 556.5L557.5 172.5H399.5" class="line" data-line-id="line-2" />
   <path d="M537.5 871.5H698.5L748.5 821.5L647.5 720.5L961.5 406.5L918.5 362.5L1003.5 277.5L962.5 234.5L1076.5 120.5" class="line" data-line-id="line-1" />
+  <path d="M362.5 491.5L684.5 813.5L941.5 556.5L557.5 172.5H399.5" class="line" data-line-id="line-2" />
+  <path d="M876.5 491.5H1033.5L1073.5 451.5" class="line" data-line-id="line-4" />
+  <path d="M533.5 662.5L708.5 487.5L623.5 402.5L819.5 206.5" class="line" data-line-id="line-5" />
   <circle cx="876.5" cy="491.5" class="station terminus transfer" data-station-id="berri-uqam" data-name="Berri-UQAM"/>
   <circle cx="1033.5" cy="491.5" class="station" data-station-id="jean-drapeau" data-name="Jean-Drapeau"/>
   <circle cx="1073.5" cy="451.5" class="station terminus" data-station-id="longueuil-udes" data-name="Longueuil–Université-de-Sherbrooke"/>

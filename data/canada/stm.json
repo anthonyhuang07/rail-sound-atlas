@@ -1,16 +1,16 @@
 {
   "system": {
-    "id": "mtl-metro",
+    "id": "stm",
     "name": "Montréal Metro"
   },
   "theme": {
     "scale": 1.15,
-    "lineWidth": 17,
+    "lineWidth": 17.5,
     "lineColors": {
-      "line-1": "#00A650",
-      "line-2": "#F47216",
-      "line-4": "#FDDD04",
-      "line-5": "#127BCA"
+      "line-1": "#2aa551",
+      "line-2": "#f58221",
+      "line-4": "#fbdd04",
+      "line-5": "#2b7ec5"
     },
     "station": {
       "fill": "#ffffff",
@@ -20,9 +20,9 @@
     },
     "transfer": {
       "fill": "#000",
-      "radius": 9.5,
+      "radius": 10.5,
       "stroke": "#ffffff",
-      "strokeWidth": 2
+      "strokeWidth": 3
     },
     "terminus": {
       "fill": "#ffffff",
@@ -41,12 +41,12 @@
       {
         "title": "Door Chime (Raw)",
         "description": "\"Dou dou dou\"",
-        "audio": "assets/audio/canada/mtl-metro/doudoudou.ogg"
+        "audio": "assets/audio/canada/stm/doudoudou.ogg"
       },
       {
         "title": "Welcome (Raw)",
         "description": "La STM vous souhaite la bienvenue à bord.",
-        "audio": "assets/audio/canada/mtl-metro/bienvenue.ogg"
+        "audio": "assets/audio/canada/stm/bienvenue.ogg"
       }
     ]
   },
@@ -54,83 +54,93 @@
     "line-1": {
       "title": "Ligne 1 - Verte",
       "subtitle": "MPM-10 (AZUR), MR-73",
-      "icon": "assets/images/canada/mtl-metro/line-1.png",
+      "icon": "assets/images/canada/stm/line-1.png",
       "items": [
         {
           "title": "Door Chime (MR-73)",
           "description": "\"Dou dou dou\"",
-          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          "audio": "assets/audio/canada/stm/mr73-door.mp3"
         },
         {
           "title": "Welcome (AZUR)",
           "description": "La STM vous souhaite la bienvenue à bord.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
+          "audio": "assets/audio/canada/stm/bienvenue-azur.mp3"
         },
         {
           "title": "Welcome (MR-73)",
           "description": "La STM vous souhaite la bienvenue à bord.",
-          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+          "audio": "assets/audio/canada/stm/bienvenue-mr73.mp3"
+        },
+        {
+          "title": "Terminus (AZUR)",
+          "description": "Terminus. Veuillez descendre du train.",
+          "audio": "assets/audio/canada/stm/terminus-azur.mp3"
         },
         {
           "title": "Terminus (MR-73)",
           "description": "Terminus. Veuillez descendre du train.",
-          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
+          "audio": "assets/audio/canada/stm/terminus-mr73.mp3"
         }
       ]
     },
     "line-2": {
       "title": "Ligne 2 - Orange",
       "subtitle": "MPM-10 (AZUR)",
-      "icon": "assets/images/canada/mtl-metro/line-2.png",
+      "icon": "assets/images/canada/stm/line-2.png",
       "items": [
         {
           "title": "Welcome",
           "description": "La STM vous souhaite la bienvenue à bord.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/bienvenue.mp3"
+          "audio": "assets/audio/canada/stm/bienvenue-azur.mp3"
+        },
+        {
+          "title": "Terminus",
+          "description": "Terminus. Veuillez descendre du train.",
+          "audio": "assets/audio/canada/stm/terminus-azur.mp3"
         }
       ]
     },
     "line-4": {
       "title": "Ligne 4 - Jaune",
       "subtitle": "MR-73",
-      "icon": "assets/images/canada/mtl-metro/line-4.png",
+      "icon": "assets/images/canada/stm/line-4.png",
       "items": [
         {
           "title": "Door Chime",
           "description": "\"Dou dou dou\"",
-          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          "audio": "assets/audio/canada/stm/mr73-door.mp3"
         },
         {
           "title": "Welcome",
           "description": "La STM vous souhaite la bienvenue à bord.",
-          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+          "audio": "assets/audio/canada/stm/bienvenue-mr73.mp3"
         },
         {
           "title": "Terminus",
           "description": "Terminus. Veuillez descendre du train.",
-          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
+          "audio": "assets/audio/canada/stm/terminus-mr73.mp3"
         }
       ]
     },
     "line-5": {
       "title": "Ligne 5 - Bleue",
       "subtitle": "MR-73",
-      "icon": "assets/images/canada/mtl-metro/line-5.png",
+      "icon": "assets/images/canada/stm/line-5.png",
       "items": [
         {
           "title": "Door Chime",
           "description": "\"Dou dou dou\"",
-          "audio": "assets/audio/canada/mtl-metro/mr73-door.mp3"
+          "audio": "assets/audio/canada/stm/mr73-door.mp3"
         },
         {
           "title": "Welcome",
           "description": "La STM vous souhaite la bienvenue à bord.",
-          "audio": "assets/audio/canada/mtl-metro/bienvenue-mr73.mp3"
+          "audio": "assets/audio/canada/stm/bienvenue-mr73.mp3"
         },
         {
           "title": "Terminus",
           "description": "Terminus. Veuillez descendre du train.",
-          "audio": "assets/audio/canada/mtl-metro/terminus-mr73.mp3"
+          "audio": "assets/audio/canada/stm/terminus-mr73.mp3"
         }
       ]
     }
@@ -228,7 +238,7 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/lionel-groulx-prochaine.mp3",
+          "audio": "assets/audio/canada/stm/line-2/lionel-groulx-prochaine.mp3",
           "lineIds": [
             "line-2"
           ]
@@ -236,7 +246,7 @@
         {
           "title": "Arrival",
           "description": "Station Lionel-Groulx. Ouverture des portes de l'autre côté.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/lionel-groulx.mp3",
+          "audio": "assets/audio/canada/stm/line-2/lionel-groulx.mp3",
           "lineIds": [
             "line-2"
           ]
@@ -451,12 +461,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Côte-Vertu.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/cote-vertu-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/cote-vertu-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Côte-Vertu, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/cote-vertu.mp3"
+          "audio": "assets/audio/canada/stm/line-2/cote-vertu.mp3"
         }
       ],
       "lineOrder": {
@@ -473,12 +483,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Du Collège.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/du-college-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/du-college-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Du Collège.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/du-college.mp3"
+          "audio": "assets/audio/canada/stm/line-2/du-college.mp3"
         }
       ],
       "lineOrder": {
@@ -495,12 +505,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: De la Savane.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/de-la-savane-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/de-la-savane-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station De la Savane.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/de-la-savane.mp3"
+          "audio": "assets/audio/canada/stm/line-2/de-la-savane.mp3"
         }
       ],
       "lineOrder": {
@@ -517,12 +527,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Namur.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/namur-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/namur-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Namur.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/namur.mp3"
+          "audio": "assets/audio/canada/stm/line-2/namur.mp3"
         }
       ],
       "lineOrder": {
@@ -539,12 +549,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Plamondon.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/plamondon-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/plamondon-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Plamondon.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/plamondon.mp3"
+          "audio": "assets/audio/canada/stm/line-2/plamondon.mp3"
         }
       ],
       "lineOrder": {
@@ -561,12 +571,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Côte-Sainte-Catherine.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/cote-ste-catherine-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/cote-ste-catherine-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Côte-Sainte-Catherine.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/cote-ste-catherine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/cote-ste-catherine.mp3"
         }
       ],
       "lineOrder": {
@@ -588,7 +598,7 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Snowdon. Correspondance avec la ligne bleue.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/snowdon-prochaine.mp3",
+          "audio": "assets/audio/canada/stm/line-2/snowdon-prochaine.mp3",
           "lineIds": [
             "line-2"
           ]
@@ -596,9 +606,25 @@
         {
           "title": "Arrival",
           "description": "Station Snowdon.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/snowdon.mp3",
+          "audio": "assets/audio/canada/stm/line-2/snowdon.mp3",
           "lineIds": [
             "line-2"
+          ]
+        },
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Snowdon. Correspondance avec la ligne orange. Ouverture des portes de l'autre côté.",
+          "audio": "assets/audio/canada/stm/line-5/snowdon-prochaine.mp3",
+          "lineIds": [
+            "line-5"
+          ]
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Snowdon, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+          "audio": "assets/audio/canada/stm/line-5/snowdon.mp3",
+          "lineIds": [
+            "line-5"
           ]
         }
       ]
@@ -613,12 +639,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Villa Maria.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/villa-maria-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/villa-maria-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Villa Maria.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/villa-maria.mp3"
+          "audio": "assets/audio/canada/stm/line-2/villa-maria.mp3"
         }
       ],
       "lineOrder": {
@@ -635,12 +661,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Vendôme.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/vendome-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/vendome-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Vendôme.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/vendome.mp3"
+          "audio": "assets/audio/canada/stm/line-2/vendome.mp3"
         }
       ],
       "lineOrder": {
@@ -657,12 +683,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Place-Saint-Henri.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/place-st-henri-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/place-st-henri-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Place-Saint-Henri.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/place-st-henri.mp3"
+          "audio": "assets/audio/canada/stm/line-2/place-st-henri.mp3"
         }
       ],
       "lineOrder": {
@@ -679,12 +705,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Georges-Vanier.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/georges-vanier-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/georges-vanier-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Georges-Vanier.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/georges-vanier.mp3"
+          "audio": "assets/audio/canada/stm/line-2/georges-vanier.mp3"
         }
       ],
       "lineOrder": {
@@ -701,12 +727,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Lucien-L'Allier.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/lucien-lallier-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-2/lucien-lallier-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Lucien-L'Allier.",
-          "audio": "assets/audio/canada/mtl-metro/line-2/lucien-lallier.mp3"
+          "audio": "assets/audio/canada/stm/line-2/lucien-lallier.mp3"
         }
       ],
       "lineOrder": {
@@ -897,7 +923,18 @@
       ],
       "title": "Montmorency",
       "subtitle": "Ligne Orange",
-      "items": [],
+      "items": [
+        {
+          "title": "Next Station",
+          "description": "Prochaine station: Montmorency.",
+          "audio": "assets/audio/canada/stm/line-2/montmorency-prochaine.mp3"
+        },
+        {
+          "title": "Arrival",
+          "description": "Station Montmorency, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+          "audio": "assets/audio/canada/stm/line-2/montmorency.mp3"
+        }
+      ],
       "lineOrder": {
         "line-2": 31
       }
@@ -919,7 +956,7 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Berri-UQAM. Correspondance avec les lignes orange et verte.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/berri-uqam-prochaine.mp3",
+          "audio": "assets/audio/canada/stm/line-4/berri-uqam-prochaine.mp3",
           "lineIds": [
             "line-4"
           ]
@@ -927,7 +964,7 @@
         {
           "title": "Arrival",
           "description": "Station Berri-UQAM, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/berri-uqam.mp3",
+          "audio": "assets/audio/canada/stm/line-4/berri-uqam.mp3",
           "lineIds": [
             "line-4"
           ]
@@ -944,17 +981,17 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Jean-Drapeau.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/jean-drapeau-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-4/jean-drapeau-prochaine.mp3"
         },
         {
           "title": "Fare Zone Warning",
           "description": "Attention! Dernière sortie avant d'atteindre la zone tarifaire B. Vous devez détenir un titre de transport tout mode AB, ABC, ou ABCD pour continuer vers la station Longueuil–Université-de-Sherbrooke.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/zone-b-attention.mp3"
+          "audio": "assets/audio/canada/stm/line-4/zone-b-attention.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Jean-Drapeau.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/jean-drapeau.mp3"
+          "audio": "assets/audio/canada/stm/line-4/jean-drapeau.mp3"
         }
       ],
       "lineOrder": {
@@ -971,12 +1008,12 @@
         {
           "title": "Next Station",
           "description": "Prochaine station: Longueuil–Université-de-Sherbrooke.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/longueuil-udes-prochaine.mp3"
+          "audio": "assets/audio/canada/stm/line-4/longueuil-udes-prochaine.mp3"
         },
         {
           "title": "Arrival",
           "description": "Station Longueuil–Université-de-Sherbrooke, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-          "audio": "assets/audio/canada/mtl-metro/line-4/longueuil-udes.mp3"
+          "audio": "assets/audio/canada/stm/line-4/longueuil-udes.mp3"
         }
       ],
       "lineOrder": {

@@ -298,7 +298,11 @@ body.is-system .system-mode-toggle {
     }
 
     .station.is-active {
-      filter: brightness(0.5);
+      animation: station-active-pulse 1.25s steps(1, end) infinite;
+    }
+
+    .station.transfer.is-active {
+      animation: station-active-pulse-transfer 1.25s steps(1, end) infinite;
     }
 
     .line,
@@ -325,6 +329,42 @@ body.is-system .system-mode-toggle {
     .station {
       cursor: pointer;
     }
+  }
+}
+
+@keyframes station-active-pulse {
+  0% {
+    fill: #000000;
+  }
+  49.999% {
+    fill: #000000;
+  }
+  50% {
+    fill: #ffffff;
+  }
+  99.999% {
+    fill: #ffffff;
+  }
+  100% {
+    fill: #000000;
+  }
+}
+
+@keyframes station-active-pulse-transfer {
+  0% {
+    fill: #9fbd4a;
+  }
+  49.999% {
+    fill: #9fbd4a;
+  }
+  50% {
+    fill: #000000;
+  }
+  99.999% {
+    fill: #000000;
+  }
+  100% {
+    fill: #9fbd4a;
   }
 }
 
@@ -355,13 +395,15 @@ body.is-system .system-mode-toggle {
   left: auto;
   width: 20rem;
   max-width: min(20rem, calc(100% - 1rem));
-  max-height: 70vh;
-  overflow-y: auto;
+  max-height: calc(100% - 1.5rem);
+  overflow: hidden;
   background: $panel;
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 1rem;
   z-index: 8;
+  display: flex;
+  flex-direction: column;
 
   &[hidden] {
     display: none;
@@ -423,6 +465,10 @@ body.is-system .system-mode-toggle {
     gap: 0.875rem;
     border-top: 0.0625rem solid #222732;
     padding-top: 0.75rem;
+    overflow-y: auto;
+    min-height: 0;
+    flex: 1;
+    align-content: start;
   }
 
   .sound-list.is-grouped {
@@ -514,7 +560,7 @@ body.is-system .system-mode-toggle {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  overflow-y: auto;
+  overflow: hidden;
   height: 100%;
   align-self: stretch;
 
@@ -601,7 +647,10 @@ body.is-system .system-mode-toggle {
     gap: 0.75rem;
     border-top: 0.0625rem solid #222732;
     padding-top: 0.75rem;
-    align-items: stretch;
+    overflow-y: auto;
+    min-height: 0;
+    flex: 1;
+    align-content: start;
 
     .sound-card {
       border: 0.0625rem solid #222732;
@@ -610,7 +659,6 @@ body.is-system .system-mode-toggle {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      height: 100%;
 
       h3 {
         margin: 0;

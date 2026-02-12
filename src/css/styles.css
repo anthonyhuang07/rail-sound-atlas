@@ -345,8 +345,12 @@ body.is-system .system-mode-toggle {
           filter: drop-shadow(0 0 0.375rem rgba(0, 0, 0, 0.25)) brightness(0.75);
 }
 #map-container svg .station.is-active {
-  -webkit-filter: brightness(0.5);
-          filter: brightness(0.5);
+  -webkit-animation: station-active-pulse 1.25s steps(1, end) infinite;
+          animation: station-active-pulse 1.25s steps(1, end) infinite;
+}
+#map-container svg .station.transfer.is-active {
+  -webkit-animation: station-active-pulse-transfer 1.25s steps(1, end) infinite;
+          animation: station-active-pulse-transfer 1.25s steps(1, end) infinite;
 }
 #map-container svg .line,
 #map-container svg .line path {
@@ -370,6 +374,75 @@ body.is-system .system-mode-toggle {
   cursor: pointer;
 }
 
+@-webkit-keyframes station-active-pulse {
+  0% {
+    fill: #000000;
+  }
+  49.999% {
+    fill: #000000;
+  }
+  50% {
+    fill: #ffffff;
+  }
+  99.999% {
+    fill: #ffffff;
+  }
+  100% {
+    fill: #000000;
+  }
+}
+
+@keyframes station-active-pulse {
+  0% {
+    fill: #000000;
+  }
+  49.999% {
+    fill: #000000;
+  }
+  50% {
+    fill: #ffffff;
+  }
+  99.999% {
+    fill: #ffffff;
+  }
+  100% {
+    fill: #000000;
+  }
+}
+@-webkit-keyframes station-active-pulse-transfer {
+  0% {
+    fill: #9fbd4a;
+  }
+  49.999% {
+    fill: #9fbd4a;
+  }
+  50% {
+    fill: #000000;
+  }
+  99.999% {
+    fill: #000000;
+  }
+  100% {
+    fill: #9fbd4a;
+  }
+}
+@keyframes station-active-pulse-transfer {
+  0% {
+    fill: #9fbd4a;
+  }
+  49.999% {
+    fill: #9fbd4a;
+  }
+  50% {
+    fill: #000000;
+  }
+  99.999% {
+    fill: #000000;
+  }
+  100% {
+    fill: #9fbd4a;
+  }
+}
 .station-tooltip {
   position: absolute;
   padding: 0.25rem 0.5rem;
@@ -399,13 +472,20 @@ body.is-system .system-mode-toggle {
   left: auto;
   width: 20rem;
   max-width: min(20rem, 100% - 1rem);
-  max-height: 70vh;
-  overflow-y: auto;
+  max-height: calc(100% - 1.5rem);
+  overflow: hidden;
   background: #151922;
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 1rem;
   z-index: 8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
 }
 .map-popup[hidden] {
   display: none;
@@ -476,6 +556,13 @@ body.is-system .system-mode-toggle {
   gap: 0.875rem;
   border-top: 0.0625rem solid #222732;
   padding-top: 0.75rem;
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -ms-flex-line-pack: start;
+      align-content: start;
 }
 .map-popup .sound-list.is-grouped {
   display: -webkit-box;
@@ -577,7 +664,7 @@ body.is-system .system-mode-toggle {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 1rem;
-  overflow-y: auto;
+  overflow: hidden;
   height: 100%;
   -ms-flex-item-align: stretch;
       align-self: stretch;
@@ -688,9 +775,13 @@ body.is-system .system-mode-toggle {
   gap: 0.75rem;
   border-top: 0.0625rem solid #222732;
   padding-top: 0.75rem;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  overflow-y: auto;
+  min-height: 0;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  -ms-flex-line-pack: start;
+      align-content: start;
 }
 .side-panel .sound-list .sound-card {
   border: 0.0625rem solid #222732;
@@ -704,7 +795,6 @@ body.is-system .system-mode-toggle {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 0.5rem;
-  height: 100%;
 }
 .side-panel .sound-list .sound-card h3 {
   margin: 0;

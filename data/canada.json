@@ -5,16 +5,17 @@
   },
   "systems": [
     {
-      "id": "mtl-metro",
+      "id": "stm",
       "name": "Montréal Metro",
-      "logo": "assets/images/canada/mtl-metro/mtl-metro.png",
-      "map": "assets/maps/canada/mtl-metro.svg",
-      "sounds": "data/canada/mtl-metro.json"
+      "logo": "assets/images/canada/stm/stm.png",
+      "map": "assets/maps/canada/stm.svg",
+      "sounds": "data/canada/stm.json"
     },
     {
       "id": "ttc",
       "name": "Toronto Subway",
       "logo": "assets/images/canada/ttc/ttc.png",
+      "map": "assets/maps/canada/ttc.svg",
       "sounds": "data/canada/ttc.json"
     },
     {

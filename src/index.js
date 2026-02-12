@@ -590,6 +590,58 @@ const applyMapTheme = (svg, theme) => {
       return;
     }
 
+    if (stationEl.tagName.toLowerCase() === "rect") {
+      const radiusValue = Number(variant.radius);
+      if (Number.isFinite(radiusValue) && radiusValue > 0) {
+        const baseX = Number(stationEl.dataset.baseX ?? stationEl.getAttribute("x"));
+        const baseY = Number(stationEl.dataset.baseY ?? stationEl.getAttribute("y"));
+        const baseWidth = Number(stationEl.dataset.baseWidth ?? stationEl.getAttribute("width"));
+        const baseHeight = Number(stationEl.dataset.baseHeight ?? stationEl.getAttribute("height"));
+        const baseRx = Number(stationEl.dataset.baseRx ?? stationEl.getAttribute("rx"));
+        const baseRy = Number(stationEl.dataset.baseRy ?? stationEl.getAttribute("ry") ?? baseRx);
+        const baseRadius = Number(stationEl.dataset.baseRadius ?? baseRx);
+
+        if (!stationEl.dataset.baseX && Number.isFinite(baseX)) stationEl.dataset.baseX = String(baseX);
+        if (!stationEl.dataset.baseY && Number.isFinite(baseY)) stationEl.dataset.baseY = String(baseY);
+        if (!stationEl.dataset.baseWidth && Number.isFinite(baseWidth)) stationEl.dataset.baseWidth = String(baseWidth);
+        if (!stationEl.dataset.baseHeight && Number.isFinite(baseHeight)) stationEl.dataset.baseHeight = String(baseHeight);
+        if (!stationEl.dataset.baseRx && Number.isFinite(baseRx)) stationEl.dataset.baseRx = String(baseRx);
+        if (!stationEl.dataset.baseRy && Number.isFinite(baseRy)) stationEl.dataset.baseRy = String(baseRy);
+        if (!stationEl.dataset.baseRadius && Number.isFinite(baseRadius)) {
+          stationEl.dataset.baseRadius = String(baseRadius);
+        }
+
+        if (
+          Number.isFinite(baseX) &&
+          Number.isFinite(baseY) &&
+          Number.isFinite(baseWidth) &&
+          Number.isFinite(baseHeight) &&
+          Number.isFinite(baseRadius) &&
+          baseRadius > 0
+        ) {
+          const scale = radiusValue / baseRadius;
+          const nextWidth = baseWidth * scale;
+          const nextHeight = baseHeight * scale;
+          const centerX = baseX + baseWidth / 2;
+          const centerY = baseY + baseHeight / 2;
+          stationEl.setAttribute("width", String(nextWidth));
+          stationEl.setAttribute("height", String(nextHeight));
+          stationEl.setAttribute("x", String(centerX - nextWidth / 2));
+          stationEl.setAttribute("y", String(centerY - nextHeight / 2));
+          if (Number.isFinite(baseRx)) stationEl.setAttribute("rx", String(baseRx * scale));
+          if (Number.isFinite(baseRy)) stationEl.setAttribute("ry", String(baseRy * scale));
+        }
+      }
+
+      if (variant.fill !== undefined) stationEl.style.fill = `${variant.fill}`;
+      if (variant.stroke !== undefined) stationEl.style.stroke = `${variant.stroke}`;
+      if (variant.strokeWidth !== undefined) {
+        stationEl.style.strokeWidth = `${variant.strokeWidth}`;
+        if (Number(variant.strokeWidth) === 0) stationEl.style.stroke = "none";
+      }
+      return;
+    }
+
     stationEl.querySelectorAll("circle").forEach((circle) => {
       const value = Number(radius);
       circle.setAttribute("r", String(value));
