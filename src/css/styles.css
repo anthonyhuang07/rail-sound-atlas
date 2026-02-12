@@ -1207,20 +1207,19 @@ body.is-system .system-mode-toggle {
   }
   #view-system.is-active.map-mode .map-wrap {
     -webkit-box-flex: 1;
-        -ms-flex: 1 1 auto;
-            flex: 1 1 auto;
+        -ms-flex: 1 1 0;
+            flex: 1 1 0;
     min-height: 0;
-    height: 100%;
+    height: auto;
   }
   .side-panel {
     position: static;
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-    margin-top: auto;
     width: 100%;
     height: auto;
-    max-height: 55vh;
+    max-height: none;
     border-left: 0.0625rem solid #222732;
   }
   .side-panel .sound-list {

@@ -45,10 +45,26 @@ main {
   min-height: 0;
   height: 100%;
   position: relative;
-}
 
-#view-system.is-active {
-  display: flex;
+  &.is-active {
+    display: flex;
+  }
+
+  &.is-active.list-mode {
+    display: block;
+    overflow: auto;
+
+    .map-wrap,
+    .side-panel {
+      display: none;
+    }
+  }
+
+  &.is-active.map-mode {
+    .system-list-view {
+      display: none;
+    }
+  }
 }
 
 #view-home,
@@ -173,24 +189,6 @@ body.is-system .system-mode-toggle {
     display: block;
     flex: 1;
   }
-}
-
-#view-system.is-active {
-  display: flex;
-}
-
-#view-system.is-active.list-mode {
-  display: block;
-  overflow: auto;
-}
-
-#view-system.is-active.list-mode .map-wrap,
-#view-system.is-active.list-mode .side-panel {
-  display: none;
-}
-
-#view-system.is-active.map-mode .system-list-view {
-  display: none;
 }
 
 #country-grid {
@@ -1019,22 +1017,23 @@ body.is-system .system-mode-toggle {
   }
 
   #view-system.is-active.map-mode .map-wrap {
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-height: 0;
-    height: 100%;
+    height: auto;
   }
 
   .side-panel {
     position: static;
     flex: 0 0 auto;
     width: 100%;
-    height: clamp(var(--mobile-menu-min), calc(var(--mobile-menu-ratio) * 100%), 75%);
+    height: auto;
     max-height: none;
     border-left: 0.0625rem solid #222732;
     transition: height 180ms ease;
 
     .side-panel-head {
       touch-action: none;
+      user-select: none;
       cursor: ns-resize;
     }
 

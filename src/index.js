@@ -22,7 +22,10 @@ const modeMapButton = document.getElementById("mode-map");
 const modeListButton = document.getElementById("mode-list");
 const systemListView = document.getElementById("system-list-view");
 const viewSystem = document.getElementById("view-system");
+const mapWrap = document.querySelector("#view-system .map-wrap");
 const sidePanelHead = sidePanel ? sidePanel.querySelector(".side-panel-head") : null;
+const sepCountry = document.querySelector(".crumb-sep[data-sep=country]");
+const sepSystem = document.querySelector(".crumb-sep[data-sep=system]");
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
 
 const stationTooltip = document.createElement("div");
@@ -45,10 +48,11 @@ const state = {
   systemMode: "map",
   selectedLineId: null,
   systemLoadToken: 0,
-  mobileMenuRatio: 0.5,
-  mobileMinMenuRatio: 0.16,
+  mobileMenuHeightPx: 0,
+  mobileMinMenuPx: 0,
   splitDragActive: false,
   splitDragPointerId: null,
+  splitDragType: null,
 };
 
 const stopActiveAudio = () => {
@@ -102,12 +106,6 @@ const renderSoundCards = (container, items) => {
     card.append(actions);
     container.append(card);
   });
-};
-
-const renderPanelContent = (titleEl, subtitleEl, listEl, content) => {
-  titleEl.textContent = content.title;
-  subtitleEl.textContent = content.subtitle;
-  renderSoundCards(listEl, content.items);
 };
 
 const renderStationPopup = (stationData) => {
@@ -351,10 +349,10 @@ const setSystemMode = (mode) => {
   if (modeMapButton) modeMapButton.classList.toggle("is-active", mode === "map");
   if (modeListButton) modeListButton.classList.toggle("is-active", mode === "list");
   if (mode === "list") {
+    clearMobileSplitLayout();
     renderSystemListView();
-  } else if (isMobileMapMode()) {
-    refreshMobileMenuMinRatio();
-    applyMobileMenuRatio(state.mobileMenuRatio, { snap: false });
+  } else {
+    syncMobileSplitLayout();
   }
 };
 
@@ -368,35 +366,74 @@ const resetInteractions = () => {
   if (svg) svg.classList.remove("is-panning");
 };
 
+const clearMobileSplitLayout = () => {
+  if (sidePanel) {
+    sidePanel.style.removeProperty("height");
+    sidePanel.style.removeProperty("flex-basis");
+  }
+  if (mapWrap) {
+    mapWrap.style.removeProperty("height");
+    mapWrap.style.removeProperty("flex");
+    mapWrap.style.removeProperty("flex-basis");
+  }
+};
+
 const isMobileMapMode = () =>
   window.matchMedia("(max-width: 720px)").matches &&
   state.view === "system" &&
   state.systemMode === "map";
 
-const refreshMobileMenuMinRatio = () => {
+const getMaxZoom = () => (window.matchMedia("(max-width: 720px)").matches ? 10.0 : 5.0);
+const getDefaultMobileMenuHeight = () => (viewSystem ? viewSystem.clientHeight * 0.5 : 0);
+
+const refreshMobileMenuMinHeight = () => {
   if (!viewSystem || !sidePanel || !sidePanelHead) return;
-  const totalHeight = viewSystem.clientHeight;
-  if (!totalHeight) return;
-  const headHeight = sidePanelHead.getBoundingClientRect().height || 0;
-  const sidePanelStyles = getComputedStyle(sidePanel);
-  const padTop = parseFloat(sidePanelStyles.paddingTop) || 0;
-  const padBottom = parseFloat(sidePanelStyles.paddingBottom) || 0;
-  const minMenuPx = headHeight + padTop + padBottom;
-  state.mobileMinMenuRatio = clamp(minMenuPx / totalHeight, 0.08, 0.5);
+  const totalHeight = viewSystem.clientHeight || 0;
+  const viewRect = viewSystem.getBoundingClientRect();
+  const sideRect = sidePanel.getBoundingClientRect();
+  const soundListEl = sidePanel.querySelector(".sound-list");
+  const separatorOffset = soundListEl
+    ? Math.max(0, soundListEl.getBoundingClientRect().top - sideRect.top)
+    : sidePanelHead.getBoundingClientRect().height || 0;
+  const vv = window.visualViewport;
+  const visibleBottomY = vv ? vv.offsetTop + vv.height : window.innerHeight;
+  const overlapUnderUi = Math.max(0, viewRect.bottom - visibleBottomY);
+  const minMenuPx = separatorOffset + overlapUnderUi;
+  state.mobileMinMenuPx = minMenuPx;
   viewSystem.style.setProperty("--mobile-menu-min", `${minMenuPx}px`);
+  return totalHeight;
 };
 
-const applyMobileMenuRatio = (ratio, { snap = false } = {}) => {
-  if (!viewSystem) return;
-  const nextRatio = snap && Math.abs(ratio - 0.5) <= 0.04 ? 0.5 : ratio;
-  const clamped = clamp(nextRatio, state.mobileMinMenuRatio, 0.75);
-  state.mobileMenuRatio = clamped;
-  viewSystem.style.setProperty("--mobile-menu-ratio", String(clamped));
+const applyMobileMenuHeight = (heightPx) => {
+  if (!viewSystem || !sidePanel || !mapWrap) return;
+  if (!isMobileMapMode()) return;
+  const totalHeight = refreshMobileMenuMinHeight() || viewSystem.clientHeight || 0;
+  if (!totalHeight) return;
+  const minMenuPx = state.mobileMinMenuPx || 0;
+  const maxMenuPx = totalHeight * 0.75;
+  const next = clamp(heightPx, minMenuPx, maxMenuPx);
+  const mapHeight = Math.max(0, totalHeight - next);
+  state.mobileMenuHeightPx = next;
+  sidePanel.style.flexBasis = `${next}px`;
+  sidePanel.style.height = `${next}px`;
+  mapWrap.style.flex = "0 0 auto";
+  mapWrap.style.flexBasis = `${mapHeight}px`;
+  mapWrap.style.height = `${mapHeight}px`;
+};
+
+const syncMobileSplitLayout = () => {
+  if (isMobileMapMode()) {
+    applyMobileMenuHeight(state.mobileMenuHeightPx || getDefaultMobileMenuHeight());
+  } else {
+    clearMobileSplitLayout();
+  }
 };
 
 const resetMobileMenuRatio = () => {
-  refreshMobileMenuMinRatio();
-  applyMobileMenuRatio(0.5, { snap: false });
+  if (!viewSystem) return;
+  const totalHeight = refreshMobileMenuMinHeight() || viewSystem.clientHeight || 0;
+  if (!totalHeight) return;
+  applyMobileMenuHeight(totalHeight * 0.5);
 };
 
 const onMobileSplitPointerDown = (event) => {
@@ -405,31 +442,68 @@ const onMobileSplitPointerDown = (event) => {
   event.preventDefault();
   state.splitDragActive = true;
   state.splitDragPointerId = event.pointerId;
+  state.splitDragType = "pointer";
   viewSystem.classList.add("is-resizing-split");
-  sidePanelHead.setPointerCapture(event.pointerId);
 };
 
 const onMobileSplitPointerMove = (event) => {
-  if (!state.splitDragActive || event.pointerId !== state.splitDragPointerId) return;
+  if (!state.splitDragActive || state.splitDragType !== "pointer") return;
+  if (event.pointerId !== state.splitDragPointerId) return;
   event.preventDefault();
   if (!viewSystem) return;
   const rect = viewSystem.getBoundingClientRect();
   const menuHeight = rect.bottom - event.clientY;
-  const ratio = menuHeight / rect.height;
-  applyMobileMenuRatio(ratio, { snap: false });
+  applyMobileMenuHeight(menuHeight);
 };
 
 const onMobileSplitPointerUp = (event) => {
-  if (!state.splitDragActive || event.pointerId !== state.splitDragPointerId) return;
+  if (!state.splitDragActive || state.splitDragType !== "pointer") return;
+  if (event.pointerId !== state.splitDragPointerId) return;
   state.splitDragActive = false;
   state.splitDragPointerId = null;
+  state.splitDragType = null;
   if (viewSystem) {
     viewSystem.classList.remove("is-resizing-split");
   }
-  applyMobileMenuRatio(state.mobileMenuRatio, { snap: true });
-  if (sidePanelHead && sidePanelHead.hasPointerCapture(event.pointerId)) {
-    sidePanelHead.releasePointerCapture(event.pointerId);
+  applyMobileMenuHeight(state.mobileMenuHeightPx);
+};
+
+const onMobileSplitTouchStart = (event) => {
+  if (!isMobileMapMode() || !viewSystem || !sidePanelHead) return;
+  if (event.target.closest("button, a")) return;
+  const touch = event.changedTouches && event.changedTouches[0];
+  if (!touch) return;
+  event.preventDefault();
+  state.splitDragActive = true;
+  state.splitDragPointerId = touch.identifier;
+  state.splitDragType = "touch";
+  viewSystem.classList.add("is-resizing-split");
+};
+
+const onMobileSplitTouchMove = (event) => {
+  if (!state.splitDragActive || state.splitDragType !== "touch") return;
+  if (!viewSystem) return;
+  const touch = Array.from(event.touches || []).find((t) => t.identifier === state.splitDragPointerId);
+  if (!touch) return;
+  event.preventDefault();
+  const rect = viewSystem.getBoundingClientRect();
+  const menuHeight = rect.bottom - touch.clientY;
+  applyMobileMenuHeight(menuHeight);
+};
+
+const onMobileSplitTouchEnd = (event) => {
+  if (!state.splitDragActive || state.splitDragType !== "touch") return;
+  const ended = Array.from(event.changedTouches || []).some(
+    (t) => t.identifier === state.splitDragPointerId
+  );
+  if (!ended) return;
+  state.splitDragActive = false;
+  state.splitDragPointerId = null;
+  state.splitDragType = null;
+  if (viewSystem) {
+    viewSystem.classList.remove("is-resizing-split");
   }
+  applyMobileMenuHeight(state.mobileMenuHeightPx);
 };
 
 const clearActive = () => {
@@ -460,10 +534,12 @@ const hideMapPopup = () => {
   stopActiveAudio();
 };
 
-const openMapPopup = (content, lineIds, event, element) => {
+const openMapPopup = (content, lineIds) => {
   if (!mapPopup) return;
   popupSoundList.classList.remove("is-grouped");
-  renderPanelContent(popupTitle, popupSubtitle, popupSoundList, content);
+  popupTitle.textContent = content.title;
+  popupSubtitle.textContent = content.subtitle;
+  renderSoundCards(popupSoundList, content.items);
   updateLineIcons(popupLineIcons, lineIds);
   mapPopup.hidden = false;
 };
@@ -530,9 +606,6 @@ const handleMapClick = (event) => {
 };
 
 const updateBreadcrumb = () => {
-  const sepCountry = document.querySelector(".crumb-sep[data-sep=country]");
-  const sepSystem = document.querySelector(".crumb-sep[data-sep=system]");
-
   if (state.view === "home") {
     crumbCountry.classList.add("is-hidden");
     crumbSystem.classList.add("is-hidden");
@@ -574,7 +647,6 @@ const setView = (viewId) => {
   updateBreadcrumb();
   if (viewId !== "system") {
     closePanel();
-    const viewSystem = document.getElementById("view-system");
     viewSystem.classList.remove("map-mode", "list-mode");
   }
 };
@@ -907,7 +979,7 @@ const handlePointerMove = (event, svg) => {
     const center = clientToSvgPoint(svg, centerClientX, centerClientY);
 
     const minZoom = 1.0;
-    const maxZoom = 5.0;
+    const maxZoom = getMaxZoom();
     const minWidth = base.width / maxZoom;
     const maxWidth = base.width / minZoom;
     const scaleFactor = state.pinchLastDist / dist;
@@ -1166,16 +1238,19 @@ const init = async () => {
   }
   if (sidePanelHead) {
     sidePanelHead.addEventListener("pointerdown", onMobileSplitPointerDown);
-    sidePanelHead.addEventListener("pointermove", onMobileSplitPointerMove);
-    sidePanelHead.addEventListener("pointerup", onMobileSplitPointerUp);
-    sidePanelHead.addEventListener("pointercancel", onMobileSplitPointerUp);
+    sidePanelHead.addEventListener("touchstart", onMobileSplitTouchStart, { passive: false });
   }
-  window.addEventListener("resize", () => {
-    refreshMobileMenuMinRatio();
-    if (isMobileMapMode()) {
-      applyMobileMenuRatio(state.mobileMenuRatio, { snap: false });
-    }
-  });
+  window.addEventListener("pointermove", onMobileSplitPointerMove);
+  window.addEventListener("pointerup", onMobileSplitPointerUp);
+  window.addEventListener("pointercancel", onMobileSplitPointerUp);
+  window.addEventListener("touchmove", onMobileSplitTouchMove, { passive: false });
+  window.addEventListener("touchend", onMobileSplitTouchEnd, { passive: false });
+  window.addEventListener("touchcancel", onMobileSplitTouchEnd, { passive: false });
+  window.addEventListener("resize", syncMobileSplitLayout);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", syncMobileSplitLayout);
+    window.visualViewport.addEventListener("scroll", syncMobileSplitLayout);
+  }
   // List mode line reset is handled by clicking the active line chip again.
   window.addEventListener("blur", resetInteractions);
   document.addEventListener("visibilitychange", () => {
@@ -1193,15 +1268,10 @@ const init = async () => {
       const base = state.baseViewBox;
       if (!vb || !base) return;
 
-      const point = svg.createSVGPoint();
-      point.x = event.clientX;
-      point.y = event.clientY;
-      const svgPoint = point.matrixTransform(svg.getScreenCTM().inverse());
-      const mouseX = svgPoint.x;
-      const mouseY = svgPoint.y;
+      const mouse = clientToSvgPoint(svg, event.clientX, event.clientY);
 
       const minZoom = 1.0;
-      const maxZoom = 5.0;
+      const maxZoom = getMaxZoom();
       const zoomFactor = event.deltaY > 0 ? 1.1 : 0.9;
       const minWidth = base.width / maxZoom;
       const maxWidth = base.width / minZoom;
@@ -1211,8 +1281,8 @@ const init = async () => {
       const ratio = nextWidth / vb.width;
       const next = clampViewBox(
         {
-          x: mouseX - (mouseX - vb.x) * ratio,
-          y: mouseY - (mouseY - vb.y) * ratio,
+          x: mouse.x - (mouse.x - vb.x) * ratio,
+          y: mouse.y - (mouse.y - vb.y) * ratio,
           width: nextWidth,
           height: nextHeight,
         },
