@@ -4,10 +4,19 @@
     "name": "GO Transit",
     "description": "Ontario — Est. 1967"
   },
-  "systemSounds": [],
+  "systemSounds": ["door-chime"],
   "lines": {
   },
   "stations": {},
   "sounds": {
+    "door-chime": {
+      "title": "Door Chime",
+      "description": "",
+      "audio": [
+        {
+          "src": "assets/audio/canada/go/door-chime.mp3"
+        }
+      ]
+    }
   }
 }

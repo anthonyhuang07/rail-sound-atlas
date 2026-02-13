@@ -28,7 +28,12 @@
           "map": "assets/maps/canada/ttc.svg",
           "data": "data/canada/ttc.json"
         },
-
+        {
+          "id": "go",
+          "name": "GO Transit",
+          "logo": "assets/images/canada/go/logo.webp",
+          "data": "data/canada/go.json"
+        },
         {
           "id": "o-train",
           "name": "O-Train",
