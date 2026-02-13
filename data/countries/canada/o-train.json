@@ -1,0 +1,32 @@
+{
+  "system": {
+    "id": "o-train",
+    "name": "O-Train",
+    "description": "Ottawa, Ontario — Est. 2001",
+    "soundIds": []
+  },
+  "lines": {
+    "line-1": {
+      "title": "Line 1 (Confederation Line)",
+      "subtitle": "Citadis Spirit",
+      "icon": "assets/images/canada/o-train/line-1.png",
+      "soundIds": [
+        "door-cycle",
+        "accel"
+      ]
+    },
+    "line-2": {
+      "title": "Line 2 (Trillium Line)",
+      "subtitle": "Stadler FLIRT, Alstom Coradia LINT 41",
+      "icon": "assets/images/canada/o-train/line-2.png",
+      "soundIds": []
+    },
+    "line-4": {
+      "title": "Line 4 (Airport Line)",
+      "subtitle": "Alstom Coradia LINT 41",
+      "icon": "assets/images/canada/o-train/line-4.png",
+      "soundIds": []
+    }
+  },
+  "stations": {}
+}

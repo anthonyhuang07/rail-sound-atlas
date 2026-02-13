@@ -1,0 +1,56 @@
+{
+  "system": {
+    "id": "go",
+    "name": "GO Transit",
+    "description": "Ontario — Est. 1967",
+    "soundIds": [
+      "door-chime",
+      "bell"
+    ]
+  },
+  "lines": {
+    "lakeshore-w": {
+      "title": "Lakeshore West",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/lakeshore-w.png",
+      "soundIds": []
+    },
+    "lakeshore-e": {
+      "title": "Lakeshore East",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/lakeshore-e.png",
+      "soundIds": []
+    },
+    "milton": {
+      "title": "Milton",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/milton.png",
+      "soundIds": []
+    },
+    "kitchener": {
+      "title": "Kitchener",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/kitchener.png",
+      "soundIds": []
+    },
+    "barrie": {
+      "title": "Barrie",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/barrie.png",
+      "soundIds": []
+    },
+    "richmond-hill": {
+      "title": "Richmond Hill",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/richmond-hill.png",
+      "soundIds": []
+    },
+    "stouffville": {
+      "title": "Stouffville",
+      "subtitle": "MPI MPXpress, Bombardier BiLevel Coach, EMD F59PH",
+      "icon": "assets/images/canada/go/stouffville.png",
+      "soundIds": []
+    }
+  },
+  "stations": {}
+}

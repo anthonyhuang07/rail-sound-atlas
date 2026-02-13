@@ -112,7 +112,7 @@ const normalizeSystemData = (raw) => {
 
   return {
     ...raw,
-    systemSounds: resolveSoundIds(raw.systemSounds),
+    system: { ...raw.system, items: resolveSoundIds(raw.system.soundIds) },
     lines,
     stations,
   };
@@ -237,7 +237,7 @@ const showSystemPanel = () => {
     panelSystemIcon.hidden = false;
   }
   if (panelBack) panelBack.hidden = true;
-  renderSoundCards(soundList, state.systemData.systemSounds);
+  renderSoundCards(soundList, state.systemData.system.items);
   openPanel();
 };
 
@@ -261,7 +261,7 @@ const renderSystemListView = () => {
   if (!state.systemData || !systemListView) return;
   const lineEntries = Object.entries(state.systemData.lines);
   const hasLines = lineEntries.length > 0;
-  const noSystemSounds = !state.systemData.systemSounds.length;
+  const noSystemSounds = !state.systemData.system.items.length;
   if (state.selectedLineId && !state.systemData.lines[state.selectedLineId]) {
     state.selectedLineId = null;
   }
@@ -358,10 +358,10 @@ const renderSystemListView = () => {
     label.textContent = line.title;
     button.append(iconWrap, label);
     button.addEventListener("click", () => {
-      stopActiveAudio();
       if (noSystemSounds && state.selectedLineId === lineId) {
         return;
       }
+      stopActiveAudio();
       state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
       renderSystemListView();
     });
@@ -382,7 +382,7 @@ const renderSystemListView = () => {
   } else {
     renderListGrid(
       document.getElementById("system-sounds-wrap"),
-      state.systemData.systemSounds,
+      state.systemData.system.items,
       "No system sounds."
     );
   }
@@ -1198,10 +1198,13 @@ const loadMap = async (mapPath, theme) => {
 const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
   stopActiveAudio();
-  const systemDataRaw = await fetch(system.data).then((res) => res.json());
+  const [systemDataRaw, soundDataRaw] = await Promise.all([
+    fetch(system.data).then((res) => res.json()),
+    fetch(system.soundData).then((res) => res.json()),
+  ]);
   if (loadToken !== state.systemLoadToken) return;
   state.systemInfo = system;
-  state.systemData = normalizeSystemData(systemDataRaw);
+  state.systemData = normalizeSystemData({ ...systemDataRaw, sounds: soundDataRaw });
   state.selectedLineId = null;
   let mapAvailable = false;
   if (system.map) {

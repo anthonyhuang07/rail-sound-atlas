@@ -16,13 +16,15 @@ Name of the system you want to contribute to.
 ## Is it a System, Line or Station sound?
 Specify "System", "Line" or "Station"
 
+**System Sound**
+- Provide title of sound (e.g. Station Announcement) and the announcement transcription (if applicable).
+
 **Line Sound**
 - Specify the Line name
 - Are there multiple versions of the sound? (Yes/No). If Yes:
   - Is it the same sound on different rolling stock? (Yes/No). If Yes:
     - Provide rolling stock name (must be a model listed under the line)
-  - Is it the same category of sound but with different announcements? (e.g. Doors Opening, To Direction N & To Direction S) (Yes/No). If Yes:
-    - Provide title of sound (e.g. Door Chime) and the announcement transcription (if applicable).
+- Provide title of sound (e.g. Door Chime) and the announcement transcription (if applicable).
 
 **Station Sound**
 - Specify the Line name(s) and Station name.

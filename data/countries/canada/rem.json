@@ -1,0 +1,28 @@
+{
+  "system": {
+    "id": "rem",
+    "name": "REM",
+    "description": "Montréal, Québec — Est. 2023",
+    "soundIds": [
+    ]
+  },
+  "lines": {
+    "lakeshore-w": {
+      "title": "Réseau Express Métropolitain",
+      "subtitle": "Alstom Metropolis Saint-Laurent",
+      "icon": "assets/images/canada/rem/A1.png",
+      "otherIcons": [
+        "assets/images/canada/rem/A2.png",
+        "assets/images/canada/rem/A3.png",
+        "assets/images/canada/rem/A4.png"
+      ],
+      "soundIds": [
+        "doors-opening",
+        "doors-closing",
+        "psd",
+        "accel"
+      ]
+    }
+  },
+  "stations": {}
+}

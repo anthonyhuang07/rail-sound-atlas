@@ -1,0 +1,32 @@
+{
+  "door-cycle": {
+    "title": "Door Cycle",
+    "audio": [
+      {
+        "title": "Doors Opening",
+        "description": "Doors opening. Ouverture des portes.",
+        "src": "assets/audio/canada/o-train/line-1/doors-opening.mp3",
+        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+        "year": 2024
+      },
+      {
+        "title": "Doors Closing",
+        "description": "Doors closing. Fermeture des portes.",
+        "src": "assets/audio/canada/o-train/line-1/doors-closing.mp3",
+        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+        "year": 2024
+      }
+    ]
+  },
+  "accel": {
+    "title": "Acceleration",
+    "description": "",
+    "audio": [
+      {
+        "src": "assets/audio/canada/o-train/line-1/accel.mp3",
+        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+        "year": 2024
+      }
+    ]
+  }
+}

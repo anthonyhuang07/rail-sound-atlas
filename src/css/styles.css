@@ -326,8 +326,9 @@ body.is-system .system-mode-toggle {
   min-width: 0;
 }
 .sound-card .sound-variation-label {
-  color: #9aa0a6;
-  font-size: 0.75em;
+  color: #f2f2f2;
+  font-size: 0.8em;
+  font-weight: 600;
   line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;

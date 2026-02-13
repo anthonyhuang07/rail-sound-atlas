@@ -1,0 +1,19 @@
+{
+  "doa-shime-ann-f": {
+    "title": "Doors Closing Announcement",
+    "description": "ドアが閉まります。手荷物をお引き下さい。無理なご乗車はおやめください。",
+    "audio": [
+      {
+        "src": "assets/audio/japan/tokyo-metro/ginza/doa-shime-ann-f.mp3"
+      }
+    ]
+  },
+  "door-chime": {
+    "title": "Door Chime (Train)",
+    "audio": [
+      {
+        "src": "assets/audio/japan/tokyo-metro/ginza/door-chime.mp3"
+      }
+    ]
+  }
+}

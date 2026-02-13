@@ -1,0 +1,62 @@
+{
+    "doors-opening": {
+        "title": "Doors Opening",
+        "audio": [
+            {
+                "title": "Without Platform Screen Doors",
+                "description": "",
+                "src": "assets/audio/canada/rem/doors-opening.mp3",
+                "origin": "https://www.youtube.com/watch?v=c8d-AKvalcw",
+                "year": 2023
+            },
+            {
+                "title": "With Platform Screen Doors",
+                "description": "",
+                "src": "assets/audio/canada/rem/doors-opening-psd.mp3",
+                "origin": "https://www.youtube.com/shorts/HJsyOVpBEqA",
+                "year": 2026
+            }
+        ]
+    },
+    "doors-closing": {
+        "title": "Doors Closing",
+        "audio": [
+            {
+                "title": "Without Platform Screen Doors",
+                "description": "",
+                "src": "assets/audio/canada/rem/doors-closing.mp3",
+                "origin": "https://www.youtube.com/watch?v=c8d-AKvalcw",
+                "year": 2023
+            },
+            {
+                "title": "With Platform Screen Doors",
+                "description": "",
+                "src": "assets/audio/canada/rem/doors-closing-psd.mp3",
+                "origin": "https://www.youtube.com/shorts/HJsyOVpBEqA",
+                "year": 2026
+            }
+        ]
+    },
+    "psd": {
+        "title": "Platform Screen Doors Beeping",
+        "audio": [
+            {
+                "description": "",
+                "src": "assets/audio/canada/rem/psd.mp3",
+                "origin": "https://www.youtube.com/shorts/PdsIxJCey6I",
+                "year": 2025
+            }
+        ]
+    },
+    "accel": {
+        "title": "Acceleration",
+        "description": "",
+        "audio": [
+            {
+                "src": "assets/audio/canada/rem/accel.mp3",
+                "origin": "https://www.youtube.com/shorts/PdsIxJCey6I",
+                "year": 2025
+            }
+        ]
+    }
+}

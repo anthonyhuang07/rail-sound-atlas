@@ -1,0 +1,22 @@
+{
+  "door-chime": {
+    "title": "Door Chime",
+    "description": "",
+    "audio": [
+      {
+        "src": "assets/audio/canada/go/door-chime.mp3",
+        "origin": "https://www.youtube.com/watch?v=OKJ5M09SnAM"
+      }
+    ]
+  },
+  "bell": {
+    "title": "Train Bell",
+    "description": "",
+    "audio": [
+      {
+        "src": "assets/audio/canada/go/bell.mp3",
+        "origin": "https://www.youtube.com/watch?v=yBqDCzoDygI"
+      }
+    ]
+  }
+}
