@@ -3,26 +3,39 @@
     "id": "canada",
     "name": "Canada"
   },
-  "systems": [
+  "regions": [
     {
-      "id": "stm",
-      "name": "Montréal Metro",
-      "logo": "assets/images/canada/stm/stm.png",
-      "map": "assets/maps/canada/stm.svg",
-      "sounds": "data/canada/stm.json"
+      "id": "quebec",
+      "name": "Québec",
+      "systems": [
+        {
+          "id": "stm",
+          "name": "Montréal Metro",
+          "logo": "assets/images/canada/stm/stm.png",
+          "map": "assets/maps/canada/stm.svg",
+          "data": "data/canada/stm.json"
+        }
+      ]
     },
     {
-      "id": "ttc",
-      "name": "Toronto Subway",
-      "logo": "assets/images/canada/ttc/ttc.png",
-      "map": "assets/maps/canada/ttc.svg",
-      "sounds": "data/canada/ttc.json"
-    },
-    {
-      "id": "o-train",
-      "name": "O-Train (Ottawa)",
-      "logo": "assets/images/canada/o-train/logo.jpg",
-      "sounds": "data/canada/o-train.json"
+      "id": "ontario",
+      "name": "Ontario",
+      "systems": [
+        {
+          "id": "ttc",
+          "name": "Toronto Subway",
+          "logo": "assets/images/canada/ttc/ttc.png",
+          "map": "assets/maps/canada/ttc.svg",
+          "data": "data/canada/ttc.json"
+        },
+
+        {
+          "id": "o-train",
+          "name": "O-Train",
+          "logo": "assets/images/canada/o-train/logo.jpg",
+          "data": "data/canada/o-train.json"
+        }
+      ]
     }
   ]
 }

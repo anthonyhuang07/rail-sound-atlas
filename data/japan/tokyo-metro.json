@@ -1,89 +1,90 @@
 {
   "system": {
     "id": "tokyo-metro",
-    "name": "Tokyo Metro"
+    "name": "Tokyo Metro",
+    "description": "Tokyo — Est. 1927"
   },
-  "systemSounds": {
-    "subtitle": "Tokyo, Tokyo — Est. 1927",
-    "items": [
-    ]
-  },
+  "systemSounds": [],
   "lines": {
     "ginza": {
       "title": "Ginza Line",
       "subtitle": "Tokyo Metro 1000 Series",
       "icon": "assets/images/japan/tokyo-metro/ginza.png",
-      "items": [
-        {
-          "title": "Doors Closing Announcement",
-          "description": "ドアが閉まります。手荷物をお引き下さい。無理なご乗車はおやめください。",
-          "audio": "assets/audio/japan/tokyo-metro/ginza/doa-shime-ann-f.mp3"
-        },
-        {
-          "title": "Door Chime (Train)",
-          "audio": "assets/audio/japan/tokyo-metro/ginza/door-chime.mp3"
-        }
+      "soundIds": [
+        "doa-shime-ann-f",
+        "door-chime"
       ]
     },
     "marunouchi": {
       "title": "Marunouchi Line",
       "subtitle": "Tokyo Metro 2000 Series",
       "icon": "assets/images/japan/tokyo-metro/marunouchi.png",
-      "otherIcons": ["assets/images/japan/tokyo-metro/marunouchi-branch.png"],
-      "items": [
-      ]
+      "otherIcons": [
+        "assets/images/japan/tokyo-metro/marunouchi-branch.png"
+      ],
+      "soundIds": []
     },
     "hibiya": {
       "title": "Hibiya Line",
       "subtitle": "Tokyo Metro 13000 Series, Tobu 70000 Series",
       "icon": "assets/images/japan/tokyo-metro/hibiya.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "tozai": {
       "title": "Tōzai Line",
       "subtitle": "Tokyo Metro 05 Series, Tokyo Metro 07 Series, Tokyo Metro 15000 Series, Tōyō Rapid 2000 Series, E231 Series",
       "icon": "assets/images/japan/tokyo-metro/tozai.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "chiyoda": {
       "title": "Chiyoda Line",
       "subtitle": "Tokyo Metro 16000 Series, Tokyo Metro 05 Series, Odakyu 4000 Series, Odakyu 60000 Series MSE, E233-2000 Series",
       "icon": "assets/images/japan/tokyo-metro/chiyoda.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "yurakucho": {
       "title": "Yūrakuchō Line",
       "subtitle": "Tokyo Metro 10000 Series, Tokyo Metro 17000 Series, Seibu 6000 Series, Seibu 40000 Series, Tobu 9000 Series, Tobu 50070 Series",
       "icon": "assets/images/japan/tokyo-metro/yurakucho.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "hanzomon": {
       "title": "Hanzōmon Line",
       "subtitle": "Tokyo Metro 8000 Series, Tokyo Metro 08 Series, Tokyo Metro 18000 Series, Tokyu 2020 Series, Tokyu 5000 Series, Tobu 50000 Series",
       "icon": "assets/images/japan/tokyo-metro/hanzomon.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "namboku": {
       "title": "Namboku Line",
       "subtitle": "Tokyo Metro 9000 Series, Saitama Rapid Railway 2000 Series, Tokyu 3000 Series, Tokyu 5080 Series, Tokyu 3020 Series, Sotetsu 21000 Series",
       "icon": "assets/images/japan/tokyo-metro/namboku.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "fukutoshin": {
       "title": "Fukutoshin Line",
       "subtitle": "Tokyo Metro 10000 Series, Tokyo Metro 17000 Series, Seibu 6000 Series, Seibu 40000 Series, Tobu 9000 Series, Tobu 50070 Series, Tokyu 5000 Series, Sotetsu 20000 Series",
       "icon": "assets/images/japan/tokyo-metro/fukutoshin.png",
-      "items": [
-      ]
+      "soundIds": []
     }
   },
-  "stations": {
-
+  "stations": {},
+  "sounds": {
+    "doa-shime-ann-f": {
+      "title": "Doors Closing Announcement",
+      "description": "ドアが閉まります。手荷物をお引き下さい。無理なご乗車はおやめください。",
+      "audio": [
+        {
+          "src": "assets/audio/japan/tokyo-metro/ginza/doa-shime-ann-f.mp3"
+        }
+      ]
+    },
+    "door-chime": {
+      "title": "Door Chime (Train)",
+      "audio": [
+        {
+          "src": "assets/audio/japan/tokyo-metro/ginza/door-chime.mp3"
+        }
+      ]
+    }
   }
 }

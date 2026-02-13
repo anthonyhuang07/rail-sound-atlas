@@ -7,7 +7,6 @@ const systemGrid = document.getElementById("system-grid");
 const mapContainer = document.getElementById("map-container");
 const crumbCountry = document.getElementById("crumb-country");
 const crumbSystem = document.getElementById("crumb-system");
-const countryTitle = document.getElementById("country-title");
 const panelLineIcons = document.getElementById("panel-line-icons");
 const panelBack = document.getElementById("panel-back");
 const panelSystemIcon = document.getElementById("panel-system-icon");
@@ -30,6 +29,8 @@ const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], 
 
 const stationTooltip = document.createElement("div");
 stationTooltip.className = "station-tooltip";
+const DOWNLOAD_ICON =
+  "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zm-7 14a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z\"/></svg>";
 
 const state = {
   activeAudio: null,
@@ -53,6 +54,9 @@ const state = {
   splitDragActive: false,
   splitDragPointerId: null,
   splitDragType: null,
+  panStartedOnTarget: false,
+  panStart: { x: 0, y: 0 },
+  panDownTarget: null,
 };
 
 const stopActiveAudio = () => {
@@ -70,86 +74,143 @@ const playSound = async (audioPath) => {
   await audio.play();
 };
 
+const createSoundActions = (audioSrc) => {
+  const playButton = document.createElement("button");
+  playButton.type = "button";
+  playButton.textContent = "Play";
+  playButton.addEventListener("click", () => playSound(audioSrc));
+
+  const downloadLink = document.createElement("a");
+  downloadLink.className = "download-button";
+  downloadLink.href = audioSrc;
+  downloadLink.setAttribute("download", "");
+  downloadLink.setAttribute("aria-label", "Download audio");
+  downloadLink.innerHTML = DOWNLOAD_ICON;
+
+  const actions = document.createElement("div");
+  actions.className = "sound-actions";
+  actions.append(playButton, downloadLink);
+  return actions;
+};
+
+const normalizeSystemData = (raw) => {
+  const sounds = raw.sounds || {};
+  const resolveSoundIds = (soundIds) =>
+    Array.isArray(soundIds) ? soundIds.map((id) => sounds[id]).filter(Boolean) : [];
+  const resolveItems = (node) =>
+    node ? { ...node, items: Array.isArray(node.soundIds) ? resolveSoundIds(node.soundIds) : node.items || [] } : { items: [] };
+
+  const lines = {};
+  Object.entries(raw.lines || {}).forEach(([lineId, line]) => {
+    lines[lineId] = resolveItems(line);
+  });
+
+  const stations = {};
+  Object.entries(raw.stations || {}).forEach(([stationId, station]) => {
+    stations[stationId] = resolveItems(station);
+  });
+
+  return {
+    ...raw,
+    systemSounds: resolveSoundIds(raw.systemSounds),
+    lines,
+    stations,
+  };
+};
+
+const stationLineIds = (station) => station.lines.map(([lineId]) => lineId);
+const stationLineOrder = (station, lineId) => {
+  const line = station.lines.find(([id]) => id === lineId);
+  return line ? line[1] : undefined;
+};
+
+const filterItemsByLine = (items, lineId) =>
+  (items || [])
+    .map((item) => ({
+      ...item,
+      audio: (item.audio || []).filter((audio) => !audio.lineIds || audio.lineIds.includes(lineId)),
+    }))
+    .filter((item) => item.audio.length > 0);
+
 const renderSoundCards = (container, items) => {
   container.innerHTML = "";
+  if (!Array.isArray(items)) return;
+  const mergedItems = [];
+  const mergedMap = new Map();
   items.forEach((item) => {
+    const key = `${item.title}@@${item.description || ""}`;
+    const existing = mergedMap.get(key);
+    if (existing) {
+      existing.audio.push(...(item.audio || []));
+    } else {
+      const entry = {
+        ...item,
+        audio: Array.isArray(item.audio) ? [...item.audio] : [],
+      };
+      mergedItems.push(entry);
+      mergedMap.set(key, entry);
+    }
+  });
+
+  mergedItems.forEach((item) => {
     const card = document.createElement("div");
     card.className = "sound-card";
     card.setAttribute("role", "listitem");
+    const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
+    const effectiveDescription =
+      singleAudio && singleAudio.description ? singleAudio.description : item.description;
 
     const title = document.createElement("h3");
     title.textContent = item.title;
 
-    const playButton = document.createElement("button");
-    playButton.type = "button";
-    playButton.textContent = "Play";
-    playButton.addEventListener("click", () => playSound(item.audio));
-
-    const downloadLink = document.createElement("a");
-    downloadLink.className = "download-button";
-    downloadLink.href = item.audio;
-    downloadLink.setAttribute("download", "");
-    downloadLink.setAttribute("aria-label", "Download audio");
-    downloadLink.innerHTML =
-      "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zm-7 14a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z\"/></svg>";
-
-    const actions = document.createElement("div");
-    actions.className = "sound-actions";
-    actions.append(playButton, downloadLink);
-
     card.append(title);
-    if (item.description && item.description.trim() !== "") {
+    if (effectiveDescription && effectiveDescription.trim() !== "") {
       const desc = document.createElement("p");
-      desc.textContent = item.description;
+      desc.textContent = effectiveDescription;
       card.append(desc);
     }
-    card.append(actions);
+
+    if (singleAudio) {
+      card.append(createSoundActions(singleAudio.src));
+    } else {
+      if (effectiveDescription && item.audio.length > 1) {
+        card.classList.add("sound-card--described-multi");
+      }
+      const variations = document.createElement("div");
+      variations.className = "sound-variations";
+      item.audio.forEach((audio) => {
+        const row = document.createElement("div");
+        row.className = "sound-variation";
+        if (audio.title) {
+          const label = document.createElement("span");
+          label.className = "sound-variation-label";
+          label.textContent = audio.title;
+          row.append(label);
+        }
+        if (audio.description) {
+          const description = document.createElement("p");
+          description.className = "sound-variation-description";
+          description.textContent = audio.description;
+          row.append(description);
+        }
+
+        row.append(createSoundActions(audio.src));
+        variations.append(row);
+      });
+      card.append(variations);
+    }
+
     container.append(card);
   });
 };
 
 const renderStationPopup = (stationData) => {
   if (!popupSoundList) return;
-  popupTitle.textContent = stationData.title;
-  popupSubtitle.textContent = stationData.subtitle;
-  popupSoundList.innerHTML = "";
-  popupSoundList.classList.remove("is-grouped");
-
-  const stationItems = stationData.items || [];
-  const lineIds = stationData.lineIds || [];
-  if (lineIds.length <= 1) {
-    renderSoundCards(popupSoundList, stationItems);
-    return;
-  }
-
-  let rendered = 0;
-  popupSoundList.classList.add("is-grouped");
-  lineIds.forEach((lineId) => {
-    const lineItems = stationItems.filter((item) => {
-      if (!item.lineIds) return false;
-      return item.lineIds.includes(lineId);
-    });
-    if (!lineItems.length) return;
-    const block = document.createElement("div");
-    block.className = "popup-block";
-
-    const title = document.createElement("h3");
-    title.className = "popup-block-title";
-    title.textContent = state.systemData.lines[lineId]?.title || "";
-
-    const list = document.createElement("div");
-    list.className = "popup-block-list";
-    renderSoundCards(list, lineItems);
-
-    block.append(title, list);
-    popupSoundList.append(block);
-    rendered += lineItems.length;
-  });
-
-  if (!rendered) {
-    popupSoundList.classList.remove("is-grouped");
-    renderSoundCards(popupSoundList, stationItems);
-  }
+  popupTitle.textContent = stationData.name;
+  popupSubtitle.textContent = stationLineIds(stationData)
+    .map((lineId) => state.systemData.lines[lineId].title)
+    .join(", ");
+  renderSoundCards(popupSoundList, stationData.items || []);
 };
 
 const openPanel = () => {
@@ -162,28 +223,21 @@ const closePanel = () => {
   clearActive();
 };
 
-const setPanelMode = (mode) => {
-  if (!panelBack) return;
-  panelBack.hidden = mode !== "detail";
-  if (panelSystemIcon) {
-    panelSystemIcon.hidden = mode !== "system";
-  }
-};
-
 const showSystemPanel = () => {
   if (!state.systemData) return;
   stopActiveAudio();
   hideMapPopup();
   clearActive();
   panelTitle.textContent = state.systemData.system.name;
-  panelSubtitle.textContent = state.systemData.systemSounds.subtitle;
+  panelSubtitle.textContent = state.systemData.system.description;
   updateLineIcons(panelLineIcons, Object.keys(state.systemData.lines));
   if (panelSystemIcon && state.systemInfo) {
     panelSystemIcon.src = state.systemInfo.logo;
     panelSystemIcon.alt = `${state.systemInfo.name} logo`;
+    panelSystemIcon.hidden = false;
   }
-  renderSoundCards(soundList, state.systemData.systemSounds.items);
-  setPanelMode("system");
+  if (panelBack) panelBack.hidden = true;
+  renderSoundCards(soundList, state.systemData.systemSounds);
   openPanel();
 };
 
@@ -206,7 +260,8 @@ const renderListGrid = (container, items, emptyText) => {
 const renderSystemListView = () => {
   if (!state.systemData || !systemListView) return;
   const lineEntries = Object.entries(state.systemData.lines);
-  const noSystemSounds = !state.systemData.systemSounds.items.length;
+  const hasLines = lineEntries.length > 0;
+  const noSystemSounds = !state.systemData.systemSounds.length;
   if (state.selectedLineId && !state.systemData.lines[state.selectedLineId]) {
     state.selectedLineId = null;
   }
@@ -215,10 +270,10 @@ const renderSystemListView = () => {
   }
   const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
   const stationItems = Object.values(state.systemData.stations)
-    .filter((station) => state.selectedLineId && station.lineIds.includes(state.selectedLineId))
+    .filter((station) => state.selectedLineId && stationLineIds(station).includes(state.selectedLineId))
     .sort((a, b) => {
-      const aOrder = a.lineOrder ? a.lineOrder[state.selectedLineId] : undefined;
-      const bOrder = b.lineOrder ? b.lineOrder[state.selectedLineId] : undefined;
+      const aOrder = stationLineOrder(a, state.selectedLineId);
+      const bOrder = stationLineOrder(b, state.selectedLineId);
       const aHas = Number.isFinite(aOrder);
       const bHas = Number.isFinite(bOrder);
       if (aHas && bHas) return aOrder - bOrder;
@@ -226,25 +281,24 @@ const renderSystemListView = () => {
       if (bHas) return 1;
       return 0;
     })
-    .flatMap((station) =>
-      station.items
-        .filter((item) => {
-          if (!item.lineIds) return true;
-          return item.lineIds.includes(state.selectedLineId);
-        })
-        .map((item) => ({
-          title: `${station.title} - ${item.title}`,
-          description: item.description,
-          audio: item.audio,
-        }))
-    );
+    .map((station) => ({
+      title: station.name,
+      audio: filterItemsByLine(station.items, state.selectedLineId).flatMap((item) =>
+        item.audio.map((audio) => ({
+            title: audio.title ? `${item.title} - ${audio.title}` : item.title,
+            description: audio.description || item.description || "",
+            src: audio.src,
+          }))
+      ),
+    }))
+    .filter((item) => item.audio.length > 0);
 
   systemListView.innerHTML = `
-    <div class="list-top">
+    <div class="list-top${hasLines ? "" : " no-lines"}">
       <div class="list-head">
         <div class="list-head-main">
           <h2 class="list-title">${state.systemData.system.name}</h2>
-          <p class="list-subtitle">${state.systemData.systemSounds.subtitle}</p>
+          <p class="list-subtitle">${state.systemData.system.description}</p>
         </div>
         <img class="list-head-logo" src="${state.systemInfo.logo}" alt="${state.systemInfo.name} logo" />
       </div>
@@ -316,9 +370,10 @@ const renderSystemListView = () => {
     lineSelector.append(row);
   });
   if (selectedLine) {
+    const selectedLineItems = filterItemsByLine(selectedLine.items, state.selectedLineId);
     renderListGrid(
       document.getElementById("line-sounds-wrap"),
-      selectedLine.items,
+      selectedLineItems,
       "No line sounds."
     );
     if (stationItems.length) {
@@ -327,7 +382,7 @@ const renderSystemListView = () => {
   } else {
     renderListGrid(
       document.getElementById("system-sounds-wrap"),
-      state.systemData.systemSounds.items,
+      state.systemData.systemSounds,
       "No system sounds."
     );
   }
@@ -362,6 +417,9 @@ const resetInteractions = () => {
   state.moved = false;
   state.panActive = false;
   state.suppressClick = false;
+  state.panStartedOnTarget = false;
+  state.panStart = { x: 0, y: 0 };
+  state.panDownTarget = null;
   const svg = mapContainer.querySelector("svg");
   if (svg) svg.classList.remove("is-panning");
 };
@@ -436,36 +494,45 @@ const resetMobileMenuRatio = () => {
   applyMobileMenuHeight(totalHeight * 0.5);
 };
 
+const beginMobileSplitDrag = (dragType, pointerId) => {
+  state.splitDragActive = true;
+  state.splitDragPointerId = pointerId;
+  state.splitDragType = dragType;
+  if (viewSystem) viewSystem.classList.add("is-resizing-split");
+};
+
+const updateMobileSplitDrag = (clientY) => {
+  if (!viewSystem) return;
+  const rect = viewSystem.getBoundingClientRect();
+  applyMobileMenuHeight(rect.bottom - clientY);
+};
+
+const endMobileSplitDrag = () => {
+  state.splitDragActive = false;
+  state.splitDragPointerId = null;
+  state.splitDragType = null;
+  if (viewSystem) viewSystem.classList.remove("is-resizing-split");
+  applyMobileMenuHeight(state.mobileMenuHeightPx);
+};
+
 const onMobileSplitPointerDown = (event) => {
   if (!isMobileMapMode() || !viewSystem || !sidePanelHead) return;
   if (event.target.closest("button, a")) return;
   event.preventDefault();
-  state.splitDragActive = true;
-  state.splitDragPointerId = event.pointerId;
-  state.splitDragType = "pointer";
-  viewSystem.classList.add("is-resizing-split");
+  beginMobileSplitDrag("pointer", event.pointerId);
 };
 
 const onMobileSplitPointerMove = (event) => {
   if (!state.splitDragActive || state.splitDragType !== "pointer") return;
   if (event.pointerId !== state.splitDragPointerId) return;
   event.preventDefault();
-  if (!viewSystem) return;
-  const rect = viewSystem.getBoundingClientRect();
-  const menuHeight = rect.bottom - event.clientY;
-  applyMobileMenuHeight(menuHeight);
+  updateMobileSplitDrag(event.clientY);
 };
 
 const onMobileSplitPointerUp = (event) => {
   if (!state.splitDragActive || state.splitDragType !== "pointer") return;
   if (event.pointerId !== state.splitDragPointerId) return;
-  state.splitDragActive = false;
-  state.splitDragPointerId = null;
-  state.splitDragType = null;
-  if (viewSystem) {
-    viewSystem.classList.remove("is-resizing-split");
-  }
-  applyMobileMenuHeight(state.mobileMenuHeightPx);
+  endMobileSplitDrag();
 };
 
 const onMobileSplitTouchStart = (event) => {
@@ -474,21 +541,15 @@ const onMobileSplitTouchStart = (event) => {
   const touch = event.changedTouches && event.changedTouches[0];
   if (!touch) return;
   event.preventDefault();
-  state.splitDragActive = true;
-  state.splitDragPointerId = touch.identifier;
-  state.splitDragType = "touch";
-  viewSystem.classList.add("is-resizing-split");
+  beginMobileSplitDrag("touch", touch.identifier);
 };
 
 const onMobileSplitTouchMove = (event) => {
   if (!state.splitDragActive || state.splitDragType !== "touch") return;
-  if (!viewSystem) return;
   const touch = Array.from(event.touches || []).find((t) => t.identifier === state.splitDragPointerId);
   if (!touch) return;
   event.preventDefault();
-  const rect = viewSystem.getBoundingClientRect();
-  const menuHeight = rect.bottom - touch.clientY;
-  applyMobileMenuHeight(menuHeight);
+  updateMobileSplitDrag(touch.clientY);
 };
 
 const onMobileSplitTouchEnd = (event) => {
@@ -497,13 +558,7 @@ const onMobileSplitTouchEnd = (event) => {
     (t) => t.identifier === state.splitDragPointerId
   );
   if (!ended) return;
-  state.splitDragActive = false;
-  state.splitDragPointerId = null;
-  state.splitDragType = null;
-  if (viewSystem) {
-    viewSystem.classList.remove("is-resizing-split");
-  }
-  applyMobileMenuHeight(state.mobileMenuHeightPx);
+  endMobileSplitDrag();
 };
 
 const clearActive = () => {
@@ -527,6 +582,27 @@ const updateLineIcons = (container, lineIds) => {
   container.hidden = lineIds.length === 0;
 };
 
+const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "card";
+  if (countryId) button.dataset.country = countryId;
+
+  const imageWrap = document.createElement("span");
+  imageWrap.className = "card-image";
+  const img = document.createElement("img");
+  img.src = image;
+  img.alt = alt;
+  imageWrap.append(img);
+
+  const titleEl = document.createElement("span");
+  titleEl.className = "card-title";
+  titleEl.textContent = title;
+  button.append(imageWrap, titleEl);
+  if (onClick) button.addEventListener("click", onClick);
+  return button;
+};
+
 const hideMapPopup = () => {
   if (!mapPopup) return;
   mapPopup.hidden = true;
@@ -536,7 +612,6 @@ const hideMapPopup = () => {
 
 const openMapPopup = (content, lineIds) => {
   if (!mapPopup) return;
-  popupSoundList.classList.remove("is-grouped");
   popupTitle.textContent = content.title;
   popupSubtitle.textContent = content.subtitle;
   renderSoundCards(popupSoundList, content.items);
@@ -551,7 +626,11 @@ const setLine = (lineId, element) => {
     element.classList.add("is-active");
   }
   const lineData = state.systemData.lines[lineId];
-  openMapPopup(lineData, [lineId]);
+  const lineContent = {
+    ...lineData,
+    items: filterItemsByLine(lineData.items, lineId),
+  };
+  openMapPopup(lineContent, [lineId]);
 };
 
 const setStation = (stationId, element) => {
@@ -561,7 +640,7 @@ const setStation = (stationId, element) => {
     element.classList.add("is-active");
   }
   const stationData = state.systemData.stations[stationId];
-  const iconLineIds = stationData.lineIds;
+  const iconLineIds = stationLineIds(stationData);
   renderStationPopup(stationData);
   updateLineIcons(popupLineIcons, iconLineIds);
   mapPopup.hidden = false;
@@ -581,10 +660,12 @@ const findMapTarget = (event) => {
 const handleMapClick = (event) => {
   if (state.suppressClick) {
     state.suppressClick = false;
+    state.panDownTarget = null;
     return;
   }
   if (state.panActive || state.moved) return;
-  const target = findMapTarget(event);
+  const target = findMapTarget(event) || state.panDownTarget;
+  state.panDownTarget = null;
   if (!target || !mapContainer.contains(target)) {
     if (state.view === "system") {
       clearActive();
@@ -925,16 +1006,20 @@ const getPointerList = () => Array.from(state.pointers.values());
 const handlePointerDown = (event, svg) => {
   if (event.button !== 0 && event.pointerType !== "touch") return;
   const target = findMapTarget(event);
-  if (target) return;
   state.moved = false;
   state.panActive = true;
+  state.panStartedOnTarget = !!target;
+  state.panStart = { x: event.clientX, y: event.clientY };
+  state.panDownTarget = target || null;
   state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
   svg.setPointerCapture(event.pointerId);
 
   const pointers = getPointerList();
   if (pointers.length === 1) {
     state.panLast = { x: event.clientX, y: event.clientY };
-    svg.classList.add("is-panning");
+    if (!state.panStartedOnTarget) {
+      svg.classList.add("is-panning");
+    }
   } else if (pointers.length === 2) {
     const [a, b] = pointers;
     const dx = a.x - b.x;
@@ -951,7 +1036,15 @@ const handlePointerMove = (event, svg) => {
     const vb = state.viewBox;
     const base = state.baseViewBox;
     if (!vb || !base) return;
-    state.moved = true;
+    if (!state.moved) {
+      const dx0 = event.clientX - state.panStart.x;
+      const dy0 = event.clientY - state.panStart.y;
+      if (Math.hypot(dx0, dy0) < 6) {
+        state.panLast = { x: event.clientX, y: event.clientY };
+        return;
+      }
+      state.moved = true;
+    }
     const scale = vb.width / svg.clientWidth;
     const dx = (event.clientX - state.panLast.x) * scale;
     const dy = (event.clientY - state.panLast.y) * scale;
@@ -1014,9 +1107,11 @@ const handlePointerUp = (event, svg) => {
   }
   if (pointers.length === 0) {
     svg.classList.remove("is-panning");
-    state.suppressClick = state.panActive && state.moved;
+    state.suppressClick = state.moved;
     state.moved = false;
     state.panActive = false;
+    state.panStartedOnTarget = false;
+    state.panStart = { x: 0, y: 0 };
   }
 };
 
@@ -1057,7 +1152,8 @@ const loadMap = async (mapPath, theme) => {
 
     const showStationTooltip = (event, target) => {
       if (!target || !target.classList.contains("station")) return;
-      const name = target.dataset.name || target.getAttribute("data-name");
+      const stationId = target.dataset.stationId || target.getAttribute("data-station-id");
+      const name = state.systemData.stations[stationId].name;
       if (!name) return;
       stationTooltip.textContent = name;
       stationTooltip.classList.add("is-visible");
@@ -1102,14 +1198,14 @@ const loadMap = async (mapPath, theme) => {
 const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
   stopActiveAudio();
-  const systemData = await fetch(system.sounds).then((res) => res.json());
+  const systemDataRaw = await fetch(system.data).then((res) => res.json());
   if (loadToken !== state.systemLoadToken) return;
   state.systemInfo = system;
-  state.systemData = systemData;
+  state.systemData = normalizeSystemData(systemDataRaw);
   state.selectedLineId = null;
   let mapAvailable = false;
   if (system.map) {
-    mapAvailable = await loadMap(system.map, systemData.theme);
+    mapAvailable = await loadMap(system.map, state.systemData.theme);
     if (loadToken !== state.systemLoadToken) return;
   } else {
     mapContainer.innerHTML = "";
@@ -1133,78 +1229,50 @@ const loadSystem = async (system) => {
 const renderCountries = (countries) => {
   countryGrid.innerHTML = "";
   countries.forEach((country) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "card";
-    button.dataset.country = country.id;
-    if (country.comingSoon === true) {
-      button.dataset.comingSoon = "true";
-      button.disabled = true;
-    }
-    const imageWrap = document.createElement("span");
-    imageWrap.className = "card-image";
-    const img = document.createElement("img");
-    img.src = country.image;
-    img.alt = `${country.name} flag`;
-    imageWrap.append(img);
-    if (country.comingSoon === true) {
-      const overlay = document.createElement("span");
-      overlay.className = "coming-soon";
-      overlay.textContent = "COMING SOON";
-      imageWrap.append(overlay);
-    }
-    const title = document.createElement("span");
-    title.className = "card-title";
-    title.textContent = country.name;
-    button.append(imageWrap, title);
-    if (!button.disabled) {
-      button.addEventListener("click", async () => {
+    const button = createMenuCard({
+      image: country.image,
+      alt: `${country.name} flag`,
+      title: country.name,
+      countryId: country.id,
+      onClick: async () => {
         const data = await fetch(country.data).then((res) => res.json());
         crumbCountry.textContent = data.country.name;
-        if (countryTitle) {
-          countryTitle.textContent = data.country.name;
-        }
-        renderSystems(data.systems);
+        renderSystems(data.regions);
         setView("country");
-      });
-    }
+      },
+    });
     countryGrid.append(button);
   });
 };
 
-const renderSystems = (systems) => {
+const renderSystems = (regions) => {
   systemGrid.innerHTML = "";
-  systems.forEach((system) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "card";
-    if (system.comingSoon === true) {
-      button.dataset.comingSoon = "true";
-      button.disabled = true;
-    }
-    const imageWrap = document.createElement("span");
-    imageWrap.className = "card-image";
-    const img = document.createElement("img");
-    img.src = system.logo;
-    img.alt = `${system.name} logo`;
-    imageWrap.append(img);
-    if (system.comingSoon === true) {
-      const overlay = document.createElement("span");
-      overlay.className = "coming-soon";
-      overlay.textContent = "COMING SOON";
-      imageWrap.append(overlay);
-    }
-    const title = document.createElement("span");
-    title.className = "card-title";
-    title.textContent = system.name;
-    button.append(imageWrap, title);
-    if (!button.disabled) {
-      button.addEventListener("click", () => {
-        crumbSystem.textContent = system.name;
-        loadSystem(system);
+  regions.forEach((region) => {
+    const group = document.createElement("section");
+    group.className = "region-group";
+
+    const title = document.createElement("h3");
+    title.className = "region-title";
+    title.textContent = region.name;
+
+    const grid = document.createElement("div");
+    grid.className = "card-grid region-grid";
+
+    region.systems.forEach((system) => {
+      const button = createMenuCard({
+        image: system.logo,
+        alt: `${system.name} logo`,
+        title: system.name,
+        onClick: () => {
+          crumbSystem.textContent = system.name;
+          loadSystem(system);
+        },
       });
-    }
-    systemGrid.append(button);
+      grid.append(button);
+    });
+
+    group.append(title, grid);
+    systemGrid.append(group);
   });
 };
 

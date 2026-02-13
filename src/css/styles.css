@@ -57,11 +57,21 @@ main {
   height: 100%;
   position: relative;
 }
-
 #view-system.is-active {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+#view-system.is-active.list-mode {
+  display: block;
+  overflow: auto;
+}
+#view-system.is-active.list-mode .map-wrap,
+#view-system.is-active.list-mode .side-panel {
+  display: none;
+}
+#view-system.is-active.map-mode .system-list-view {
+  display: none;
 }
 
 #view-home,
@@ -203,28 +213,38 @@ body.is-system .system-mode-toggle {
           flex: 1;
 }
 
-#view-system.is-active {
+#country-grid {
+  margin-top: 0;
+}
+
+#system-grid {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-}
-
-#view-system.is-active.list-mode {
-  display: block;
-  overflow: auto;
-}
-
-#view-system.is-active.list-mode .map-wrap,
-#view-system.is-active.list-mode .side-panel {
-  display: none;
-}
-
-#view-system.is-active.map-mode .system-list-view {
-  display: none;
-}
-
-#country-grid {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0;
   margin-top: 0;
+}
+
+.region-group {
+  display: block;
+}
+
+.region-group + .region-group {
+  margin-top: 1rem;
+}
+
+.region-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.region-grid {
+  margin-top: 1rem;
 }
 
 .card-grid {
@@ -283,27 +303,49 @@ body.is-system .system-mode-toggle {
   -o-object-fit: cover;
      object-fit: cover;
 }
-.card-grid .card .card-image .coming-soon {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: 1em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.25);
-  font-weight: 600;
-}
 .card-grid .card .card-title {
   font-size: 0.95em;
   font-weight: 600;
   padding: 0.625rem 0.75rem;
 }
 
-.card[data-coming-soon=true] .card-image img {
-  -webkit-filter: brightness(0.75);
-          filter: brightness(0.75);
+.sound-card .sound-variations {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  margin-top: 0;
+}
+.sound-card .sound-variation {
+  border: 0.0625rem solid #222732;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  display: grid;
+  gap: 0.375rem;
+  -ms-flex-line-pack: start;
+      align-content: start;
+  min-width: 0;
+}
+.sound-card .sound-variation-label {
+  color: #9aa0a6;
+  font-size: 0.75em;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.sound-card .sound-variation-description {
+  margin: 0;
+  color: #9aa0a6;
+  font-size: 0.75em;
+  line-height: 1.2;
+}
+.sound-card .sound-variation .sound-actions {
+  margin-top: 0;
+}
+
+.sound-card.sound-card--described-multi .sound-variations {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .map-wrap {
@@ -915,6 +957,9 @@ body.is-system .system-mode-toggle {
   width: 100%;
   max-width: 100%;
 }
+.system-list-view .list-top.no-lines .list-head {
+  margin-bottom: 0;
+}
 .system-list-view .list-head-main {
   min-width: 0;
 }
@@ -1204,10 +1249,12 @@ body.is-system .system-mode-toggle {
             flex-direction: column;
     min-height: 0;
     height: 100%;
+    --mobile-menu-ratio: 0.5;
+    --mobile-menu-min: 5rem;
   }
   #view-system.is-active.map-mode .map-wrap {
     -webkit-box-flex: 1;
-        -ms-flex: 1 1 0;
+        -ms-flex: 1 1 0px;
             flex: 1 1 0;
     min-height: 0;
     height: auto;
@@ -1221,10 +1268,25 @@ body.is-system .system-mode-toggle {
     height: auto;
     max-height: none;
     border-left: 0.0625rem solid #222732;
+    -webkit-transition: height 180ms ease;
+    transition: height 180ms ease;
+  }
+  .side-panel .side-panel-head {
+    -ms-touch-action: none;
+        touch-action: none;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    cursor: ns-resize;
   }
   .side-panel .sound-list {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
     scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  }
+  #view-system.is-active.map-mode.is-resizing-split .side-panel {
+    -webkit-transition: none;
+    transition: none;
   }
   .map-popup .sound-list,
   .system-list-view {

@@ -1,51 +1,58 @@
 {
   "system": {
     "id": "o-train",
-    "name": "O-Train"
+    "name": "O-Train",
+    "description": "Ottawa, Ontario — Est. 2001"
   },
-  "systemSounds": {
-    "subtitle": "Ottawa, Ontario — Est. 2001",
-    "items": [
-    ]
-  },
+  "systemSounds": [],
   "lines": {
     "line-1": {
       "title": "Line 1 (Confederation Line)",
       "subtitle": "Citadis Spirit",
       "icon": "assets/images/canada/o-train/line-1.png",
-      "items": [
-        {
-          "title": "Doors Opening",
-          "description": "Doors opening. Ouverture des portes.",
-          "audio": "assets/audio/canada/o-train/line-1/doors-opening.mp3"
-        },
-        {
-          "title": "Doors Closing",
-          "description": "Doors closing. Fermeture des portes.",
-          "audio": "assets/audio/canada/o-train/line-1/doors-closing.mp3"
-        },
-        {
-          "title": "Acceleration",
-          "description": "",
-          "audio": "assets/audio/canada/o-train/line-1/accel.mp3"
-        }
+      "soundIds": [
+        "door-cycle",
+        "accel"
       ]
     },
     "line-2": {
       "title": "Line 2 (Trillium Line)",
       "subtitle": "Stadler FLIRT, Alstom Coradia LINT 41",
       "icon": "assets/images/canada/o-train/line-2.png",
-      "items": [
-      ]
+      "soundIds": []
     },
     "line-4": {
       "title": "Line 4 (Airport Line)",
       "subtitle": "Alstom Coradia LINT 41",
       "icon": "assets/images/canada/o-train/line-4.png",
-      "items": []
+      "soundIds": []
     }
   },
-  "stations": {
-
+  "stations": {},
+  "sounds": {
+    "door-cycle": {
+      "title": "Door Cycle",
+      "audio": [
+        {
+          "title": "Doors Opening",
+          "description": "Doors opening. Ouverture des portes.",
+          "src": "assets/audio/canada/o-train/line-1/doors-opening.mp3"
+        },
+        {
+          "title": "Doors Closing",
+          "description": "Doors closing. Fermeture des portes.",
+          "src": "assets/audio/canada/o-train/line-1/doors-closing.mp3"
+        }
+      ]
+    },
+    "accel": {
+      "title": "Acceleration",
+      "description": "",
+      "audio": [
+        {
+          "src": "assets/audio/canada/o-train/line-1/accel.mp3"
+        }
+      ]
+    }
   }
 }

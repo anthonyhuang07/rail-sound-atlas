@@ -195,6 +195,31 @@ body.is-system .system-mode-toggle {
   margin-top: 0;
 }
 
+#system-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 0;
+}
+
+.region-group {
+  display: block;
+}
+
+.region-group + .region-group {
+  margin-top: 1rem;
+}
+
+.region-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0;
+}
+
+.region-grid {
+  margin-top: 1rem;
+}
+
 .card-grid {
   display: flex;
   flex-direction: row;
@@ -237,18 +262,6 @@ body.is-system .system-mode-toggle {
         object-fit: cover;
       }
 
-      .coming-soon {
-        position: absolute;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        font-size: 1em;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #ffffff;
-        background: rgba(0, 0, 0, 0.25);
-        font-weight: 600;
-      }
     }
 
     .card-title {
@@ -259,8 +272,50 @@ body.is-system .system-mode-toggle {
   }
 }
 
-.card[data-coming-soon="true"] .card-image img {
-  filter: brightness(0.75);
+.sound-card {
+  .sound-variations {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0;
+  }
+
+  .sound-variation {
+    border: 0.0625rem solid #222732;
+    border-radius: 0.375rem;
+    padding: 0.5rem;
+    display: grid;
+    gap: 0.375rem;
+    align-content: start;
+    min-width: 0;
+  }
+
+  .sound-variation-label {
+    color: $muted;
+    font-size: 0.75em;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+
+  .sound-variation-description {
+    margin: 0;
+    color: $muted;
+    font-size: 0.75em;
+    line-height: 1.2;
+  }
+
+  .sound-variation .sound-actions {
+    margin-top: 0;
+  }
+}
+
+.sound-card.sound-card--described-multi {
+  .sound-variations {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .map-wrap {
@@ -753,6 +808,10 @@ body.is-system .system-mode-toggle {
     gap: 0.75rem;
     width: 100%;
     max-width: 100%;
+  }
+
+  .list-top.no-lines .list-head {
+    margin-bottom: 0;
   }
 
   .list-head-main {

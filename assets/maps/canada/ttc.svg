@@ -4,113 +4,113 @@
   <path d="M477.5 254.5H128.5V281.5" class="line" data-line-id="line-6" />
   <path d="M760.5 254.5C760.5 510.613 760.5 659.625 760.5 905.422C760.5 926.409 743.487 943.5 722.5 943.5H718.5C697.513 943.5 680.5 926.487 680.5 905.5V621.5H641.5V571.5L551.5 481.5V328.5L366.5 143.5V106.5" class="line" data-line-id="line-1" />
   <path d="M204.5 632.5H1077.5L1228.5 481.5" class="line" data-line-id="line-2" />
-  <circle cx="204.5" cy="632.5" class="station terminus" data-station-id="kipling" data-name="Kipling"/>
-  <circle cx="234.5" cy="632.5" class="station" data-station-id="islington" data-name="Islington"/>
-  <circle cx="264.5" cy="632.5" class="station" data-station-id="royal-york" data-name="Royal York"/>
-  <circle cx="294.5" cy="632.5" class="station" data-station-id="old-mill" data-name="Old Mill"/>
-  <circle cx="324.5" cy="632.5" class="station" data-station-id="jane" data-name="Jane"/>
-  <circle cx="354.5" cy="632.5" class="station" data-station-id="runnymede" data-name="Runnymede"/>
-  <circle cx="384.5" cy="632.5" class="station" data-station-id="high-park" data-name="High Park"/>
-  <circle cx="414.5" cy="632.5" class="station" data-station-id="keele" data-name="Keele"/>
-  <circle cx="444.5" cy="632.5" class="station" data-station-id="dundas-west" data-name="Dundas West"/>
-  <circle cx="474.5" cy="632.5" class="station" data-station-id="lansdowne" data-name="Lansdowne"/>
-  <circle cx="504.5" cy="632.5" class="station" data-station-id="dufferin" data-name="Dufferin"/>
-  <circle cx="534.5" cy="632.5" class="station" data-station-id="ossington" data-name="Ossington"/>
-  <circle cx="563.5" cy="632.5" class="station" data-station-id="christie" data-name="Christie"/>
-  <circle cx="594.5" cy="632.5" class="station" data-station-id="bathurst" data-name="Bathurst"/>
-  <rect x="635" y="615" width="13" height="24" rx="6.5" class="station transfer" data-station-id="spadina" data-name="Spadina"/>
-  <circle cx="680.5" cy="632.5" class="station transfer" data-station-id="st-george" data-name="St. George"/>
-  <circle cx="721.5" cy="632.5" class="station" data-station-id="bay" data-name="Bay"/>
-  <circle cx="760.5" cy="632.5" class="station transfer" data-station-id="bloor-yonge" data-name="Bloor-Yonge"/>
-  <circle cx="808.5" cy="632.5" class="station" data-station-id="sherbourne" data-name="Sherbourne"/>
-  <circle cx="837.5" cy="632.5" class="station" data-station-id="castle-frank" data-name="Castle Frank"/>
-  <circle cx="867.5" cy="632.5" class="station" data-station-id="broadview" data-name="Broadview"/>
-  <circle cx="897.5" cy="632.5" class="station" data-station-id="chester" data-name="Chester"/>
-  <circle cx="927.5" cy="632.5" class="station" data-station-id="pape" data-name="Pape"/>
-  <circle cx="957.5" cy="632.5" class="station" data-station-id="donlands" data-name="Donlands"/>
-  <circle cx="987.5" cy="632.5" class="station" data-station-id="greenwood" data-name="Greenwood"/>
-  <circle cx="1017.5" cy="632.5" class="station" data-station-id="coxwell" data-name="Coxwell"/>
-  <circle cx="1047.5" cy="632.5" class="station" data-station-id="woodbine" data-name="Woodbine"/>
-  <circle cx="1077.5" cy="632.5" class="station" data-station-id="main-street" data-name="Main Street"/>
-  <circle cx="1127.5" cy="582.5" class="station" data-station-id="victoria-park" data-name="Victoria Park"/>
-  <circle cx="1177.5" cy="532.5" class="station" data-station-id="warden" data-name="Warden"/>
-  <circle cx="1228.5" cy="481.5" class="station terminus transfer" data-station-id="kennedy" data-name="Kennedy"/>
-  <circle cx="760.5" cy="254.5" class="station terminus" data-station-id="finch" data-name="Finch"/>
-  <circle cx="760.5" cy="291.5" class="station" data-station-id="north-york-centre" data-name="North York Centre"/>
-  <circle cx="760.5" cy="328.5" class="station terminus transfer" data-station-id="sheppard-yonge" data-name="Sheppard-Yonge"/>
-  <circle cx="760.5" cy="365.5" class="station" data-station-id="york-mills" data-name="York Mills"/>
-  <circle cx="760.5" cy="423.5" class="station" data-station-id="lawrence" data-name="Lawrence"/>
-  <circle cx="760.5" cy="481.5" class="station transfer" data-station-id="eglinton" data-name="Eglinton"/>
-  <circle cx="760.5" cy="510.5" class="station" data-station-id="davisville" data-name="Davisville"/>
-  <circle cx="760.5" cy="540.5" class="station" data-station-id="st-clair" data-name="St. Clair"/>
-  <circle cx="760.5" cy="568.5" class="station" data-station-id="summerhill" data-name="Summerhill"/>
-  <circle cx="760.5" cy="598.5" class="station" data-station-id="rosedale" data-name="Rosedale"/>
-  <circle cx="760.5" cy="684.5" class="station" data-station-id="wellesley" data-name="Wellesley"/>
-  <circle cx="760.5" cy="736.5" class="station" data-station-id="college" data-name="College"/>
-  <circle cx="760.5" cy="788.5" class="station" data-station-id="tmu" data-name="TMU"/>
-  <circle cx="760.5" cy="840.5" class="station" data-station-id="queen" data-name="Queen"/>
-  <circle cx="760.5" cy="892.5" class="station" data-station-id="king" data-name="King"/>
-  <circle cx="720.5" cy="943.5" class="station" data-station-id="union" data-name="Union"/>
-  <circle cx="680.5" cy="891.5" class="station" data-station-id="st-andrew" data-name="St. Andrew"/>
-  <circle cx="680.5" cy="840.5" class="station" data-station-id="osgoode" data-name="Osgoode"/>
-  <circle cx="680.5" cy="788.5" class="station" data-station-id="st-patrick" data-name="St. Patrick"/>
-  <circle cx="680.5" cy="736.5" class="station" data-station-id="queens-park" data-name="Queen's Park"/>
-  <circle cx="680.5" cy="684.5" class="station" data-station-id="museum" data-name="Museum"/>
-  <circle cx="641.5" cy="583.5" class="station" data-station-id="dupont" data-name="Dupont"/>
-  <circle cx="609.5" cy="539.5" class="station" data-station-id="st-clair-west" data-name="St. Clair West"/>
-  <circle cx="551.5" cy="481.5" class="station transfer" data-station-id="cedarvale" data-name="Cedarvale"/>
-  <circle cx="551.5" cy="452.5" class="station" data-station-id="glencairn" data-name="Glencairn"/>
-  <circle cx="551.5" cy="423.5" class="station" data-station-id="lawrence-west" data-name="Lawrence West"/>
-  <circle cx="551.5" cy="394.5" class="station" data-station-id="yorkdale" data-name="Yorkdale"/>
-  <circle cx="551.5" cy="365.5" class="station" data-station-id="wilson" data-name="Wilson"/>
-  <circle cx="551.5" cy="328.5" class="station" data-station-id="sheppard-west" data-name="Sheppard West"/>
-  <circle cx="514.5" cy="291.5" class="station" data-station-id="downsview-park" data-name="Downsview Park"/>
-  <circle cx="477.5" cy="254.5" class="station terminus transfer" data-station-id="finch-west" data-name="Finch West"/>
-  <circle cx="440.5" cy="217.5" class="station" data-station-id="york-u" data-name="York University"/>
-  <circle cx="403.5" cy="180.5" class="station" data-station-id="pioneer-village" data-name="Pioneer Village"/>
-  <circle cx="366.5" cy="143.5" class="station" data-station-id="highway-407" data-name="Highway 407"/>
-  <circle cx="366.5" cy="106.5" class="station terminus" data-station-id="vaughan" data-name="Vaughan Metropolitan Centre"/>
-  <circle cx="813.5" cy="328.5" class="station" data-station-id="bayview" data-name="Bayview"/>
-  <circle cx="866.5" cy="328.5" class="station" data-station-id="bessarion" data-name="Bessarion"/>
-  <circle cx="919.5" cy="328.5" class="station" data-station-id="leslie" data-name="Leslie"/>
-  <circle cx="972.5" cy="328.5" class="station terminus" data-station-id="don-mills" data-name="Don Mills"/>
-  <circle cx="364.5" cy="481.5" class="station terminus" data-station-id="mt-dennis" data-name="Mount Dennis"/>
-  <circle cx="399.5" cy="481.5" class="station" data-station-id="keelesdale" data-name="Keelesdale"/>
-  <circle cx="434.5" cy="481.5" class="station" data-station-id="caledonia" data-name="Caledonia"/>
-  <circle cx="469.5" cy="481.5" class="station" data-station-id="fairbank" data-name="Fairbank"/>
-  <circle cx="504.5" cy="481.5" class="station" data-station-id="oakwood" data-name="Oakwood"/>
-  <circle cx="607.5" cy="481.5" class="station" data-station-id="forest-hill" data-name="Forest Hill"/>
-  <circle cx="656.5" cy="481.5" class="station" data-station-id="chaplin" data-name="Chaplin"/>
-  <circle cx="705.5" cy="481.5" class="station" data-station-id="avenue" data-name="Avenue"/>
-  <circle cx="808.5" cy="481.5" class="station" data-station-id="mt-pleasant" data-name="Mount Pleasant"/>
-  <circle cx="838.5" cy="481.5" class="station" data-station-id="leaside" data-name="Leaside"/>
-  <circle cx="868.5" cy="481.5" class="station" data-station-id="laird" data-name="Laird"/>
-  <circle cx="898.5" cy="481.5" class="station" data-station-id="sunnybrook-park" data-name="Sunnybrook Park"/>
-  <circle cx="928.5" cy="481.5" class="station" data-station-id="don-valley" data-name="Don Valley"/>
-  <circle cx="958.5" cy="481.5" class="station" data-station-id="aga-khan-park-museum" data-name="Aga Khan Park & Museum"/>
-  <circle cx="988.5" cy="481.5" class="station" data-station-id="wynford" data-name="Wynford"/>
-  <circle cx="1018.5" cy="481.5" class="station" data-station-id="sloane" data-name="Sloane"/>
-  <circle cx="1048.5" cy="481.5" class="station" data-station-id="o-connor" data-name="O'Connor"/>
-  <circle cx="1078.5" cy="481.5" class="station" data-station-id="pharmacy" data-name="Pharmacy"/>
-  <circle cx="1108.5" cy="481.5" class="station" data-station-id="hakimi-lebovic" data-name="Hakimi Lebovic"/>
-  <circle cx="1138.5" cy="481.5" class="station" data-station-id="golden-mile" data-name="Golden Mile"/>
-  <circle cx="1168.5" cy="481.5" class="station" data-station-id="birchmount" data-name="Birchmount"/>
-  <circle cx="1198.5" cy="481.5" class="station" data-station-id="ionview" data-name="Ionview"/>
-  <circle cx="451.5" cy="254.5" class="station" data-station-id="sentinel" data-name="Sentinel"/>
-  <circle cx="431.5" cy="254.5" class="station" data-station-id="tobermory" data-name="Tobermory"/>
-  <circle cx="410.5" cy="254.5" class="station" data-station-id="driftwood" data-name="Driftwood"/>
-  <circle cx="390.5" cy="254.5" class="station" data-station-id="jane-and-finch" data-name="Jane and Finch"/>
-  <circle cx="370.5" cy="254.5" class="station" data-station-id="norfinch-oakdale" data-name="Norfinch Oakdale"/>
-  <circle cx="350.5" cy="254.5" class="station" data-station-id="signet-arrow" data-name="Signet Arrow"/>
-  <circle cx="330.5" cy="254.5" class="station" data-station-id="emery" data-name="Emery"/>
-  <circle cx="310.5" cy="254.5" class="station" data-station-id="milvan-rumike" data-name="Milvan Rumike"/>
-  <circle cx="289.5" cy="254.5" class="station" data-station-id="duncanwoods" data-name="Duncanwoods"/>
-  <circle cx="269.5" cy="254.5" class="station" data-station-id="pearldale" data-name="Pearldale"/>
-  <circle cx="249.5" cy="254.5" class="station" data-station-id="rowntree-mills" data-name="Rowntree Mills"/>
-  <circle cx="229.5" cy="254.5" class="station" data-station-id="mt-olive" data-name="Mount Olive"/>
-  <circle cx="208.5" cy="254.5" class="station" data-station-id="stevenson" data-name="Stevenson"/>
-  <circle cx="188.5" cy="254.5" class="station" data-station-id="albion" data-name="Albion"/>
-  <circle cx="168.5" cy="254.5" class="station" data-station-id="martin-grove" data-name="Martin Grove"/>
-  <circle cx="148.5" cy="254.5" class="station" data-station-id="westmore" data-name="Westmore"/>
-  <circle cx="128.5" cy="281.5" class="station terminus" data-station-id="humber-college" data-name="Humber College"/>
+  <circle cx="204.5" cy="632.5" class="station terminus" data-station-id="kipling"/>
+  <circle cx="234.5" cy="632.5" class="station" data-station-id="islington"/>
+  <circle cx="264.5" cy="632.5" class="station" data-station-id="royal-york"/>
+  <circle cx="294.5" cy="632.5" class="station" data-station-id="old-mill"/>
+  <circle cx="324.5" cy="632.5" class="station" data-station-id="jane"/>
+  <circle cx="354.5" cy="632.5" class="station" data-station-id="runnymede"/>
+  <circle cx="384.5" cy="632.5" class="station" data-station-id="high-park"/>
+  <circle cx="414.5" cy="632.5" class="station" data-station-id="keele"/>
+  <circle cx="444.5" cy="632.5" class="station" data-station-id="dundas-west"/>
+  <circle cx="474.5" cy="632.5" class="station" data-station-id="lansdowne"/>
+  <circle cx="504.5" cy="632.5" class="station" data-station-id="dufferin"/>
+  <circle cx="534.5" cy="632.5" class="station" data-station-id="ossington"/>
+  <circle cx="563.5" cy="632.5" class="station" data-station-id="christie"/>
+  <circle cx="594.5" cy="632.5" class="station" data-station-id="bathurst"/>
+  <rect x="635" y="615" width="13" height="24" rx="6.5" class="station transfer" data-station-id="spadina"/>
+  <circle cx="680.5" cy="632.5" class="station transfer" data-station-id="st-george"/>
+  <circle cx="721.5" cy="632.5" class="station" data-station-id="bay"/>
+  <circle cx="760.5" cy="632.5" class="station transfer" data-station-id="bloor-yonge"/>
+  <circle cx="808.5" cy="632.5" class="station" data-station-id="sherbourne"/>
+  <circle cx="837.5" cy="632.5" class="station" data-station-id="castle-frank"/>
+  <circle cx="867.5" cy="632.5" class="station" data-station-id="broadview"/>
+  <circle cx="897.5" cy="632.5" class="station" data-station-id="chester"/>
+  <circle cx="927.5" cy="632.5" class="station" data-station-id="pape"/>
+  <circle cx="957.5" cy="632.5" class="station" data-station-id="donlands"/>
+  <circle cx="987.5" cy="632.5" class="station" data-station-id="greenwood"/>
+  <circle cx="1017.5" cy="632.5" class="station" data-station-id="coxwell"/>
+  <circle cx="1047.5" cy="632.5" class="station" data-station-id="woodbine"/>
+  <circle cx="1077.5" cy="632.5" class="station" data-station-id="main-street"/>
+  <circle cx="1127.5" cy="582.5" class="station" data-station-id="victoria-park"/>
+  <circle cx="1177.5" cy="532.5" class="station" data-station-id="warden"/>
+  <circle cx="1228.5" cy="481.5" class="station terminus transfer" data-station-id="kennedy"/>
+  <circle cx="760.5" cy="254.5" class="station terminus" data-station-id="finch"/>
+  <circle cx="760.5" cy="291.5" class="station" data-station-id="north-york-centre"/>
+  <circle cx="760.5" cy="328.5" class="station terminus transfer" data-station-id="sheppard-yonge"/>
+  <circle cx="760.5" cy="365.5" class="station" data-station-id="york-mills"/>
+  <circle cx="760.5" cy="423.5" class="station" data-station-id="lawrence"/>
+  <circle cx="760.5" cy="481.5" class="station transfer" data-station-id="eglinton"/>
+  <circle cx="760.5" cy="510.5" class="station" data-station-id="davisville"/>
+  <circle cx="760.5" cy="540.5" class="station" data-station-id="st-clair"/>
+  <circle cx="760.5" cy="568.5" class="station" data-station-id="summerhill"/>
+  <circle cx="760.5" cy="598.5" class="station" data-station-id="rosedale"/>
+  <circle cx="760.5" cy="684.5" class="station" data-station-id="wellesley"/>
+  <circle cx="760.5" cy="736.5" class="station" data-station-id="college"/>
+  <circle cx="760.5" cy="788.5" class="station" data-station-id="tmu"/>
+  <circle cx="760.5" cy="840.5" class="station" data-station-id="queen"/>
+  <circle cx="760.5" cy="892.5" class="station" data-station-id="king"/>
+  <circle cx="720.5" cy="943.5" class="station" data-station-id="union"/>
+  <circle cx="680.5" cy="891.5" class="station" data-station-id="st-andrew"/>
+  <circle cx="680.5" cy="840.5" class="station" data-station-id="osgoode"/>
+  <circle cx="680.5" cy="788.5" class="station" data-station-id="st-patrick"/>
+  <circle cx="680.5" cy="736.5" class="station" data-station-id="queens-park"/>
+  <circle cx="680.5" cy="684.5" class="station" data-station-id="museum"/>
+  <circle cx="641.5" cy="583.5" class="station" data-station-id="dupont"/>
+  <circle cx="609.5" cy="539.5" class="station" data-station-id="st-clair-west"/>
+  <circle cx="551.5" cy="481.5" class="station transfer" data-station-id="cedarvale"/>
+  <circle cx="551.5" cy="452.5" class="station" data-station-id="glencairn"/>
+  <circle cx="551.5" cy="423.5" class="station" data-station-id="lawrence-west"/>
+  <circle cx="551.5" cy="394.5" class="station" data-station-id="yorkdale"/>
+  <circle cx="551.5" cy="365.5" class="station" data-station-id="wilson"/>
+  <circle cx="551.5" cy="328.5" class="station" data-station-id="sheppard-west"/>
+  <circle cx="514.5" cy="291.5" class="station" data-station-id="downsview-park"/>
+  <circle cx="477.5" cy="254.5" class="station terminus transfer" data-station-id="finch-west"/>
+  <circle cx="440.5" cy="217.5" class="station" data-station-id="york-u"/>
+  <circle cx="403.5" cy="180.5" class="station" data-station-id="pioneer-village"/>
+  <circle cx="366.5" cy="143.5" class="station" data-station-id="highway-407"/>
+  <circle cx="366.5" cy="106.5" class="station terminus" data-station-id="vaughan"/>
+  <circle cx="813.5" cy="328.5" class="station" data-station-id="bayview"/>
+  <circle cx="866.5" cy="328.5" class="station" data-station-id="bessarion"/>
+  <circle cx="919.5" cy="328.5" class="station" data-station-id="leslie"/>
+  <circle cx="972.5" cy="328.5" class="station terminus" data-station-id="don-mills"/>
+  <circle cx="364.5" cy="481.5" class="station terminus" data-station-id="mt-dennis"/>
+  <circle cx="399.5" cy="481.5" class="station" data-station-id="keelesdale"/>
+  <circle cx="434.5" cy="481.5" class="station" data-station-id="caledonia"/>
+  <circle cx="469.5" cy="481.5" class="station" data-station-id="fairbank"/>
+  <circle cx="504.5" cy="481.5" class="station" data-station-id="oakwood"/>
+  <circle cx="607.5" cy="481.5" class="station" data-station-id="forest-hill"/>
+  <circle cx="656.5" cy="481.5" class="station" data-station-id="chaplin"/>
+  <circle cx="705.5" cy="481.5" class="station" data-station-id="avenue"/>
+  <circle cx="808.5" cy="481.5" class="station" data-station-id="mt-pleasant"/>
+  <circle cx="838.5" cy="481.5" class="station" data-station-id="leaside"/>
+  <circle cx="868.5" cy="481.5" class="station" data-station-id="laird"/>
+  <circle cx="898.5" cy="481.5" class="station" data-station-id="sunnybrook-park"/>
+  <circle cx="928.5" cy="481.5" class="station" data-station-id="don-valley"/>
+  <circle cx="958.5" cy="481.5" class="station" data-station-id="aga-khan-park-museum"/>
+  <circle cx="988.5" cy="481.5" class="station" data-station-id="wynford"/>
+  <circle cx="1018.5" cy="481.5" class="station" data-station-id="sloane"/>
+  <circle cx="1048.5" cy="481.5" class="station" data-station-id="o-connor"/>
+  <circle cx="1078.5" cy="481.5" class="station" data-station-id="pharmacy"/>
+  <circle cx="1108.5" cy="481.5" class="station" data-station-id="hakimi-lebovic"/>
+  <circle cx="1138.5" cy="481.5" class="station" data-station-id="golden-mile"/>
+  <circle cx="1168.5" cy="481.5" class="station" data-station-id="birchmount"/>
+  <circle cx="1198.5" cy="481.5" class="station" data-station-id="ionview"/>
+  <circle cx="451.5" cy="254.5" class="station" data-station-id="sentinel"/>
+  <circle cx="431.5" cy="254.5" class="station" data-station-id="tobermory"/>
+  <circle cx="410.5" cy="254.5" class="station" data-station-id="driftwood"/>
+  <circle cx="390.5" cy="254.5" class="station" data-station-id="jane-and-finch"/>
+  <circle cx="370.5" cy="254.5" class="station" data-station-id="norfinch-oakdale"/>
+  <circle cx="350.5" cy="254.5" class="station" data-station-id="signet-arrow"/>
+  <circle cx="330.5" cy="254.5" class="station" data-station-id="emery"/>
+  <circle cx="310.5" cy="254.5" class="station" data-station-id="milvan-rumike"/>
+  <circle cx="289.5" cy="254.5" class="station" data-station-id="duncanwoods"/>
+  <circle cx="269.5" cy="254.5" class="station" data-station-id="pearldale"/>
+  <circle cx="249.5" cy="254.5" class="station" data-station-id="rowntree-mills"/>
+  <circle cx="229.5" cy="254.5" class="station" data-station-id="mt-olive"/>
+  <circle cx="208.5" cy="254.5" class="station" data-station-id="stevenson"/>
+  <circle cx="188.5" cy="254.5" class="station" data-station-id="albion"/>
+  <circle cx="168.5" cy="254.5" class="station" data-station-id="martin-grove"/>
+  <circle cx="148.5" cy="254.5" class="station" data-station-id="westmore"/>
+  <circle cx="128.5" cy="281.5" class="station terminus" data-station-id="humber-college"/>
 </svg>

@@ -1,0 +1,13 @@
+{
+  "system": {
+    "id": "go",
+    "name": "GO Transit",
+    "description": "Ontario — Est. 1967"
+  },
+  "systemSounds": [],
+  "lines": {
+  },
+  "stations": {},
+  "sounds": {
+  }
+}

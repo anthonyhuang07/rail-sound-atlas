@@ -1,7 +1,8 @@
 {
   "system": {
     "id": "ttc",
-    "name": "Toronto Subway"
+    "name": "Toronto Subway",
+    "description": "Toronto, Ontario — Est. 1954"
   },
   "theme": {
     "scale": 1.1,
@@ -36,1458 +37,1479 @@
       "fontSize": 12
     }
   },
-  "systemSounds": {
-    "subtitle": "Toronto, Ontario — Est. 1954",
-    "items": [
-      {
-        "title": "Station Announcement",
-        "audio": "assets/audio/canada/ttc/station-ann.mp3"
-      },
-      {
-        "title": "Safety Announcement",
-        "description": "The TTC takes your safety very seriously. In the event of an emergency, speak to a staff member. Use the emergency alarm on board a train, or DWA button or the payphone on the platform. You can also report concerns using the SafeTTC app.",
-        "audio": "assets/audio/canada/ttc/ann-safety.mp3"
-      }
-    ]
-  },
+  "systemSounds": ["station-ann", "ann-safety"],
   "lines": {
     "line-1": {
       "title": "Line 1 Yonge–University",
       "subtitle": "Toronto Rocket",
       "icon": "assets/images/canada/ttc/line-1.png",
-      "items": [
-        {
-          "title": "Doors Opening (Vaughan)",
-          "description": "Line 1 towards Vaughan.",
-          "audio": "assets/audio/canada/ttc/line-1/line-1-vaughan.mp3"
-        },
-        {
-          "title": "Doors Opening (Finch)",
-          "description": "Line 1 towards Finch.",
-          "audio": "assets/audio/canada/ttc/line-1/line-1-finch.mp3"
-        },
-        {
-          "title": "Doors Closing",
-          "description": "Please stand clear of the doors.",
-          "audio": "assets/audio/canada/ttc/doors-closing-rocket.mp3"
-        }
+      "soundIds": [
+        "line-1-doors-opening",
+        "doors-closing-rocket"
       ]
     },
     "line-2": {
       "title": "Line 2 Bloor–Danforth",
       "subtitle": "T1",
       "icon": "assets/images/canada/ttc/line-2.png",
-      "items": [
-        {
-          "title": "Doors Opening (Kennedy)",
-          "description": "Line 2 towards Kennedy.",
-          "audio": "assets/audio/canada/ttc/line-2/line-2-kennedy.mp3"
-        }
+      "soundIds": [
+        "line-2-kennedy"
       ]
     },
     "line-4": {
       "title": "Line 4 Sheppard",
       "subtitle": "Toronto Rocket",
       "icon": "assets/images/canada/ttc/line-4.png",
-      "items": [
-        {
-          "title": "Doors Opening (Don Mills)",
-          "description": "Line 4 to Don Mills.",
-          "audio": "assets/audio/canada/ttc/line-4/line-4-don-mills.mp3"
-        },
-        {
-          "title": "Doors Opening (Sheppard-Yonge)",
-          "description": "Line 4 to Sheppard-Yonge.",
-          "audio": "assets/audio/canada/ttc/line-4/line-4-sheppard-yonge.mp3"
-        },
-        {
-          "title": "Doors Closing",
-          "description": "Please stand clear of the doors.",
-          "audio": "assets/audio/canada/ttc/doors-closing-rocket.mp3"
-        }
+      "soundIds": [
+        "line-4-doors-opening",
+        "doors-closing-rocket"
       ]
     },
     "line-5": {
       "title": "Line 5 Eglinton",
       "subtitle": "Flexity Freedom",
       "icon": "assets/images/canada/ttc/line-5.png",
-      "items": []
+      "soundIds": []
     },
     "line-6": {
       "title": "Line 6 Finch West",
       "subtitle": "Citadis Spirit",
       "icon": "assets/images/canada/ttc/line-6.png",
-      "items": []
+      "soundIds": []
     }
   },
   "stations": {
     "vaughan": {
-      "lineIds": [
-        "line-1"
+      "name": "Vaughan Metropolitan Centre",
+      "lines": [
+        [
+          "line-1",
+          1
+        ]
       ],
-      "title": "Vaughan Metropolitan Centre",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-1/vaughan-next.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-1/vaughan.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-1": 1
-      }
+      "soundIds": [
+        "vaughan-next",
+        "vaughan"
+      ]
     },
     "highway-407": {
-      "lineIds": [
-        "line-1"
+      "name": "Highway 407",
+      "lines": [
+        [
+          "line-1",
+          2
+        ]
       ],
-      "title": "Highway 407",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 2
-      }
+      "soundIds": []
     },
     "pioneer-village": {
-      "lineIds": [
-        "line-1"
+      "name": "Pioneer Village",
+      "lines": [
+        [
+          "line-1",
+          3
+        ]
       ],
-      "title": "Pioneer Village",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 3
-      }
+      "soundIds": []
     },
     "york-u": {
-      "lineIds": [
-        "line-1"
+      "name": "York University",
+      "lines": [
+        [
+          "line-1",
+          4
+        ]
       ],
-      "title": "York University",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 4
-      }
+      "soundIds": []
     },
     "finch-west": {
-      "lineIds": [
-        "line-1",
-        "line-6"
+      "name": "Finch West",
+      "lines": [
+        [
+          "line-1",
+          5
+        ],
+        [
+          "line-6",
+          1
+        ]
       ],
-      "title": "Finch West",
-      "subtitle": "Line 1 Yonge–University, Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-1": 5,
-        "line-6": 1
-      }
+      "soundIds": []
     },
     "downsview-park": {
-      "lineIds": [
-        "line-1"
+      "name": "Downsview Park",
+      "lines": [
+        [
+          "line-1",
+          6
+        ]
       ],
-      "title": "Downsview Park",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 6
-      }
+      "soundIds": []
     },
     "sheppard-west": {
-      "lineIds": [
-        "line-1"
+      "name": "Sheppard West",
+      "lines": [
+        [
+          "line-1",
+          7
+        ]
       ],
-      "title": "Sheppard West",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 7
-      }
+      "soundIds": []
     },
     "wilson": {
-      "lineIds": [
-        "line-1"
+      "name": "Wilson",
+      "lines": [
+        [
+          "line-1",
+          8
+        ]
       ],
-      "title": "Wilson",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 8
-      }
+      "soundIds": []
     },
     "yorkdale": {
-      "lineIds": [
-        "line-1"
+      "name": "Yorkdale",
+      "lines": [
+        [
+          "line-1",
+          9
+        ]
       ],
-      "title": "Yorkdale",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 9
-      }
+      "soundIds": []
     },
     "lawrence-west": {
-      "lineIds": [
-        "line-1"
+      "name": "Lawrence West",
+      "lines": [
+        [
+          "line-1",
+          10
+        ]
       ],
-      "title": "Lawrence West",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 10
-      }
+      "soundIds": []
     },
     "glencairn": {
-      "lineIds": [
-        "line-1"
+      "name": "Glencairn",
+      "lines": [
+        [
+          "line-1",
+          11
+        ]
       ],
-      "title": "Glencairn",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 11
-      }
+      "soundIds": []
     },
     "cedarvale": {
-      "lineIds": [
-        "line-1",
-        "line-5"
+      "name": "Cedarvale",
+      "lines": [
+        [
+          "line-1",
+          12
+        ],
+        [
+          "line-5",
+          6
+        ]
       ],
-      "title": "Cedarvale",
-      "subtitle": "Line 1 Yonge–University, Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-1": 12,
-        "line-5": 6
-      }
+      "soundIds": []
     },
     "st-clair-west": {
-      "lineIds": [
-        "line-1"
+      "name": "St. Clair West",
+      "lines": [
+        [
+          "line-1",
+          13
+        ]
       ],
-      "title": "St. Clair West",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 13
-      }
+      "soundIds": []
     },
     "dupont": {
-      "lineIds": [
-        "line-1"
+      "name": "Dupont",
+      "lines": [
+        [
+          "line-1",
+          14
+        ]
       ],
-      "title": "Dupont",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 14
-      }
+      "soundIds": []
     },
     "spadina": {
-      "lineIds": [
-        "line-1",
-        "line-2"
+      "name": "Spadina",
+      "lines": [
+        [
+          "line-1",
+          15
+        ],
+        [
+          "line-2",
+          15
+        ]
       ],
-      "title": "Spadina",
-      "subtitle": "Line 1 Yonge–University, Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-1": 15,
-        "line-2": 15
-      }
+      "soundIds": []
     },
     "st-george": {
-      "lineIds": [
-        "line-1",
-        "line-2"
+      "name": "St. George",
+      "lines": [
+        [
+          "line-1",
+          16
+        ],
+        [
+          "line-2",
+          16
+        ]
       ],
-      "title": "St. George",
-      "subtitle": "Line 1 Yonge–University, Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-1": 16,
-        "line-2": 16
-      }
+      "soundIds": []
     },
     "museum": {
-      "lineIds": [
-        "line-1"
+      "name": "Museum",
+      "lines": [
+        [
+          "line-1",
+          17
+        ]
       ],
-      "title": "Museum",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 17
-      }
+      "soundIds": []
     },
     "queens-park": {
-      "lineIds": [
-        "line-1"
+      "name": "Queen's Park",
+      "lines": [
+        [
+          "line-1",
+          18
+        ]
       ],
-      "title": "Queen's Park",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 18
-      }
+      "soundIds": []
     },
     "st-patrick": {
-      "lineIds": [
-        "line-1"
+      "name": "St. Patrick",
+      "lines": [
+        [
+          "line-1",
+          19
+        ]
       ],
-      "title": "St. Patrick",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 19
-      }
+      "soundIds": []
     },
     "osgoode": {
-      "lineIds": [
-        "line-1"
+      "name": "Osgoode",
+      "lines": [
+        [
+          "line-1",
+          20
+        ]
       ],
-      "title": "Osgoode",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 20
-      }
+      "soundIds": []
     },
     "st-andrew": {
-      "lineIds": [
-        "line-1"
+      "name": "St. Andrew",
+      "lines": [
+        [
+          "line-1",
+          21
+        ]
       ],
-      "title": "St. Andrew",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 21
-      }
+      "soundIds": []
     },
     "union": {
-      "lineIds": [
-        "line-1"
+      "name": "Union",
+      "lines": [
+        [
+          "line-1",
+          22
+        ]
       ],
-      "title": "Union",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Union. Union Station.",
-          "audio": "assets/audio/canada/ttc/line-1/union-next.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Union. Union Station. Doors will open on the right.",
-          "audio": "assets/audio/canada/ttc/line-1/union.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-1": 22
-      }
+      "soundIds": [
+        "union-next",
+        "union"
+      ]
     },
     "king": {
-      "lineIds": [
-        "line-1"
+      "name": "King",
+      "lines": [
+        [
+          "line-1",
+          23
+        ]
       ],
-      "title": "King",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 23
-      }
+      "soundIds": []
     },
     "queen": {
-      "lineIds": [
-        "line-1"
+      "name": "Queen",
+      "lines": [
+        [
+          "line-1",
+          24
+        ]
       ],
-      "title": "Queen",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 24
-      }
+      "soundIds": []
     },
     "tmu": {
-      "lineIds": [
-        "line-1"
+      "name": "TMU",
+      "lines": [
+        [
+          "line-1",
+          25
+        ]
       ],
-      "title": "TMU",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 25
-      }
+      "soundIds": []
     },
     "college": {
-      "lineIds": [
-        "line-1"
+      "name": "College",
+      "lines": [
+        [
+          "line-1",
+          26
+        ]
       ],
-      "title": "College",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 26
-      }
+      "soundIds": []
     },
     "wellesley": {
-      "lineIds": [
-        "line-1"
+      "name": "Wellesley",
+      "lines": [
+        [
+          "line-1",
+          27
+        ]
       ],
-      "title": "Wellesley",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 27
-      }
+      "soundIds": []
     },
     "bloor-yonge": {
-      "lineIds": [
-        "line-1",
-        "line-2"
+      "name": "Bloor-Yonge",
+      "lines": [
+        [
+          "line-1",
+          28
+        ],
+        [
+          "line-2",
+          18
+        ]
       ],
-      "title": "Bloor-Yonge",
-      "subtitle": "Line 1 Yonge–University, Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-1": 28,
-        "line-2": 18
-      }
+      "soundIds": []
     },
     "rosedale": {
-      "lineIds": [
-        "line-1"
+      "name": "Rosedale",
+      "lines": [
+        [
+          "line-1",
+          29
+        ]
       ],
-      "title": "Rosedale",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 29
-      }
+      "soundIds": []
     },
     "summerhill": {
-      "lineIds": [
-        "line-1"
+      "name": "Summerhill",
+      "lines": [
+        [
+          "line-1",
+          30
+        ]
       ],
-      "title": "Summerhill",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 30
-      }
+      "soundIds": []
     },
     "st-clair": {
-      "lineIds": [
-        "line-1"
+      "name": "St. Clair",
+      "lines": [
+        [
+          "line-1",
+          31
+        ]
       ],
-      "title": "St. Clair",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 31
-      }
+      "soundIds": []
     },
     "davisville": {
-      "lineIds": [
-        "line-1"
+      "name": "Davisville",
+      "lines": [
+        [
+          "line-1",
+          32
+        ]
       ],
-      "title": "Davisville",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 32
-      }
+      "soundIds": []
     },
     "eglinton": {
-      "lineIds": [
-        "line-1",
-        "line-5"
+      "name": "Eglinton",
+      "lines": [
+        [
+          "line-1",
+          33
+        ],
+        [
+          "line-5",
+          10
+        ]
       ],
-      "title": "Eglinton",
-      "subtitle": "Line 1 Yonge–University, Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-1": 33,
-        "line-5": 10
-      }
+      "soundIds": []
     },
     "lawrence": {
-      "lineIds": [
-        "line-1"
+      "name": "Lawrence",
+      "lines": [
+        [
+          "line-1",
+          34
+        ]
       ],
-      "title": "Lawrence",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 34
-      }
+      "soundIds": []
     },
     "york-mills": {
-      "lineIds": [
-        "line-1"
+      "name": "York Mills",
+      "lines": [
+        [
+          "line-1",
+          35
+        ]
       ],
-      "title": "York Mills",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 35
-      }
+      "soundIds": []
     },
     "sheppard-yonge": {
-      "lineIds": [
-        "line-1",
-        "line-4"
+      "name": "Sheppard-Yonge",
+      "lines": [
+        [
+          "line-1",
+          36
+        ],
+        [
+          "line-4",
+          1
+        ]
       ],
-      "title": "Sheppard-Yonge",
-      "subtitle": "Line 1 Yonge–University, Line 4 Sheppard",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change for Line 1.",
-          "audio": "assets/audio/canada/ttc/line-4/sheppard-yonge-next.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change here for Line 1.",
-          "audio": "assets/audio/canada/ttc/line-4/sheppard-yonge.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-1": 36,
-        "line-4": 1
-      }
+      "soundIds": [
+        "sheppard-yonge-next",
+        "sheppard-yonge"
+      ]
     },
     "north-york-centre": {
-      "lineIds": [
-        "line-1"
+      "name": "North York Centre",
+      "lines": [
+        [
+          "line-1",
+          37
+        ]
       ],
-      "title": "North York Centre",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [],
-      "lineOrder": {
-        "line-1": 37
-      }
+      "soundIds": []
     },
     "finch": {
-      "lineIds": [
-        "line-1"
+      "name": "Finch",
+      "lines": [
+        [
+          "line-1",
+          38
+        ]
       ],
-      "title": "Finch",
-      "subtitle": "Line 1 Yonge–University",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Finch. Finch Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-1/finch-next.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Finch. Finch Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-1/finch.mp3",
-          "lineIds": [
-            "line-1"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-1": 38
-      }
+      "soundIds": [
+        "finch-next",
+        "finch"
+      ]
     },
     "kipling": {
-      "lineIds": [
-        "line-2"
+      "name": "Kipling",
+      "lines": [
+        [
+          "line-2",
+          1
+        ]
       ],
-      "title": "Kipling",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "The next station is Kipling, Kipling Station.",
-          "audio": "assets/audio/canada/ttc/line-2/kipling-next.mp3",
-          "lineIds": [
-            "line-2"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at Kipling, Kipling Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-2/kipling.mp3",
-          "lineIds": [
-            "line-2"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-2": 1
-      }
+      "soundIds": [
+        "kipling-next",
+        "kipling"
+      ]
     },
     "islington": {
-      "lineIds": [
-        "line-2"
+      "name": "Islington",
+      "lines": [
+        [
+          "line-2",
+          2
+        ]
       ],
-      "title": "Islington",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 2
-      }
+      "soundIds": []
     },
     "royal-york": {
-      "lineIds": [
-        "line-2"
+      "name": "Royal York",
+      "lines": [
+        [
+          "line-2",
+          3
+        ]
       ],
-      "title": "Royal York",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 3
-      }
+      "soundIds": []
     },
     "old-mill": {
-      "lineIds": [
-        "line-2"
+      "name": "Old Mill",
+      "lines": [
+        [
+          "line-2",
+          4
+        ]
       ],
-      "title": "Old Mill",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 4
-      }
+      "soundIds": []
     },
     "jane": {
-      "lineIds": [
-        "line-2"
+      "name": "Jane",
+      "lines": [
+        [
+          "line-2",
+          5
+        ]
       ],
-      "title": "Jane",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 5
-      }
+      "soundIds": []
     },
     "runnymede": {
-      "lineIds": [
-        "line-2"
+      "name": "Runnymede",
+      "lines": [
+        [
+          "line-2",
+          6
+        ]
       ],
-      "title": "Runnymede",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 6
-      }
+      "soundIds": []
     },
     "high-park": {
-      "lineIds": [
-        "line-2"
+      "name": "High Park",
+      "lines": [
+        [
+          "line-2",
+          7
+        ]
       ],
-      "title": "High Park",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 7
-      }
+      "soundIds": []
     },
     "keele": {
-      "lineIds": [
-        "line-2"
+      "name": "Keele",
+      "lines": [
+        [
+          "line-2",
+          8
+        ]
       ],
-      "title": "Keele",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 8
-      }
+      "soundIds": []
     },
     "dundas-west": {
-      "lineIds": [
-        "line-2"
+      "name": "Dundas West",
+      "lines": [
+        [
+          "line-2",
+          9
+        ]
       ],
-      "title": "Dundas West",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 9
-      }
+      "soundIds": []
     },
     "lansdowne": {
-      "lineIds": [
-        "line-2"
+      "name": "Lansdowne",
+      "lines": [
+        [
+          "line-2",
+          10
+        ]
       ],
-      "title": "Lansdowne",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 10
-      }
+      "soundIds": []
     },
     "dufferin": {
-      "lineIds": [
-        "line-2"
+      "name": "Dufferin",
+      "lines": [
+        [
+          "line-2",
+          11
+        ]
       ],
-      "title": "Dufferin",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 11
-      }
+      "soundIds": []
     },
     "ossington": {
-      "lineIds": [
-        "line-2"
+      "name": "Ossington",
+      "lines": [
+        [
+          "line-2",
+          12
+        ]
       ],
-      "title": "Ossington",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 12
-      }
+      "soundIds": []
     },
     "christie": {
-      "lineIds": [
-        "line-2"
+      "name": "Christie",
+      "lines": [
+        [
+          "line-2",
+          13
+        ]
       ],
-      "title": "Christie",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 13
-      }
+      "soundIds": []
     },
     "bathurst": {
-      "lineIds": [
-        "line-2"
+      "name": "Bathurst",
+      "lines": [
+        [
+          "line-2",
+          14
+        ]
       ],
-      "title": "Bathurst",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 14
-      }
+      "soundIds": []
     },
     "bay": {
-      "lineIds": [
-        "line-2"
+      "name": "Bay",
+      "lines": [
+        [
+          "line-2",
+          17
+        ]
       ],
-      "title": "Bay",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 17
-      }
+      "soundIds": []
     },
     "sherbourne": {
-      "lineIds": [
-        "line-2"
+      "name": "Sherbourne",
+      "lines": [
+        [
+          "line-2",
+          19
+        ]
       ],
-      "title": "Sherbourne",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 19
-      }
+      "soundIds": []
     },
     "castle-frank": {
-      "lineIds": [
-        "line-2"
+      "name": "Castle Frank",
+      "lines": [
+        [
+          "line-2",
+          20
+        ]
       ],
-      "title": "Castle Frank",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 20
-      }
+      "soundIds": []
     },
     "broadview": {
-      "lineIds": [
-        "line-2"
+      "name": "Broadview",
+      "lines": [
+        [
+          "line-2",
+          21
+        ]
       ],
-      "title": "Broadview",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 21
-      }
+      "soundIds": []
     },
     "chester": {
-      "lineIds": [
-        "line-2"
+      "name": "Chester",
+      "lines": [
+        [
+          "line-2",
+          22
+        ]
       ],
-      "title": "Chester",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 22
-      }
+      "soundIds": []
     },
     "pape": {
-      "lineIds": [
-        "line-2"
+      "name": "Pape",
+      "lines": [
+        [
+          "line-2",
+          23
+        ]
       ],
-      "title": "Pape",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 23
-      }
+      "soundIds": []
     },
     "donlands": {
-      "lineIds": [
-        "line-2"
+      "name": "Donlands",
+      "lines": [
+        [
+          "line-2",
+          24
+        ]
       ],
-      "title": "Donlands",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 24
-      }
+      "soundIds": []
     },
     "greenwood": {
-      "lineIds": [
-        "line-2"
+      "name": "Greenwood",
+      "lines": [
+        [
+          "line-2",
+          25
+        ]
       ],
-      "title": "Greenwood",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 25
-      }
+      "soundIds": []
     },
     "coxwell": {
-      "lineIds": [
-        "line-2"
+      "name": "Coxwell",
+      "lines": [
+        [
+          "line-2",
+          26
+        ]
       ],
-      "title": "Coxwell",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 26
-      }
+      "soundIds": []
     },
     "woodbine": {
-      "lineIds": [
-        "line-2"
+      "name": "Woodbine",
+      "lines": [
+        [
+          "line-2",
+          27
+        ]
       ],
-      "title": "Woodbine",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 27
-      }
+      "soundIds": []
     },
     "main-street": {
-      "lineIds": [
-        "line-2"
+      "name": "Main Street",
+      "lines": [
+        [
+          "line-2",
+          28
+        ]
       ],
-      "title": "Main Street",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 28
-      }
+      "soundIds": []
     },
     "victoria-park": {
-      "lineIds": [
-        "line-2"
+      "name": "Victoria Park",
+      "lines": [
+        [
+          "line-2",
+          29
+        ]
       ],
-      "title": "Victoria Park",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 29
-      }
+      "soundIds": []
     },
     "warden": {
-      "lineIds": [
-        "line-2"
+      "name": "Warden",
+      "lines": [
+        [
+          "line-2",
+          30
+        ]
       ],
-      "title": "Warden",
-      "subtitle": "Line 2 Bloor–Danforth",
-      "items": [],
-      "lineOrder": {
-        "line-2": 30
-      }
+      "soundIds": []
     },
     "kennedy": {
-      "lineIds": [
-        "line-2",
-        "line-5"
+      "name": "Kennedy",
+      "lines": [
+        [
+          "line-2",
+          31
+        ],
+        [
+          "line-5",
+          25
+        ]
       ],
-      "title": "Kennedy",
-      "subtitle": "Line 2 Bloor–Danforth, Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-2": 31,
-        "line-5": 25
-      }
+      "soundIds": []
     },
     "bayview": {
-      "lineIds": [
-        "line-4"
+      "name": "Bayview",
+      "lines": [
+        [
+          "line-4",
+          2
+        ]
       ],
-      "title": "Bayview",
-      "subtitle": "Line 4 Sheppard",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Bayview. Bayview Station.",
-          "audio": "assets/audio/canada/ttc/line-4/bayview-next.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Bayview. Bayview Station. Doors will open on the left.",
-          "audio": "assets/audio/canada/ttc/line-4/bayview.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-4": 2
-      }
+      "soundIds": [
+        "bayview-next",
+        "bayview"
+      ]
     },
     "bessarion": {
-      "lineIds": [
-        "line-4"
+      "name": "Bessarion",
+      "lines": [
+        [
+          "line-4",
+          3
+        ]
       ],
-      "title": "Bessarion",
-      "subtitle": "Line 4 Sheppard",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Bessarion. Bessarion Station.",
-          "audio": "assets/audio/canada/ttc/line-4/bessarion-next.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Bessarion. Bessarion Station. Doors will open on the left.",
-          "audio": "assets/audio/canada/ttc/line-4/bessarion.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-4": 3
-      }
+      "soundIds": [
+        "bessarion-next",
+        "bessarion"
+      ]
     },
     "leslie": {
-      "lineIds": [
-        "line-4"
+      "name": "Leslie",
+      "lines": [
+        [
+          "line-4",
+          4
+        ]
       ],
-      "title": "Leslie",
-      "subtitle": "Line 4 Sheppard",
-      "items": [
-        {
-          "title": "Next Station",
-          "description": "Next station is: Leslie. Leslie Station.",
-          "audio": "assets/audio/canada/ttc/line-4/leslie-next.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        },
-        {
-          "title": "Arrival",
-          "description": "Arriving at: Leslie. Leslie Station. Doors will open on the left.",
-          "audio": "assets/audio/canada/ttc/line-4/leslie.mp3",
-          "lineIds": [
-            "line-4"
-          ]
-        }
-      ],
-      "lineOrder": {
-        "line-4": 4
-      }
+      "soundIds": [
+        "leslie-next",
+        "leslie"
+      ]
     },
     "don-mills": {
-      "lineIds": [
-        "line-4"
+      "name": "Don Mills",
+      "lines": [
+        [
+          "line-4",
+          5
+        ]
       ],
-      "title": "Don Mills",
-      "subtitle": "Line 4 Sheppard",
-      "items": [
+      "soundIds": [
+        "don-mills-next",
+        "don-mills"
+      ]
+    },
+    "mt-dennis": {
+      "name": "Mount Dennis",
+      "lines": [
+        [
+          "line-5",
+          1
+        ]
+      ],
+      "soundIds": []
+    },
+    "keelesdale": {
+      "name": "Keelesdale",
+      "lines": [
+        [
+          "line-5",
+          2
+        ]
+      ],
+      "soundIds": []
+    },
+    "caledonia": {
+      "name": "Caledonia",
+      "lines": [
+        [
+          "line-5",
+          3
+        ]
+      ],
+      "soundIds": []
+    },
+    "fairbank": {
+      "name": "Fairbank",
+      "lines": [
+        [
+          "line-5",
+          4
+        ]
+      ],
+      "soundIds": []
+    },
+    "oakwood": {
+      "name": "Oakwood",
+      "lines": [
+        [
+          "line-5",
+          5
+        ]
+      ],
+      "soundIds": []
+    },
+    "forest-hill": {
+      "name": "Forest Hill",
+      "lines": [
+        [
+          "line-5",
+          7
+        ]
+      ],
+      "soundIds": []
+    },
+    "chaplin": {
+      "name": "Chaplin",
+      "lines": [
+        [
+          "line-5",
+          8
+        ]
+      ],
+      "soundIds": []
+    },
+    "avenue": {
+      "name": "Avenue",
+      "lines": [
+        [
+          "line-5",
+          9
+        ]
+      ],
+      "soundIds": []
+    },
+    "mt-pleasant": {
+      "name": "Mount Pleasant",
+      "lines": [
+        [
+          "line-5",
+          11
+        ]
+      ],
+      "soundIds": []
+    },
+    "leaside": {
+      "name": "Leaside",
+      "lines": [
+        [
+          "line-5",
+          12
+        ]
+      ],
+      "soundIds": []
+    },
+    "laird": {
+      "name": "Laird",
+      "lines": [
+        [
+          "line-5",
+          13
+        ]
+      ],
+      "soundIds": []
+    },
+    "sunnybrook-park": {
+      "name": "Sunnybrook Park",
+      "lines": [
+        [
+          "line-5",
+          14
+        ]
+      ],
+      "soundIds": []
+    },
+    "don-valley": {
+      "name": "Don Valley",
+      "lines": [
+        [
+          "line-5",
+          15
+        ]
+      ],
+      "soundIds": []
+    },
+    "aga-khan-park-museum": {
+      "name": "Aga Khan Park & Museum",
+      "lines": [
+        [
+          "line-5",
+          16
+        ]
+      ],
+      "soundIds": []
+    },
+    "wynford": {
+      "name": "Wynford",
+      "lines": [
+        [
+          "line-5",
+          17
+        ]
+      ],
+      "soundIds": []
+    },
+    "sloane": {
+      "name": "Sloane",
+      "lines": [
+        [
+          "line-5",
+          18
+        ]
+      ],
+      "soundIds": []
+    },
+    "o-connor": {
+      "name": "O'Connor",
+      "lines": [
+        [
+          "line-5",
+          19
+        ]
+      ],
+      "soundIds": []
+    },
+    "pharmacy": {
+      "name": "Pharmacy",
+      "lines": [
+        [
+          "line-5",
+          20
+        ]
+      ],
+      "soundIds": []
+    },
+    "hakimi-lebovic": {
+      "name": "Hakimi Lebovic",
+      "lines": [
+        [
+          "line-5",
+          21
+        ]
+      ],
+      "soundIds": []
+    },
+    "golden-mile": {
+      "name": "Golden Mile",
+      "lines": [
+        [
+          "line-5",
+          22
+        ]
+      ],
+      "soundIds": []
+    },
+    "birchmount": {
+      "name": "Birchmount",
+      "lines": [
+        [
+          "line-5",
+          23
+        ]
+      ],
+      "soundIds": []
+    },
+    "ionview": {
+      "name": "Ionview",
+      "lines": [
+        [
+          "line-5",
+          24
+        ]
+      ],
+      "soundIds": []
+    },
+    "sentinel": {
+      "name": "Sentinel",
+      "lines": [
+        [
+          "line-6",
+          2
+        ]
+      ],
+      "soundIds": []
+    },
+    "tobermory": {
+      "name": "Tobermory",
+      "lines": [
+        [
+          "line-6",
+          3
+        ]
+      ],
+      "soundIds": []
+    },
+    "driftwood": {
+      "name": "Driftwood",
+      "lines": [
+        [
+          "line-6",
+          4
+        ]
+      ],
+      "soundIds": []
+    },
+    "jane-and-finch": {
+      "name": "Jane and Finch",
+      "lines": [
+        [
+          "line-6",
+          5
+        ]
+      ],
+      "soundIds": []
+    },
+    "norfinch-oakdale": {
+      "name": "Norfinch Oakdale",
+      "lines": [
+        [
+          "line-6",
+          6
+        ]
+      ],
+      "soundIds": []
+    },
+    "signet-arrow": {
+      "name": "Signet Arrow",
+      "lines": [
+        [
+          "line-6",
+          7
+        ]
+      ],
+      "soundIds": []
+    },
+    "emery": {
+      "name": "Emery",
+      "lines": [
+        [
+          "line-6",
+          8
+        ]
+      ],
+      "soundIds": []
+    },
+    "milvan-rumike": {
+      "name": "Milvan Rumike",
+      "lines": [
+        [
+          "line-6",
+          9
+        ]
+      ],
+      "soundIds": []
+    },
+    "duncanwoods": {
+      "name": "Duncanwoods",
+      "lines": [
+        [
+          "line-6",
+          10
+        ]
+      ],
+      "soundIds": []
+    },
+    "pearldale": {
+      "name": "Pearldale",
+      "lines": [
+        [
+          "line-6",
+          11
+        ]
+      ],
+      "soundIds": []
+    },
+    "rowntree-mills": {
+      "name": "Rowntree Mills",
+      "lines": [
+        [
+          "line-6",
+          12
+        ]
+      ],
+      "soundIds": []
+    },
+    "mt-olive": {
+      "name": "Mount Olive",
+      "lines": [
+        [
+          "line-6",
+          13
+        ]
+      ],
+      "soundIds": []
+    },
+    "stevenson": {
+      "name": "Stevenson",
+      "lines": [
+        [
+          "line-6",
+          14
+        ]
+      ],
+      "soundIds": []
+    },
+    "albion": {
+      "name": "Albion",
+      "lines": [
+        [
+          "line-6",
+          15
+        ]
+      ],
+      "soundIds": []
+    },
+    "martin-grove": {
+      "name": "Martin Grove",
+      "lines": [
+        [
+          "line-6",
+          16
+        ]
+      ],
+      "soundIds": []
+    },
+    "westmore": {
+      "name": "Westmore",
+      "lines": [
+        [
+          "line-6",
+          17
+        ]
+      ],
+      "soundIds": []
+    },
+    "humber-college": {
+      "name": "Humber College",
+      "lines": [
+        [
+          "line-6",
+          18
+        ]
+      ],
+      "soundIds": []
+    }
+  },
+  "sounds": {
+    "station-ann": {
+      "title": "Station Announcement",
+      "audio": [
         {
-          "title": "Next Station",
-          "description": "Next station is: Don Mills. Don Mills Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-4/don-mills-next.mp3",
-          "lineIds": [
-            "line-4"
-          ]
+          "src": "assets/audio/canada/ttc/station-ann.mp3"
+        }
+      ]
+    },
+    "ann-safety": {
+      "title": "Safety Announcement",
+      "description": "The TTC takes your safety very seriously. In the event of an emergency, speak to a staff member. Use the emergency alarm on board a train, or DWA button or the payphone on the platform. You can also report concerns using the SafeTTC app.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/ann-safety.mp3"
+        }
+      ]
+    },
+    "line-1-doors-opening": {
+      "title": "Doors Opening",
+      "audio": [
+        {
+          "title": "Towards Vaughan",
+          "description": "Line 1 towards Vaughan.",
+          "src": "assets/audio/canada/ttc/line-1/line-1-vaughan.mp3"
         },
         {
-          "title": "Arrival",
-          "description": "Arriving at: Don Mills. Don Mills Station. This is a terminal station.",
-          "audio": "assets/audio/canada/ttc/line-4/don-mills.mp3",
+          "title": "Towards Finch",
+          "description": "Line 1 towards Finch.",
+          "src": "assets/audio/canada/ttc/line-1/line-1-finch.mp3"
+        }
+      ]
+    },
+    "doors-closing-rocket": {
+      "title": "Doors Closing",
+      "description": "Please stand clear of the doors.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/doors-closing-rocket.mp3"
+        }
+      ]
+    },
+    "line-2-kennedy": {
+      "title": "Doors Opening (Kennedy)",
+      "description": "Line 2 towards Kennedy.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-2/line-2-kennedy.mp3"
+        }
+      ]
+    },
+    "line-4-doors-opening": {
+      "title": "Doors Opening",
+      "audio": [
+        {
+          "title": "To Don Mills",
+          "description": "Line 4 to Don Mills.",
+          "src": "assets/audio/canada/ttc/line-4/line-4-don-mills.mp3"
+        },
+        {
+          "title": "To Sheppard-Yonge",
+          "description": "Line 4 to Sheppard-Yonge.",
+          "src": "assets/audio/canada/ttc/line-4/line-4-sheppard-yonge.mp3"
+        }
+      ]
+    },
+    "vaughan-next": {
+      "title": "Next Station",
+      "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/vaughan-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
+    },
+    "vaughan": {
+      "title": "Arrival",
+      "description": "Arriving at: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/vaughan.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
+    },
+    "union-next": {
+      "title": "Next Station",
+      "description": "Next station is: Union. Union Station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/union-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
+    },
+    "union": {
+      "title": "Arrival",
+      "description": "Arriving at: Union. Union Station. Doors will open on the right.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/union.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
+    },
+    "sheppard-yonge-next": {
+      "title": "Next Station",
+      "description": "Next station is: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change for Line 1.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/sheppard-yonge-next.mp3",
           "lineIds": [
             "line-4"
           ]
         }
-      ],
-      "lineOrder": {
-        "line-4": 5
-      }
+      ]
     },
-    "mt-dennis": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Mount Dennis",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 1
-      }
+    "sheppard-yonge": {
+      "title": "Arrival",
+      "description": "Arriving at: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change here for Line 1.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/sheppard-yonge.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "keelesdale": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Keelesdale",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 2
-      }
+    "finch-next": {
+      "title": "Next Station",
+      "description": "Next station is: Finch. Finch Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/finch-next.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
     },
-    "caledonia": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Caledonia",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 3
-      }
+    "finch": {
+      "title": "Arrival",
+      "description": "Arriving at: Finch. Finch Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-1/finch.mp3",
+          "lineIds": [
+            "line-1"
+          ]
+        }
+      ]
     },
-    "fairbank": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Fairbank",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 4
-      }
+    "kipling-next": {
+      "title": "Next Station",
+      "description": "The next station is Kipling, Kipling Station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-2/kipling-next.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        }
+      ]
     },
-    "oakwood": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Oakwood",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 5
-      }
+    "kipling": {
+      "title": "Arrival",
+      "description": "Arriving at Kipling, Kipling Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-2/kipling.mp3",
+          "lineIds": [
+            "line-2"
+          ]
+        }
+      ]
     },
-    "forest-hill": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Forest Hill",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 7
-      }
+    "bayview-next": {
+      "title": "Next Station",
+      "description": "Next station is: Bayview. Bayview Station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/bayview-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "chaplin": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Chaplin",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 8
-      }
+    "bayview": {
+      "title": "Arrival",
+      "description": "Arriving at: Bayview. Bayview Station. Doors will open on the left.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/bayview.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "avenue": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Avenue",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 9
-      }
+    "bessarion-next": {
+      "title": "Next Station",
+      "description": "Next station is: Bessarion. Bessarion Station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/bessarion-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "mt-pleasant": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Mount Pleasant",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 11
-      }
+    "bessarion": {
+      "title": "Arrival",
+      "description": "Arriving at: Bessarion. Bessarion Station. Doors will open on the left.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/bessarion.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "leaside": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Leaside",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 12
-      }
+    "leslie-next": {
+      "title": "Next Station",
+      "description": "Next station is: Leslie. Leslie Station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/leslie-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "laird": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Laird",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 13
-      }
+    "leslie": {
+      "title": "Arrival",
+      "description": "Arriving at: Leslie. Leslie Station. Doors will open on the left.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/leslie.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "sunnybrook-park": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Sunnybrook Park",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 14
-      }
+    "don-mills-next": {
+      "title": "Next Station",
+      "description": "Next station is: Don Mills. Don Mills Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/don-mills-next.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     },
-    "don-valley": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Don Valley",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 15
-      }
-    },
-    "aga-khan-park-museum": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Aga Khan Park & Museum",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 16
-      }
-    },
-    "wynford": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Wynford",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 17
-      }
-    },
-    "sloane": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Sloane",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 18
-      }
-    },
-    "o-connor": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "O'Connor",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 19
-      }
-    },
-    "pharmacy": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Pharmacy",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 20
-      }
-    },
-    "hakimi-lebovic": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Hakimi Lebovic",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 21
-      }
-    },
-    "golden-mile": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Golden Mile",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 22
-      }
-    },
-    "birchmount": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Birchmount",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 23
-      }
-    },
-    "ionview": {
-      "lineIds": [
-        "line-5"
-      ],
-      "title": "Ionview",
-      "subtitle": "Line 5 Eglinton",
-      "items": [],
-      "lineOrder": {
-        "line-5": 24
-      }
-    },
-    "sentinel": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Sentinel",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 2
-      }
-    },
-    "tobermory": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Tobermory",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 3
-      }
-    },
-    "driftwood": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Driftwood",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 4
-      }
-    },
-    "jane-and-finch": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Jane and Finch",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 5
-      }
-    },
-    "norfinch-oakdale": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Norfinch Oakdale",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 6
-      }
-    },
-    "signet-arrow": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Signet Arrow",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 7
-      }
-    },
-    "emery": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Emery",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 8
-      }
-    },
-    "milvan-rumike": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Milvan Rumike",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 9
-      }
-    },
-    "duncanwoods": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Duncanwoods",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 10
-      }
-    },
-    "pearldale": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Pearldale",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 11
-      }
-    },
-    "rowntree-mills": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Rowntree Mills",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 12
-      }
-    },
-    "mt-olive": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Mount Olive",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 13
-      }
-    },
-    "stevenson": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Stevenson",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 14
-      }
-    },
-    "albion": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Albion",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 15
-      }
-    },
-    "martin-grove": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Martin Grove",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 16
-      }
-    },
-    "westmore": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Westmore",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 17
-      }
-    },
-    "humber-college": {
-      "lineIds": [
-        "line-6"
-      ],
-      "title": "Humber College",
-      "subtitle": "Line 6 Finch West",
-      "items": [],
-      "lineOrder": {
-        "line-6": 18
-      }
+    "don-mills": {
+      "title": "Arrival",
+      "description": "Arriving at: Don Mills. Don Mills Station. This is a terminal station.",
+      "audio": [
+        {
+          "src": "assets/audio/canada/ttc/line-4/don-mills.mp3",
+          "lineIds": [
+            "line-4"
+          ]
+        }
+      ]
     }
   }
 }
