@@ -17,13 +17,18 @@
       }
     ]
   },
-  "mr73-door": {
+  "door-chime": {
     "title": "Door Chime",
     "description": "\"Dou dou dou\"",
     "audio": [
       {
         "title": "MR-73",
-        "src": "assets/audio/canada/stm/mr73-door.mp3"
+        "src": "assets/audio/canada/stm/mr73-door.mp3",
+        "lineIds": [
+          "line-1",
+          "line-4",
+          "line-5"
+        ]
       }
     ]
   },

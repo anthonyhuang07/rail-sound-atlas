@@ -28,5 +28,59 @@
         "year": 2024
       }
     ]
+  },
+  "bell": {
+    "title": "Train Bell",
+    "description": "",
+    "audio": [
+      {
+        "title": "LINT",
+        "src": "assets/audio/canada/o-train/bell-lint.mp3",
+        "lineIds": [
+          "line-2",
+          "line-4"
+        ],
+        "origin": "Self-Recorded",
+        "year": 2026
+      }
+    ]
+  },
+  "bayview-next": {
+    "title": "Next Station",
+    "description": "Next station: Bayview. Prochaine station: Bayview.",
+    "audio": [
+      {
+        "title": "LINT",
+        "src": "assets/audio/canada/o-train/line-2/bayview-next-lint.mp3",
+        "origin": "Self-Recorded",
+        "lineIds": [
+          "line-2"
+        ],
+        "year": 2026
+      }
+    ]
+  },
+  "corso-italia-next": {
+    "title": "Next Station",
+    "description": "Next station: Corso Italia. Prochaine station: Corso Italia.",
+    "audio": [
+      {
+        "title": "LINT",
+        "src": "assets/audio/canada/o-train/line-2/corso-italia-next-lint.mp3",
+        "origin": "Self-Recorded",
+        "year": 2026
+      }
+    ]
+  },
+  "dows-lake": {
+    "title": "Arrival",
+    "description": "Dow's Lake Station. Station Lac Dow.",
+    "audio": [
+      {
+        "src": "assets/audio/canada/o-train/line-2/dows-lake-lint.mp3",
+        "origin": "Self-Recorded",
+        "year": 2026
+      }
+    ]
   }
 }

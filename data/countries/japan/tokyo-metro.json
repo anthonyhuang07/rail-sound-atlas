@@ -12,7 +12,8 @@
       "icon": "assets/images/japan/tokyo-metro/ginza.png",
       "soundIds": [
         "doa-shime-ann-f",
-        "door-chime"
+        "door-chime",
+        "psd-chime"
       ]
     },
     "marunouchi": {
@@ -22,49 +23,67 @@
       "otherIcons": [
         "assets/images/japan/tokyo-metro/marunouchi-branch.png"
       ],
-      "soundIds": []
+      "soundIds": [
+        "door-chime"
+      ]
     },
     "hibiya": {
       "title": "Hibiya Line",
       "subtitle": "Tokyo Metro 13000 Series, Tobu 70000 Series",
       "icon": "assets/images/japan/tokyo-metro/hibiya.png",
-      "soundIds": []
+      "soundIds": [
+        "door-chime",
+        "psd-chime"
+      ]
     },
     "tozai": {
       "title": "Tōzai Line",
       "subtitle": "Tokyo Metro 05 Series, Tokyo Metro 07 Series, Tokyo Metro 15000 Series, Tōyō Rapid 2000 Series, E231 Series",
       "icon": "assets/images/japan/tokyo-metro/tozai.png",
-      "soundIds": []
+      "soundIds": [
+        "psd-chime"
+      ]
     },
     "chiyoda": {
       "title": "Chiyoda Line",
       "subtitle": "Tokyo Metro 16000 Series, Tokyo Metro 05 Series, Odakyu 4000 Series, Odakyu 60000 Series MSE, E233-2000 Series",
       "icon": "assets/images/japan/tokyo-metro/chiyoda.png",
-      "soundIds": []
+      "soundIds": [
+        "door-chime"
+      ]
     },
     "yurakucho": {
       "title": "Yūrakuchō Line",
       "subtitle": "Tokyo Metro 10000 Series, Tokyo Metro 17000 Series, Seibu 6000 Series, Seibu 40000 Series, Tobu 9000 Series, Tobu 50070 Series",
       "icon": "assets/images/japan/tokyo-metro/yurakucho.png",
-      "soundIds": []
+      "soundIds": [
+        "door-chime"
+      ]
     },
     "hanzomon": {
       "title": "Hanzōmon Line",
       "subtitle": "Tokyo Metro 8000 Series, Tokyo Metro 08 Series, Tokyo Metro 18000 Series, Tokyu 2020 Series, Tokyu 5000 Series, Tobu 50000 Series",
       "icon": "assets/images/japan/tokyo-metro/hanzomon.png",
-      "soundIds": []
+      "soundIds": [
+        "door-chime",
+        "psd-chime"
+      ]
     },
     "namboku": {
       "title": "Namboku Line",
       "subtitle": "Tokyo Metro 9000 Series, Saitama Rapid Railway 2000 Series, Tokyu 3000 Series, Tokyu 5080 Series, Tokyu 3020 Series, Sotetsu 21000 Series",
       "icon": "assets/images/japan/tokyo-metro/namboku.png",
-      "soundIds": []
+      "soundIds": [
+        "psd-chime"
+      ]
     },
     "fukutoshin": {
       "title": "Fukutoshin Line",
       "subtitle": "Tokyo Metro 10000 Series, Tokyo Metro 17000 Series, Seibu 6000 Series, Seibu 40000 Series, Tobu 9000 Series, Tobu 50070 Series, Tokyu 5000 Series, Sotetsu 20000 Series",
       "icon": "assets/images/japan/tokyo-metro/fukutoshin.png",
-      "soundIds": []
+      "soundIds": [
+        "door-chime"
+      ]
     }
   },
   "stations": {}

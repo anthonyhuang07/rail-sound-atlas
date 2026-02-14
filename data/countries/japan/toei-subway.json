@@ -1,0 +1,48 @@
+{
+  "system": {
+    "id": "toei-subway",
+    "name": "Toei Subway",
+    "description": "Tokyo — Est. 1960",
+    "soundIds": []
+  },
+  "lines": {
+    "asakusa": {
+      "title": "Asakusa Line",
+      "subtitle": "Toei 5500 Series, Keisei 3000 Series, Keisei 3100 Series, Keisei 3400 Series, Keisei 3600 Series, Keisei 3700 Series, Keikyu 600 Series, Keikyu N1000 Series, Keikyu 1500 Series, Hokuso 7300 Series, Hokuso 7500 Series, Chiba New Town Railway 9100 Series, Chiba New Town Railway 9200 Series, Chiba New Town Railway 9800 Series",
+      "icon": "assets/images/japan/toei-subway/asakusa.png",
+      "soundIds": [
+        "door-chime",
+        "psd-opening",
+        "psd-closing"
+      ]
+    },
+    "mita": {
+      "title": "Mita Line",
+      "subtitle": "Toei 6300 Series, Toei 6500 Series, Tokyu 3000 Series, Tokyu 3020 Series, Tokyu 5080 Series, Sotetsu 21000 Series",
+      "icon": "assets/images/japan/toei-subway/mita.png",
+      "soundIds": [
+        "psd-opening",
+        "psd-closing"
+      ]
+    },
+    "shinjuku": {
+      "title": "Shinjuku Line",
+      "subtitle": "Toei 10-300 Series, Keio 5000 Series, Keio 9030 Series",
+      "icon": "assets/images/japan/toei-subway/shinjuku.png",
+      "soundIds": [
+        "psd-opening",
+        "psd-closing"
+      ]
+    },
+    "oedo": {
+      "title": "Ōedo Line",
+      "subtitle": "Toei 12-000 Series, Toei 12-600 Series",
+      "icon": "assets/images/japan/toei-subway/oedo.png",
+      "soundIds": [
+        "psd-opening",
+        "psd-closing"
+      ]
+    }
+  },
+  "stations": {}
+}

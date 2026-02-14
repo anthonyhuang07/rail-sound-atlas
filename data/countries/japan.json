@@ -14,6 +14,13 @@
           "logo": "assets/images/japan/tokyo-metro/logo.png",
           "data": "data/countries/japan/tokyo-metro.json",
           "soundData": "data/sounds/japan/tokyo-metro.json"
+        },
+        {
+          "id": "toei-subway",
+          "name": "Toei Subway",
+          "logo": "assets/images/japan/toei-subway/logo.webp",
+          "data": "data/countries/japan/toei-subway.json",
+          "soundData": "data/sounds/japan/toei-subway.json"
         }
       ]
     }

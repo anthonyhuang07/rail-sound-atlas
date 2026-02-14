@@ -1,0 +1,130 @@
+{
+    "door-chime": {
+        "title": "Door Chime",
+        "description": "",
+        "audio": [
+            {
+                "src": "assets/audio/japan/toei-subway/door-chime.mp3",
+                "lineIds": [
+                    "asakusa"
+                ]
+            }
+        ]
+    },
+    "psd-opening": {
+        "title": "Platform Screen Doors Opening",
+        "description": "",
+        "audio": [
+            {
+                "title": "Main",
+                "description": "「ポポポン」",
+                "src": "assets/audio/japan/toei-subway/psd-open-popopon.mp3",
+                "lineIds": [
+                    "oedo",
+                    "shinjuku",
+                    "asakusa"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Main",
+                "description": "「ポポポン」",
+                "src": "assets/audio/japan/toei-subway/psd-open-popopon-shin.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Tokyu Controlled Stations",
+                "description": "「ピポパポピポパン」",
+                "src": "assets/audio/japan/toei-subway/psd-pipopapopipopan-single.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Tokyo Metro Controlled Stations",
+                "description": "「ピンポーン」",
+                "src": "assets/audio/japan/toei-subway/psd-pinpoon.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Keisei Controlled Stations",
+                "description": "「ピララピララピララ」",
+                "src": "assets/audio/japan/toei-subway/psd-pirarapirarapirara.mp3",
+                "lineIds": [
+                    "asakusa"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            }
+        ]
+    },
+    "psd-closing": {
+        "title": "Platform Screen Doors Closing",
+        "description": "",
+        "audio": [
+            {
+                "title": "Main",
+                "description": "「ピポパポピポパン」",
+                "src": "assets/audio/japan/toei-subway/psd-close-pipopapopipopan.mp3",
+                "lineIds": [
+                    "oedo",
+                    "shinjuku",
+                    "asakusa"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Main",
+                "description": "「ピポパポピポパン」",
+                "src": "assets/audio/japan/toei-subway/psd-close-pipopapopipopan-shin.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Tokyu Controlled Stations",
+                "description": "「ピポパポピポパン」",
+                "src": "assets/audio/japan/toei-subway/psd-pipopapopipopan-single.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Tokyo Metro Controlled Stations",
+                "description": "「ピンポーン」",
+                "src": "assets/audio/japan/toei-subway/psd-pinpoon.mp3",
+                "lineIds": [
+                    "mita"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            },
+            {
+                "title": "Keisei Controlled Stations",
+                "description": "「ピンポン」",
+                "src": "assets/audio/japan/toei-subway/psd-pinpon.mp3",
+                "lineIds": [
+                    "asakusa"
+                ],
+                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                "year": 2024
+            }
+        ]
+    }
+}

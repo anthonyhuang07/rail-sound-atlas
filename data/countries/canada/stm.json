@@ -46,7 +46,7 @@
       "subtitle": "MPM-10 (AZUR), MR-73",
       "icon": "assets/images/canada/stm/line-1.png",
       "soundIds": [
-        "mr73-door",
+        "door-chime",
         "welcome",
         "terminus"
       ]
@@ -65,7 +65,7 @@
       "subtitle": "MR-73",
       "icon": "assets/images/canada/stm/line-4.png",
       "soundIds": [
-        "mr73-door",
+        "door-chime",
         "welcome",
         "terminus"
       ]
@@ -75,7 +75,7 @@
       "subtitle": "MR-73",
       "icon": "assets/images/canada/stm/line-5.png",
       "soundIds": [
-        "mr73-door",
+        "door-chime",
         "welcome",
         "terminus"
       ]

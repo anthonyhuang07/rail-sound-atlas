@@ -19,14 +19,59 @@
       "title": "Line 2 (Trillium Line)",
       "subtitle": "Stadler FLIRT, Alstom Coradia LINT 41",
       "icon": "assets/images/canada/o-train/line-2.png",
-      "soundIds": []
+      "soundIds": [
+        "bell"
+      ]
     },
     "line-4": {
       "title": "Line 4 (Airport Line)",
       "subtitle": "Alstom Coradia LINT 41",
       "icon": "assets/images/canada/o-train/line-4.png",
-      "soundIds": []
+      "soundIds": [
+        "bell"
+      ]
     }
   },
-  "stations": {}
+  "stations": {
+    "bayview": {
+      "name": "Bayview",
+      "lines": [
+        [
+          "line-1",
+          2
+        ],
+        [
+          "line-2",
+          1
+        ]
+      ],
+      "soundIds": [
+        "bayview-next"
+      ]
+    },
+    "corso-italia": {
+      "name": "Corso Italia",
+      "lines": [
+        [
+          "line-2",
+          2
+        ]
+      ],
+      "soundIds": [
+        "corso-italia-next"
+      ]
+    },
+    "dows-lake": {
+      "name": "Dow's Lake | Lac Dow",
+      "lines": [
+        [
+          "line-2",
+          3
+        ]
+      ],
+      "soundIds": [
+        "dows-lake"
+      ]
+    }
+  }
 }

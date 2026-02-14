@@ -5,7 +5,8 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/door-chime.mp3",
-        "origin": "https://www.youtube.com/watch?v=OKJ5M09SnAM"
+        "origin": "https://www.youtube.com/watch?v=OKJ5M09SnAM",
+        "year": 2025
       }
     ]
   },
@@ -15,7 +16,30 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/bell.mp3",
-        "origin": "https://www.youtube.com/watch?v=yBqDCzoDygI"
+        "origin": "https://www.youtube.com/watch?v=yBqDCzoDygI",
+        "year": 2021
+      }
+    ]
+  },
+  "exhibition": {
+    "title": "Arrival",
+    "description": "Now arriving at: Exhibition. Arrivée à: Exhibition. Please remember to tap off. N'oubliez pas de présenter votre carte à la sortie.",
+    "audio": [
+      {
+        "src": "assets/audio/canada/go/lakeshore-w/exhibition.mp3",
+        "origin": "Self-Recorded",
+        "year": 2026
+      }
+    ]
+  },
+  "oakville": {
+    "title": "Arrival",
+    "description": "Now arriving at: Oakville. Arrivée à: Oakville.",
+    "audio": [
+      {
+        "src": "assets/audio/canada/go/lakeshore-w/oakville.mp3",
+        "origin": "Self-Recorded",
+        "year": 2026
       }
     ]
   }

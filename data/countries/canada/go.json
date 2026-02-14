@@ -52,5 +52,30 @@
       "soundIds": []
     }
   },
-  "stations": {}
+  "stations": {
+    "exhibition": {
+      "name": "Exhibition",
+      "lines": [
+        [
+          "lakeshore-w",
+          2
+        ]
+      ],
+      "soundIds": [
+        "exhibition"
+      ]
+    },
+    "oakville": {
+      "name": "Oakville",
+      "lines": [
+        [
+          "lakeshore-w",
+          7
+        ]
+      ],
+      "soundIds": [
+        "oakville"
+      ]
+    }
+  }
 }

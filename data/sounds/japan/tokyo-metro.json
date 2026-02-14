@@ -12,7 +12,34 @@
     "title": "Door Chime (Train)",
     "audio": [
       {
-        "src": "assets/audio/japan/tokyo-metro/ginza/door-chime.mp3"
+        "src": "assets/audio/japan/tokyo-metro/door-chime.mp3",
+        "lineIds": [
+          "ginza",
+          "marunouchi",
+          "hibiya",
+          "chiyoda",
+          "yurakucho",
+          "hanzomon",
+          "fukutoshin"
+        ]
+      }
+    ]
+  },
+  "psd-chime": {
+    "title": "Door Chime (Platform Screen Doors)",
+    "audio": [
+      {
+        "description": "「ピンポーン」",
+        "src": "assets/audio/japan/tokyo-metro/psd-pinpoon.mp3",
+        "lineIds": [
+          "ginza",
+          "hibiya",
+          "tozai",
+          "hanzomon",
+          "namboku"
+        ],
+        "origin": "https://www.youtube.com/watch?v=SZ60zRLWMvc",
+        "year": 2024
       }
     ]
   }
