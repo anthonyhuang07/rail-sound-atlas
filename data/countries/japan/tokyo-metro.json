@@ -11,7 +11,7 @@
       "subtitle": "Tokyo Metro 1000 Series",
       "icon": "assets/images/japan/tokyo-metro/ginza.png",
       "soundIds": [
-        "doa-shime-ann-f",
+        "doa-shime-ann",
         "door-chime",
         "psd-chime"
       ]
@@ -24,7 +24,8 @@
         "assets/images/japan/tokyo-metro/marunouchi-branch.png"
       ],
       "soundIds": [
-        "door-chime"
+        "door-chime",
+        "doa-shime-ann"
       ]
     },
     "hibiya": {
@@ -66,6 +67,7 @@
       "icon": "assets/images/japan/tokyo-metro/hanzomon.png",
       "soundIds": [
         "door-chime",
+        "doa-shime-ann",
         "psd-chime"
       ]
     },

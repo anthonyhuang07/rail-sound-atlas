@@ -1,10 +1,17 @@
 {
-  "doa-shime-ann-f": {
+  "doa-shime-ann": {
     "title": "Doors Closing Announcement",
     "description": "ドアが閉まります。手荷物をお引き下さい。無理なご乗車はおやめください。",
     "audio": [
       {
-        "src": "assets/audio/japan/tokyo-metro/ginza/doa-shime-ann-f.mp3"
+        "src": "assets/audio/japan/tokyo-metro/doa-shime-ann-f.mp3",
+        "lineIds": [
+          "ginza",
+          "marunouchi",
+          "hanzomon"
+        ],
+        "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
+        "year": 2019
       }
     ]
   },
@@ -15,13 +22,29 @@
         "src": "assets/audio/japan/tokyo-metro/door-chime.mp3",
         "lineIds": [
           "ginza",
-          "marunouchi",
           "hibiya",
-          "chiyoda",
           "yurakucho",
-          "hanzomon",
           "fukutoshin"
-        ]
+        ],
+        "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
+        "year": 2019
+      },
+      {
+        "src": "assets/audio/japan/tokyo-metro/door-chime-alt.mp3",
+        "lineIds": [
+          "marunouchi",
+          "chiyoda"
+        ],
+        "origin": "https://www.youtube.com/watch?v=aCltq0HEJ1o",
+        "year": 2018
+      },
+      {
+        "src": "assets/audio/japan/tokyo-metro/door-chime-2020.mp3",
+        "lineIds": [
+          "hanzomon"
+        ],
+        "origin": "https://www.youtube.com/watch?v=-5Nejuj2qyk",
+        "year": 2019
       }
     ]
   },

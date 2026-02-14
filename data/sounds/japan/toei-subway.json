@@ -4,9 +4,15 @@
         "description": "",
         "audio": [
             {
-                "src": "assets/audio/japan/toei-subway/door-chime.mp3",
+                "src": "assets/audio/japan/toei-subway/asakusa/door-chime-5500.mp3",
                 "lineIds": [
                     "asakusa"
+                ]
+            },
+            {
+                "src": "assets/audio/japan/toei-subway/door-chime.mp3",
+                "lineIds": [
+                    "shinjuku"
                 ]
             }
         ]
@@ -124,6 +130,68 @@
                 ],
                 "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
                 "year": 2024
+            }
+        ]
+    },
+    "hassha-melody": {
+        "title": "Departure Melody",
+        "description": "",
+        "audio": [
+            {
+                "title": "To Nishi-magome",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-honest-heart.mp3",
+                "lineIds": [
+                    "asakusa"
+                ]
+            },
+            {
+                "title": "To Meguro",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-honest-heart-alt.mp3",
+                "lineIds": [
+                    "mita"
+                ]
+            },
+            {
+                "title": "To Shinjuku",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-honest-heart.mp3",
+                "lineIds": [
+                    "shinjuku"
+                ]
+            },
+            {
+                "title": "To Tochomae",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-honest-heart.mp3",
+                "lineIds": [
+                    "oedo"
+                ]
+            },
+            {
+                "title": "To Oshiage",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-melody.mp3",
+                "lineIds": [
+                    "asakusa"
+                ]
+            },
+            {
+                "title": "To Nishi-takashimadaira",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-melody.mp3",
+                "lineIds": [
+                    "mita"
+                ]
+            },
+            {
+                "title": "To Moto-Yawata",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-melody.mp3",
+                "lineIds": [
+                    "shinjuku"
+                ]
+            },
+            {
+                "title": "To Hikarigaoka",
+                "src": "assets/audio/japan/toei-subway/hassha-melody-melody.mp3",
+                "lineIds": [
+                    "oedo"
+                ]
             }
         ]
     }
