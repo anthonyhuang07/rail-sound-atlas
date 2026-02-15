@@ -88,5 +88,30 @@
       ]
     }
   },
-  "stations": {}
+  "stations": {
+    "tawaramachi": {
+      "name": "Tawaramachi",
+      "lines": [
+        [
+          "ginza",
+          18
+        ]
+      ],
+      "soundIds": [
+        "g-18-hassha"
+      ]
+    },
+    "asakusa": {
+      "name": "Asakusa",
+      "lines": [
+        [
+          "ginza",
+          19
+        ]
+      ],
+      "soundIds": [
+        "g-19-hassha"
+      ]
+    }
+  }
 }

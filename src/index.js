@@ -31,6 +31,7 @@ const sidePanelHead = sidePanel ? sidePanel.querySelector(".side-panel-head") : 
 const sepCountry = document.querySelector(".crumb-sep[data-sep=country]");
 const sepSystem = document.querySelector(".crumb-sep[data-sep=system]");
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
+let userSystemMode = null;
 
 const stationTooltip = document.createElement("div");
 stationTooltip.className = "station-tooltip";
@@ -42,6 +43,8 @@ const STOP_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M7 7h10v10H7z\"/></svg>";
 const CHEVRON_DOWN_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M6.7 9.3a1 1 0 0 1 1.4 0L12 13.2l3.9-3.9a1 1 0 1 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L6.7 10.7a1 1 0 0 1 0-1.4z\"/></svg>";
+const CHEVRON_UP_ICON =
+  "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M17.3 14.7a1 1 0 0 1-1.4 0L12 10.8l-3.9 3.9a1 1 0 1 1-1.4-1.4l4.6-4.6a1 1 0 0 1 1.4 0l4.6 4.6a1 1 0 0 1 0 1.4z\"/></svg>";
 
 const state = {
   audioControllers: new Set(),
@@ -269,16 +272,21 @@ const stationLineOrder = (station, lineId) => {
 
 const filterItemsByLine = (items, lineId) =>
   (items || [])
-    .map((item) => ({
-      ...item,
-      audio: (item.audio || []).filter((audio, _, list) => {
+    .map((item) => {
+      const sourceAudio = item.audio || [];
+      const filteredAudio = sourceAudio.filter((audio, _, list) => {
         const hasScopedAudio = list.some((entry) => Array.isArray(entry.lineIds) && entry.lineIds.length);
         if (hasScopedAudio) {
           return Array.isArray(audio.lineIds) && audio.lineIds.includes(lineId);
         }
         return !audio.lineIds || audio.lineIds.includes(lineId);
-      }),
-    }))
+      });
+      return {
+        ...item,
+        audio: filteredAudio,
+        hideSingleAudioTitle: sourceAudio.length > 1 && filteredAudio.length === 1,
+      };
+    })
     .filter((item) => item.audio.length > 0);
 
 const filterSystemItems = (items) =>
@@ -314,82 +322,110 @@ const renderSoundCards = (container, items) => {
     card.className = "sound-card";
     card.setAttribute("role", "listitem");
     const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
-    const effectiveDescription =
-      singleAudio && singleAudio.description ? singleAudio.description : item.description;
-
-    const title = document.createElement("h3");
-    title.textContent = item.title;
-
     if (singleAudio) {
+      const title = document.createElement("h3");
+      title.textContent = item.title;
       card.append(title);
-      if (effectiveDescription && effectiveDescription.trim() !== "") {
+
+      const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
+      if (singleTitle && !item.hideSingleAudioTitle) {
+        const subTitle = document.createElement("div");
+        subTitle.className = "sound-group-title";
+        subTitle.textContent = singleTitle;
+        card.append(subTitle);
+      }
+      const singleDescription =
+        singleAudio.description || item.description || "";
+      if (singleDescription && singleDescription.trim() !== "") {
         const desc = document.createElement("p");
-        desc.textContent = effectiveDescription;
+        desc.textContent = singleDescription;
         card.append(desc);
       }
       card.append(createSoundActions(singleAudio));
-    } else {
-      const header = document.createElement("div");
-      header.className = "sound-card-header";
-      header.setAttribute("role", "button");
-      header.tabIndex = 0;
-      header.setAttribute("aria-expanded", "false");
-
-      const chevron = document.createElement("span");
-      chevron.className = "sound-card-chevron";
-      chevron.innerHTML = CHEVRON_DOWN_ICON;
-      header.append(title, chevron);
-
-      const body = document.createElement("div");
-      body.className = "sound-card-body";
-      body.hidden = true;
-
-      if (effectiveDescription && effectiveDescription.trim() !== "") {
-        const desc = document.createElement("p");
-        desc.textContent = effectiveDescription;
-        body.append(desc);
-      }
-
-      const variations = document.createElement("div");
-      variations.className = "sound-variations";
-      item.audio.forEach((audio) => {
-        const row = document.createElement("div");
-        row.className = "sound-variation";
-        if (audio.title) {
-          const label = document.createElement("span");
-          label.className = "sound-variation-label";
-          label.textContent = audio.title;
-          row.append(label);
-        }
-        if (audio.description) {
-          const description = document.createElement("p");
-          description.className = "sound-variation-description";
-          description.textContent = audio.description;
-          row.append(description);
-        }
-        row.append(createSoundActions(audio));
-        variations.append(row);
-      });
-      body.append(variations);
-
-      const toggleCard = () => {
-        const willExpand = body.hidden;
-        body.hidden = !willExpand;
-        card.classList.toggle("is-expanded", willExpand);
-        header.setAttribute("aria-expanded", String(willExpand));
-      };
-
-      header.addEventListener("click", toggleCard);
-      header.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          toggleCard();
-        }
-      });
-
-      card.append(header, body);
+      container.append(card);
+      return;
     }
 
+    card.classList.add("sound-card--collapsible");
+    if (item.groupTitle && item.groupTitle.trim() !== "") {
+      card.classList.add("sound-card--grouped-multi");
+    }
+
+    const header = document.createElement("div");
+    header.className = "sound-card-header";
+    header.setAttribute("role", "button");
+    header.tabIndex = 0;
+    header.setAttribute("aria-expanded", "false");
+
+    const textWrap = document.createElement("div");
+    textWrap.className = "sound-card-title-wrap";
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+    textWrap.append(title);
+
+    if (item.description && item.description.trim() !== "") {
+      const subtitle = document.createElement("p");
+      subtitle.className = "sound-card-subtitle";
+      subtitle.textContent = item.description;
+      textWrap.append(subtitle);
+    }
+
+    const chevron = document.createElement("span");
+    chevron.className = "sound-card-chevron";
+    chevron.innerHTML = CHEVRON_DOWN_ICON;
+    header.append(textWrap, chevron);
+
+    const content = document.createElement("div");
+    content.className = "sound-card-content";
+    content.hidden = true;
+
+    if (item.groupTitle && item.groupTitle.trim() !== "") {
+      const groupTitle = document.createElement("div");
+      groupTitle.className = "sound-group-title";
+      groupTitle.textContent = item.groupTitle;
+      content.append(groupTitle);
+    }
+
+    const variations = document.createElement("div");
+    variations.className = "sound-variations";
+    item.audio.forEach((audio) => {
+      const row = document.createElement("div");
+      row.className = "sound-variation";
+      if (audio.title) {
+        const label = document.createElement("span");
+        label.className = "sound-variation-label";
+        label.textContent = audio.title;
+        row.append(label);
+      }
+      if (audio.description) {
+        const description = document.createElement("p");
+        description.className = "sound-variation-description";
+        description.textContent = audio.description;
+        row.append(description);
+      }
+      row.append(createSoundActions(audio));
+      variations.append(row);
+    });
+    content.append(variations);
+
+    const toggleCard = () => {
+      const willExpand = content.hidden;
+      content.hidden = !willExpand;
+      card.classList.toggle("is-expanded", willExpand);
+      chevron.innerHTML = willExpand ? CHEVRON_UP_ICON : CHEVRON_DOWN_ICON;
+      header.setAttribute("aria-expanded", String(willExpand));
+    };
+
+    header.addEventListener("click", toggleCard);
+    header.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggleCard();
+      }
+    });
+
+    card.append(header, content);
     container.append(card);
   });
 };
@@ -473,14 +509,24 @@ const renderSystemListView = () => {
       return 0;
     })
     .map((station) => ({
-      title: station.name,
-      audio: filterItemsByLine(station.items, state.selectedLineId).flatMap((item) =>
-        item.audio.map((audio) => ({
-            ...audio,
-            title: item.title,
-            description: audio.description || item.description || "",
-          }))
-      ),
+      ...(() => {
+        const scopedItems = filterItemsByLine(station.items, state.selectedLineId);
+        const uniqueTitles = [...new Set(scopedItems.map((item) => item.title))];
+        const commonTitle = uniqueTitles.length === 1 ? uniqueTitles[0] : "";
+        return {
+          title: station.name,
+          description: "",
+          groupTitle: commonTitle,
+          audio: scopedItems.flatMap((item) => {
+            const keepSubTitle = item.audio.length > 1;
+            return item.audio.map((audio) => ({
+              ...audio,
+              title: keepSubTitle ? audio.title || item.title : item.title,
+              description: audio.description || item.description || "",
+            }));
+          }),
+        };
+      })(),
     }))
     .filter((item) => item.audio.length > 0);
 
@@ -1406,7 +1452,9 @@ const loadSystem = async (system) => {
   }
   state.mapAvailable = mapAvailable;
   const isMobile = window.matchMedia("(max-width: 720px)").matches;
-  setSystemMode(state.mapAvailable && !isMobile ? "map" : "list");
+  const defaultMode = isMobile ? "list" : "map";
+  const preferredMode = userSystemMode || defaultMode;
+  setSystemMode(state.mapAvailable ? preferredMode : "list");
   showSystemPanel();
   setView("system");
   if (state.mapAvailable && !isMobile) {
@@ -1494,10 +1542,16 @@ const init = async () => {
     });
   }
   if (modeMapButton) {
-    modeMapButton.addEventListener("click", () => setSystemMode("map"));
+    modeMapButton.addEventListener("click", () => {
+      userSystemMode = "map";
+      setSystemMode("map");
+    });
   }
   if (modeListButton) {
-    modeListButton.addEventListener("click", () => setSystemMode("list"));
+    modeListButton.addEventListener("click", () => {
+      userSystemMode = "list";
+      setSystemMode("list");
+    });
   }
   if (infoModalClose) infoModalClose.addEventListener("click", closeInfoModal);
   if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
