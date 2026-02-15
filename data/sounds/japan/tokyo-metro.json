@@ -10,8 +10,10 @@
           "marunouchi",
           "hanzomon"
         ],
-        "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
-        "year": 2019
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
+          "yearCaptured": 2019
+        }
       }
     ]
   },
@@ -26,8 +28,10 @@
           "yurakucho",
           "fukutoshin"
         ],
-        "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
-        "year": 2019
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
+          "yearCaptured": 2019
+        }
       },
       {
         "src": "assets/audio/japan/tokyo-metro/door-chime-alt.mp3",
@@ -35,16 +39,20 @@
           "marunouchi",
           "chiyoda"
         ],
-        "origin": "https://www.youtube.com/watch?v=aCltq0HEJ1o",
-        "year": 2018
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=aCltq0HEJ1o",
+          "yearCaptured": 2018
+        }
       },
       {
         "src": "assets/audio/japan/tokyo-metro/door-chime-2020.mp3",
         "lineIds": [
           "hanzomon"
         ],
-        "origin": "https://www.youtube.com/watch?v=-5Nejuj2qyk",
-        "year": 2019
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=-5Nejuj2qyk",
+          "yearCaptured": 2019
+        }
       }
     ]
   },
@@ -61,8 +69,10 @@
           "hanzomon",
           "namboku"
         ],
-        "origin": "https://www.youtube.com/watch?v=SZ60zRLWMvc",
-        "year": 2024
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=SZ60zRLWMvc",
+          "yearCaptured": 2024
+        }
       }
     ]
   }

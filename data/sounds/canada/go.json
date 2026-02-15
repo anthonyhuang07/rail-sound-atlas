@@ -5,8 +5,10 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/door-chime.mp3",
-        "origin": "https://www.youtube.com/watch?v=OKJ5M09SnAM",
-        "year": 2025
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=OKJ5M09SnAM",
+          "yearCaptured": 2025
+        }
       }
     ]
   },
@@ -16,8 +18,10 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/bell.mp3",
-        "origin": "https://www.youtube.com/watch?v=yBqDCzoDygI",
-        "year": 2021
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=yBqDCzoDygI",
+          "yearCaptured": 2021
+        }
       }
     ]
   },
@@ -27,8 +31,10 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/lakeshore-w/exhibition.mp3",
-        "origin": "Self-Recorded",
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026
+        }
       }
     ]
   },
@@ -38,8 +44,10 @@
     "audio": [
       {
         "src": "assets/audio/canada/go/lakeshore-w/oakville.mp3",
-        "origin": "Self-Recorded",
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026
+        }
       }
     ]
   }

@@ -213,6 +213,112 @@ body.is-system .system-mode-toggle {
           flex: 1;
 }
 
+.info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+.info-modal[hidden] {
+  display: none;
+}
+.info-modal .info-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+.info-modal .info-modal-card {
+  position: relative;
+  z-index: 1;
+  width: min(26rem, 100%);
+  background: #151922;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 0.5rem;
+  padding: 0.875rem;
+}
+.info-modal .info-modal-head {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.625rem;
+}
+.info-modal .info-modal-actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.5rem;
+}
+.info-modal .close-button {
+  background: transparent;
+  color: #f2f2f2;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 0.375rem;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.1em;
+  cursor: pointer;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.info-modal .download-button {
+  background: transparent;
+  color: #f2f2f2;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 0.375rem;
+  width: 2rem;
+  height: 2rem;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-decoration: none;
+}
+.info-modal .download-button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  fill: currentColor;
+  display: block;
+}
+.info-modal h3 {
+  font-size: 1em;
+}
+.info-modal .info-modal-body {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 0.0625rem solid #222732;
+  padding-top: 0.625rem;
+}
+.info-modal .info-modal-body p {
+  color: #9aa0a6;
+  font-size: 0.85em;
+}
+.info-modal .info-modal-body a {
+  color: #8cc8ff;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.open-variants-button {
+  margin-top: auto;
+}
+
 #country-grid {
   margin-top: 0;
 }

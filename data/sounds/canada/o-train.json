@@ -6,15 +6,21 @@
         "title": "Doors Opening",
         "description": "Doors opening. Ouverture des portes.",
         "src": "assets/audio/canada/o-train/line-1/doors-opening.mp3",
-        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
-        "year": 2024
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+          "yearCaptured": 2024,
+          "rollingStock": "Citadis Spirit"
+        }
       },
       {
         "title": "Doors Closing",
         "description": "Doors closing. Fermeture des portes.",
         "src": "assets/audio/canada/o-train/line-1/doors-closing.mp3",
-        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
-        "year": 2024
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+          "yearCaptured": 2024,
+          "rollingStock": "Citadis Spirit"
+        }
       }
     ]
   },
@@ -24,8 +30,11 @@
     "audio": [
       {
         "src": "assets/audio/canada/o-train/line-1/accel.mp3",
-        "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
-        "year": 2024
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=0h2Uq8MzsMs",
+          "yearCaptured": 2024,
+          "rollingStock": "Citadis Spirit"
+        }
       }
     ]
   },
@@ -40,8 +49,11 @@
           "line-2",
           "line-4"
         ],
-        "origin": "Self-Recorded",
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026,
+          "rollingStock": "Alstom Coradia LINT 41"
+        }
       }
     ]
   },
@@ -52,11 +64,14 @@
       {
         "title": "LINT",
         "src": "assets/audio/canada/o-train/line-2/bayview-next-lint.mp3",
-        "origin": "Self-Recorded",
         "lineIds": [
           "line-2"
         ],
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026,
+          "rollingStock": "Alstom Coradia LINT 41"
+        }
       }
     ]
   },
@@ -67,8 +82,11 @@
       {
         "title": "LINT",
         "src": "assets/audio/canada/o-train/line-2/corso-italia-next-lint.mp3",
-        "origin": "Self-Recorded",
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026,
+          "rollingStock": "Alstom Coradia LINT 41"
+        }
       }
     ]
   },
@@ -78,8 +96,11 @@
     "audio": [
       {
         "src": "assets/audio/canada/o-train/line-2/dows-lake-lint.mp3",
-        "origin": "Self-Recorded",
-        "year": 2026
+        "metadata": {
+          "origin": "Self-Recorded",
+          "yearCaptured": 2026,
+          "rollingStock": "Alstom Coradia LINT 41"
+        }
       }
     ]
   }

@@ -7,13 +7,22 @@
                 "src": "assets/audio/japan/toei-subway/asakusa/door-chime-5500.mp3",
                 "lineIds": [
                     "asakusa"
-                ]
+                ],
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=U0ZiO2UCWp4",
+                    "yearCaptured": 2018,
+                    "rollingStock": "Toei Subway 5500 Series"
+                }
             },
             {
                 "src": "assets/audio/japan/toei-subway/door-chime.mp3",
                 "lineIds": [
                     "shinjuku"
-                ]
+                ],
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=vuq8JkANTm4",
+                    "yearCaptured": 2019
+                }
             }
         ]
     },
@@ -30,8 +39,10 @@
                     "shinjuku",
                     "asakusa"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Main",
@@ -40,8 +51,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Tokyu Controlled Stations",
@@ -50,8 +63,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Tokyo Metro Controlled Stations",
@@ -60,8 +75,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Keisei Controlled Stations",
@@ -70,8 +87,10 @@
                 "lineIds": [
                     "asakusa"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             }
         ]
     },
@@ -88,8 +107,10 @@
                     "shinjuku",
                     "asakusa"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Main",
@@ -98,8 +119,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Tokyu Controlled Stations",
@@ -108,8 +131,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Tokyo Metro Controlled Stations",
@@ -118,8 +143,10 @@
                 "lineIds": [
                     "mita"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             },
             {
                 "title": "Keisei Controlled Stations",
@@ -128,8 +155,10 @@
                 "lineIds": [
                     "asakusa"
                 ],
-                "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
-                "year": 2024
+                "metadata": {
+                    "origin": "https://www.youtube.com/watch?v=_6J4W0q4VkI",
+                    "yearCaptured": 2024
+                }
             }
         ]
     },

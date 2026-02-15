@@ -95,7 +95,21 @@ permalink: /
         <section class="system-list-view" id="system-list-view"></section>
       </section>
     </main>
-
+    <div class="info-modal" id="info-modal" hidden>
+      <div class="info-modal-backdrop" id="info-modal-backdrop"></div>
+      <div class="info-modal-card" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+        <div class="info-modal-head">
+          <h3 id="info-modal-title">Sound Info</h3>
+          <div class="info-modal-actions">
+            <a id="info-modal-download" class="download-button" href="#" download aria-label="Download audio">
+              ↓
+            </a>
+            <button type="button" class="close-button" id="info-modal-close" aria-label="Close sound info">X</button>
+          </div>
+        </div>
+        <div class="info-modal-body" id="info-modal-body"></div>
+      </div>
+    </div>
     <script src="src/index.js" type="module"></script>
   </body>
 </html>

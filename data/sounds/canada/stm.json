@@ -22,13 +22,19 @@
     "description": "\"Dou dou dou\"",
     "audio": [
       {
+        "src": "assets/audio/canada/stm/doudoudou.ogg"
+      },
+      {
         "title": "MR-73",
         "src": "assets/audio/canada/stm/mr73-door.mp3",
         "lineIds": [
           "line-1",
           "line-4",
           "line-5"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -42,7 +48,10 @@
         "lineIds": [
           "line-1",
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        }
       },
       {
         "title": "MR-73",
@@ -51,7 +60,10 @@
           "line-1",
           "line-4",
           "line-5"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -65,7 +77,10 @@
         "lineIds": [
           "line-1",
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        }
       },
       {
         "title": "MR-73",
@@ -74,7 +89,10 @@
           "line-1",
           "line-4",
           "line-5"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -86,7 +104,10 @@
         "src": "assets/audio/canada/stm/line-2/lionel-groulx-prochaine.mp3",
         "lineIds": [
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        }
       }
     ]
   },
@@ -98,7 +119,10 @@
         "src": "assets/audio/canada/stm/line-2/lionel-groulx.mp3",
         "lineIds": [
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        }
       }
     ]
   },
@@ -219,7 +243,10 @@
         "src": "assets/audio/canada/stm/line-2/snowdon-prochaine.mp3",
         "lineIds": [
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10 (AZUR)"
+        }
       },
       {
         "title": "Ligne Bleue",
@@ -227,7 +254,10 @@
         "src": "assets/audio/canada/stm/line-5/snowdon-prochaine.mp3",
         "lineIds": [
           "line-5"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -240,7 +270,10 @@
         "src": "assets/audio/canada/stm/line-2/snowdon.mp3",
         "lineIds": [
           "line-2"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        }
       },
       {
         "title": "Ligne Bleue",
@@ -248,7 +281,10 @@
         "src": "assets/audio/canada/stm/line-5/snowdon.mp3",
         "lineIds": [
           "line-5"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -368,7 +404,10 @@
         "src": "assets/audio/canada/stm/line-4/berri-uqam-prochaine.mp3",
         "lineIds": [
           "line-4"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },
@@ -381,7 +420,10 @@
         "src": "assets/audio/canada/stm/line-4/berri-uqam.mp3",
         "lineIds": [
           "line-4"
-        ]
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        }
       }
     ]
   },

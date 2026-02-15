@@ -24,8 +24,8 @@
         "assets/images/japan/tokyo-metro/marunouchi-branch.png"
       ],
       "soundIds": [
-        "door-chime",
-        "doa-shime-ann"
+        "doa-shime-ann",
+        "door-chime"
       ]
     },
     "hibiya": {
@@ -66,8 +66,8 @@
       "subtitle": "Tokyo Metro 8000 Series, Tokyo Metro 08 Series, Tokyo Metro 18000 Series, Tokyu 2020 Series, Tokyu 5000 Series, Tobu 50000 Series",
       "icon": "assets/images/japan/tokyo-metro/hanzomon.png",
       "soundIds": [
-        "door-chime",
         "doa-shime-ann",
+        "door-chime",
         "psd-chime"
       ]
     },

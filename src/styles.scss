@@ -191,6 +191,108 @@ body.is-system .system-mode-toggle {
   }
 }
 
+.info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+
+  &[hidden] {
+    display: none;
+  }
+
+  .info-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .info-modal-card {
+    position: relative;
+    z-index: 1;
+    width: min(26rem, 100%);
+    background: $panel;
+    border: 0.0625rem solid #2b313d;
+    border-radius: 0.5rem;
+    padding: 0.875rem;
+  }
+
+  .info-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .info-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .close-button {
+    background: transparent;
+    color: $text;
+    border: 0.0625rem solid #2b313d;
+    border-radius: 0.375rem;
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.1em;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .download-button {
+    background: transparent;
+    color: $text;
+    border: 0.0625rem solid #2b313d;
+    border-radius: 0.375rem;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+
+    svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      fill: currentColor;
+      display: block;
+    }
+  }
+
+  h3 {
+    font-size: 1em;
+  }
+
+  .info-modal-body {
+    display: grid;
+    gap: 0.5rem;
+    border-top: 0.0625rem solid #222732;
+    padding-top: 0.625rem;
+
+    p {
+      color: $muted;
+      font-size: 0.85em;
+    }
+
+    a {
+      color: #8cc8ff;
+      text-decoration: underline;
+      word-break: break-all;
+    }
+  }
+
+}
+
+.open-variants-button {
+  margin-top: auto;
+}
+
 #country-grid {
   margin-top: 0;
 }
