@@ -36,6 +36,12 @@ const stationTooltip = document.createElement("div");
 stationTooltip.className = "station-tooltip";
 const DOWNLOAD_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zm-7 14a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z\"/></svg>";
+const PLAY_ICON =
+  "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M8 6.5v11a1 1 0 0 0 1.5.86l8.5-5.5a1 1 0 0 0 0-1.72l-8.5-5.5A1 1 0 0 0 8 6.5z\"/></svg>";
+const STOP_ICON =
+  "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M7 7h10v10H7z\"/></svg>";
+const CHEVRON_DOWN_ICON =
+  "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M6.7 9.3a1 1 0 0 1 1.4 0L12 13.2l3.9-3.9a1 1 0 1 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L6.7 10.7a1 1 0 0 1 0-1.4z\"/></svg>";
 
 const state = {
   audioControllers: new Set(),
@@ -134,6 +140,9 @@ const createSoundActions = (audioData) => {
   label.style.zIndex = "1";
   label.style.mixBlendMode = "difference";
   label.style.color = "#ffffff";
+  label.style.display = "inline-flex";
+  label.style.alignItems = "center";
+  label.style.justifyContent = "center";
   playButton.append(progressFill, label);
   let audio = null;
   let progressFrame = null;
@@ -149,7 +158,13 @@ const createSoundActions = (audioData) => {
   };
 
   const setPlaying = (isPlaying) => {
-    label.textContent = isPlaying ? "Stop" : "Play";
+    label.innerHTML = isPlaying ? STOP_ICON : PLAY_ICON;
+    const icon = label.querySelector("svg");
+    if (icon) {
+      icon.style.width = "1.35rem";
+      icon.style.height = "1.35rem";
+      icon.style.display = "block";
+    }
     playButton.setAttribute("aria-label", isPlaying ? "Stop audio" : "Play audio");
   };
 
@@ -305,24 +320,38 @@ const renderSoundCards = (container, items) => {
     const title = document.createElement("h3");
     title.textContent = item.title;
 
-    card.append(title);
-    if (effectiveDescription && effectiveDescription.trim() !== "") {
-      const desc = document.createElement("p");
-      desc.textContent = effectiveDescription;
-      card.append(desc);
-    }
-
     if (singleAudio) {
+      card.append(title);
+      if (effectiveDescription && effectiveDescription.trim() !== "") {
+        const desc = document.createElement("p");
+        desc.textContent = effectiveDescription;
+        card.append(desc);
+      }
       card.append(createSoundActions(singleAudio));
     } else {
-      const openVariantsButton = document.createElement("button");
-      openVariantsButton.type = "button";
-      openVariantsButton.className = "open-variants-button";
-      openVariantsButton.textContent = "Open Sounds";
+      const header = document.createElement("div");
+      header.className = "sound-card-header";
+      header.setAttribute("role", "button");
+      header.tabIndex = 0;
+      header.setAttribute("aria-expanded", "false");
+
+      const chevron = document.createElement("span");
+      chevron.className = "sound-card-chevron";
+      chevron.innerHTML = CHEVRON_DOWN_ICON;
+      header.append(title, chevron);
+
+      const body = document.createElement("div");
+      body.className = "sound-card-body";
+      body.hidden = true;
+
+      if (effectiveDescription && effectiveDescription.trim() !== "") {
+        const desc = document.createElement("p");
+        desc.textContent = effectiveDescription;
+        body.append(desc);
+      }
 
       const variations = document.createElement("div");
       variations.className = "sound-variations";
-      variations.style.display = "none";
       item.audio.forEach((audio) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
@@ -341,14 +370,24 @@ const renderSoundCards = (container, items) => {
         row.append(createSoundActions(audio));
         variations.append(row);
       });
+      body.append(variations);
 
-      openVariantsButton.addEventListener("click", () => {
-        const isOpen = variations.style.display !== "none";
-        variations.style.display = isOpen ? "none" : "grid";
-        openVariantsButton.textContent = isOpen ? "Open Sounds" : "Hide Sounds";
+      const toggleCard = () => {
+        const willExpand = body.hidden;
+        body.hidden = !willExpand;
+        card.classList.toggle("is-expanded", willExpand);
+        header.setAttribute("aria-expanded", String(willExpand));
+      };
+
+      header.addEventListener("click", toggleCard);
+      header.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggleCard();
+        }
       });
 
-      card.append(openVariantsButton, variations);
+      card.append(header, body);
     }
 
     container.append(card);

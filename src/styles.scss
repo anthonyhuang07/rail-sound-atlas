@@ -289,8 +289,42 @@ body.is-system .system-mode-toggle {
 
 }
 
-.open-variants-button {
-  margin-top: auto;
+.sound-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.625rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.sound-card-chevron {
+  width: 1.75rem;
+  height: 1.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $muted;
+  flex-shrink: 0;
+  transition: transform 160ms ease;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: block;
+  }
+}
+
+.sound-card.is-expanded .sound-card-chevron {
+  transform: rotate(180deg);
+}
+
+.sound-card-body {
+  margin-top: 0.5rem;
+
+  &[hidden] {
+    display: none;
+  }
 }
 
 #country-grid {
@@ -1018,7 +1052,7 @@ body.is-system .system-mode-toggle {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
     gap: 0.75rem;
-    align-items: stretch;
+    align-items: start;
   }
 
   .sound-card {
@@ -1028,7 +1062,7 @@ body.is-system .system-mode-toggle {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    height: 100%;
+    height: auto;
 
     h3 {
       font-size: 0.95em;
