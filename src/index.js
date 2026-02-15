@@ -79,7 +79,6 @@ const stopActiveAudio = () => {
 
 const closeInfoModal = () => {
   if (!infoModal) return;
-  stopActiveAudio();
   infoModal.hidden = true;
   if (infoModalBody) infoModalBody.innerHTML = "";
   if (infoModalDownload) infoModalDownload.removeAttribute("href");
@@ -323,6 +322,36 @@ const renderSoundCards = (container, items) => {
     card.setAttribute("role", "listitem");
     const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
     if (singleAudio) {
+      if (item.forceBoxedSingle) {
+        const title = document.createElement("h3");
+        title.textContent = item.title;
+        card.append(title);
+
+        const variations = document.createElement("div");
+        variations.className = "sound-variations";
+        const row = document.createElement("div");
+        row.className = "sound-variation";
+        const singleDescription = singleAudio.description || item.description || "";
+        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
+        if (singleTitle && !item.hideSingleAudioTitle) {
+          const label = document.createElement("span");
+          label.className = singleDescription ? "sound-variation-label" : "sound-group-title";
+          label.textContent = singleTitle;
+          row.append(label);
+        }
+        if (singleDescription && singleDescription.trim() !== "") {
+          const description = document.createElement("p");
+          description.className = "sound-variation-description";
+          description.textContent = singleDescription;
+          row.append(description);
+        }
+        row.append(createSoundActions(singleAudio));
+        variations.append(row);
+        card.append(variations);
+        container.append(card);
+        return;
+      }
+
       const title = document.createElement("h3");
       title.textContent = item.title;
       card.append(title);
@@ -392,7 +421,7 @@ const renderSoundCards = (container, items) => {
     item.audio.forEach((audio) => {
       const row = document.createElement("div");
       row.className = "sound-variation";
-      if (audio.title) {
+      if (audio.title && !item.hideSingleAudioTitle) {
         const label = document.createElement("span");
         label.className = "sound-variation-label";
         label.textContent = audio.title;
@@ -517,6 +546,7 @@ const renderSystemListView = () => {
           title: station.name,
           description: "",
           groupTitle: commonTitle,
+          forceBoxedSingle: true,
           audio: scopedItems.flatMap((item) => {
             const keepSubTitle = item.audio.length > 1;
             return item.audio.map((audio) => ({

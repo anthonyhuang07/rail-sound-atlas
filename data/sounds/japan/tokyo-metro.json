@@ -76,6 +76,195 @@
       }
     ]
   },
+  "g-12-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-12-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-12-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+  "g-13-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-13-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-13-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+  "g-14-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-14-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-14-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+  "g-15-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-15-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-15-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+  "g-16-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-16-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-16-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+    "g-17-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-17-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-17-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
+    "g-18-hassha": {
+    "title": "Departure Melody",
+    "audio": [
+      {
+        "title": "To Shibuya",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-18-1.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      },
+      {
+        "title": "To Asakusa",
+        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-18-2.mp3",
+        "lineIds": [
+          "ginza"
+        ],
+        "metadata": {
+          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
+          "yearCaptured": 2025
+        }
+      }
+    ]
+  },
   "g-19-hassha": {
     "title": "Departure Melody",
     "audio": [
@@ -93,38 +282,6 @@
       {
         "title": "Platform 2",
         "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-19-2.mp3",
-        "lineIds": [
-          "ginza"
-        ],
-        "metadata": {
-          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
-          "yearCaptured": 2025
-        }
-      }
-    ]
-  },
-  "g-18-hassha": {
-    "title": "Departure Melody",
-    "audio": [
-      {
-        "title": "To Shibuya",
-        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-18-1.mp3",
-        "lineIds": [
-          "ginza"
-        ],
-        "metadata": {
-          "origin": "https://www.youtube.com/watch?v=RoKgAVyEn1I",
-          "yearCaptured": 2025
-        }
-      }
-    ]
-  },
-  "g-17-hassha": {
-    "title": "Departure Melody",
-    "audio": [
-      {
-        "title": "To Shibuya",
-        "src": "assets/audio/japan/tokyo-metro/ginza/hassha-g-17-1.mp3",
         "lineIds": [
           "ginza"
         ],

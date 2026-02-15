@@ -89,6 +89,78 @@
     }
   },
   "stations": {
+    "mitsukoshimae": {
+      "name": "Mitsukoshimae",
+      "lines": [
+        [
+          "ginza",
+          12
+        ]
+      ],
+      "soundIds": [
+        "g-12-hassha"
+      ]
+    },
+    "kanda": {
+      "name": "Kanda",
+      "lines": [
+        [
+          "ginza",
+          13
+        ]
+      ],
+      "soundIds": [
+        "g-13-hassha"
+      ]
+    },
+    "suehirocho": {
+      "name": "Suehirocho",
+      "lines": [
+        [
+          "ginza",
+          14
+        ]
+      ],
+      "soundIds": [
+        "g-14-hassha"
+      ]
+    },
+    "ueno-hirokoji": {
+      "name": "Ueno-hirokoji",
+      "lines": [
+        [
+          "ginza",
+          15
+        ]
+      ],
+      "soundIds": [
+        "g-15-hassha"
+      ]
+    },
+    "ueno": {
+      "name": "Ueno",
+      "lines": [
+        [
+          "ginza",
+          16
+        ]
+      ],
+      "soundIds": [
+        "g-16-hassha"
+      ]
+    },
+    "inaricho": {
+      "name": "Inaricho",
+      "lines": [
+        [
+          "ginza",
+          17
+        ]
+      ],
+      "soundIds": [
+        "g-17-hassha"
+      ]
+    },
     "tawaramachi": {
       "name": "Tawaramachi",
       "lines": [
