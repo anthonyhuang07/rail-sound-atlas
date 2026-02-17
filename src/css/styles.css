@@ -11,6 +11,7 @@
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -18,7 +19,7 @@ body {
   font-family: "Helvetica Neue", Arial, sans-serif;
   color: #f2f2f2;
   background: #000000;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -44,6 +45,7 @@ main {
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 #view-system {
@@ -211,6 +213,10 @@ body.is-system .system-mode-toggle {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -ms-scroll-chaining: none;
+      overscroll-behavior: contain;
 }
 
 .info-modal {

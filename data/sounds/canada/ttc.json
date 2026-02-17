@@ -64,6 +64,22 @@
       }
     ]
   },
+  "accel": {
+    "title": "Train Acceleration",
+    "audio": [
+      {
+        "src": "assets/audio/canada/ttc/line-2/accel-t1.mp3",
+        "lineIds": [
+          "line-2"
+        ],
+        "metadata": {
+          "rollingStock": "T1",
+          "origin": "https://www.youtube.com/watch?v=6pvcubkoHpI",
+          "yearCaptured": 2022
+        }
+      }
+    ]
+  },
   "vaughan-next": {
     "title": "Next Station",
     "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",

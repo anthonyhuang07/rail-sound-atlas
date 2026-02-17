@@ -16,6 +16,7 @@ $sound-desc-lines: 3;
 html,
 body {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -37,6 +38,7 @@ main {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
 #view-system {
@@ -188,6 +190,9 @@ body.is-system .system-mode-toggle {
   &.is-active {
     display: block;
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
 

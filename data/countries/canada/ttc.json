@@ -56,7 +56,8 @@
       "subtitle": "T1",
       "icon": "assets/images/canada/ttc/line-2.png",
       "soundIds": [
-        "line-2-kennedy"
+        "line-2-kennedy",
+        "accel"
       ]
     },
     "line-4": {
