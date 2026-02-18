@@ -717,9 +717,10 @@ body.is-system .system-mode-toggle {
   }
 
   .line-icon {
-    width: 1.125rem;
     height: 1.125rem;
+    width: auto;
     object-fit: contain;
+    max-width: none;
   }
 
   .close-button {
@@ -903,9 +904,9 @@ body.is-system .system-mode-toggle {
   }
 
   .line-icon {
-    width: 1.125rem;
     height: 1.125rem;
-    max-width: 1.125rem;
+    width: auto;
+    max-width: none;
     max-height: 1.125rem;
     flex-shrink: 0;
     object-fit: contain;
@@ -1100,11 +1101,12 @@ body.is-system .system-mode-toggle {
     }
 
     img {
-      width: 1rem;
       height: 1rem;
+      width: auto;
       display: block;
       object-fit: contain;
       flex-shrink: 0;
+      max-width: none;
     }
   }
 

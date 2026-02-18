@@ -1,0 +1,130 @@
+{
+  "system": {
+    "id": "shenzhen-metro",
+    "name": "Shenzhen Metro",
+    "description": "Shenzhen, Guangdong — Est. 2004",
+    "soundIds": []
+  },
+  "lines": {
+    "line-1": {
+      "title": "Line 1",
+      "subtitle": "Bombardier MOVIA 456, CRRC Changchun, CRRC Zhuzhou",
+      "icon": "assets/images/china/shenzhen-metro/line-1.png",
+      "soundIds": [
+      ]
+    },
+    "line-2": {
+      "title": "Line 2",
+      "subtitle": "CRRC Changchun, CRRC Zhuzhou",
+      "icon": "assets/images/china/shenzhen-metro/line-2.png",
+      "soundIds": [
+      ]
+    },
+    "line-3": {
+        "title": "Line 3",
+        "subtitle": "CNR Changchun, CSR Nanjing Puzhen",
+        "icon": "assets/images/china/shenzhen-metro/line-3.png",
+        "soundIds": [
+        ]
+    },
+    "line-4": {
+        "title": "Line 4",
+        "subtitle": "CRRC Nanjing Puzhen Type A",
+        "icon": "assets/images/china/shenzhen-metro/line-4.png",
+        "soundIds": [
+        ]
+    },
+    "line-5": {
+        "title": "Line 5",
+        "subtitle": "CRRC Zhuzhou, CRRC Changchun",
+        "icon": "assets/images/china/shenzhen-metro/line-5.png",
+        "soundIds": [
+        ]
+    },
+    "line-6": {
+        "title": "Line 6",
+        "subtitle": "CRRC Puzhen",
+        "icon": "assets/images/china/shenzhen-metro/line-6.png",
+        "soundIds": [
+        ]
+    },
+    "line-6-branch": {
+        "title": "Line 6 Branch",
+        "subtitle": "CRRC Puzhen",
+        "icon": "assets/images/china/shenzhen-metro/line-6b.webp",
+        "soundIds": [
+        ]
+    },
+    "line-7": {
+        "title": "Line 7",
+        "subtitle": "CRRC Changchun",
+        "icon": "assets/images/china/shenzhen-metro/line-7.png",
+        "soundIds": [
+        ]
+    },
+    "line-8": {
+        "title": "Line 8",
+        "subtitle": "CRRC Changchun, CRRC Zhuzhou",
+        "icon": "assets/images/china/shenzhen-metro/line-8.png",
+        "soundIds": [
+        ]
+    },
+    "line-9": {
+        "title": "Line 9",
+        "subtitle": "CRRC Changchun",
+        "icon": "assets/images/china/shenzhen-metro/line-9.png",
+        "soundIds": [
+        ]
+    },
+    "line-10": {
+        "title": "Line 10",
+        "subtitle": "CRRC Changchun Type A",
+        "icon": "assets/images/china/shenzhen-metro/line-10.png",
+        "soundIds": [
+        ]
+    },
+    "line-11": {
+        "title": "Line 11",
+        "subtitle": "CRRC Zhuzhou",
+        "icon": "assets/images/china/shenzhen-metro/line-11.png",
+        "soundIds": [
+        ]
+    },
+    "line-12": {
+        "title": "Line 12",
+        "subtitle": "CRRC Puzhen Type A",
+        "icon": "assets/images/china/shenzhen-metro/line-12.png",
+        "soundIds": [
+        ]
+    },
+    "line-13": {
+        "title": "Line 13",
+        "subtitle": "",
+        "icon": "assets/images/china/shenzhen-metro/line-13.png",
+        "soundIds": [
+        ]
+    },
+    "line-14": {
+        "title": "Line 14",
+        "subtitle": "CRRC Changchun",
+        "icon": "assets/images/china/shenzhen-metro/line-14.png",
+        "soundIds": [
+        ]
+    },
+    "line-16": {
+        "title": "Line 16",
+        "subtitle": "CRRC Changchun",
+        "icon": "assets/images/china/shenzhen-metro/line-16.png",
+        "soundIds": [
+        ]
+    },
+    "line-20": {
+        "title": "Line 20",
+        "subtitle": "CRRC Changchun Type A",
+        "icon": "assets/images/china/shenzhen-metro/line-20.png",
+        "soundIds": [
+        ]
+    }
+  },
+  "stations": {}
+}

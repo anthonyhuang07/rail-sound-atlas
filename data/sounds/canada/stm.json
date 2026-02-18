@@ -96,9 +96,17 @@
       }
     ]
   },
-  "lionel-groulx-prochaine": {
+  "zone-b-attention": {
+    "title": "Fare Zone Warning",
+    "description": "Attention! Dernière sortie avant d'atteindre la zone tarifaire B. Vous devez détenir un titre de transport tout mode AB, ABC, ou ABCD pour continuer vers la station Longueuil–Université-de-Sherbrooke.",
+    "audio": [
+      {
+        "src": "assets/audio/canada/stm/line-4/zone-b-attention.mp3"
+      }
+    ]
+  },
+  "next-station": {
     "title": "Next Station",
-    "description": "Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
     "audio": [
       {
         "src": "assets/audio/canada/stm/line-2/lionel-groulx-prochaine.mp3",
@@ -107,136 +115,58 @@
         ],
         "metadata": {
           "rollingStock": "MPM-10"
-        }
-      }
-    ]
-  },
-  "lionel-groulx": {
-    "title": "Arrival",
-    "description": "Station Lionel-Groulx. Ouverture des portes de l'autre côté.",
-    "audio": [
+        },
+        "description": "Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
+        "stationNumber": 11
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/lionel-groulx.mp3",
+        "src": "assets/audio/canada/stm/line-2/cote-vertu-prochaine.mp3",
+        "description": "Prochaine station: Côte-Vertu.",
+        "stationNumber": 1,
         "lineIds": [
           "line-2"
-        ],
-        "metadata": {
-          "rollingStock": "MPM-10"
-        }
-      }
-    ]
-  },
-  "cote-vertu-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Côte-Vertu.",
-    "audio": [
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/cote-vertu-prochaine.mp3"
-      }
-    ]
-  },
-  "cote-vertu": {
-    "title": "Arrival",
-    "description": "Station Côte-Vertu, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-2/du-college-prochaine.mp3",
+        "description": "Prochaine station: Du Collège.",
+        "stationNumber": 2,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/cote-vertu.mp3"
-      }
-    ]
-  },
-  "du-college-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Du Collège.",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-2/de-la-savane-prochaine.mp3",
+        "description": "Prochaine station: De la Savane.",
+        "stationNumber": 3,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/du-college-prochaine.mp3"
-      }
-    ]
-  },
-  "du-college": {
-    "title": "Arrival",
-    "description": "Station Du Collège.",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-2/namur-prochaine.mp3",
+        "description": "Prochaine station: Namur.",
+        "stationNumber": 4,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/du-college.mp3"
-      }
-    ]
-  },
-  "de-la-savane-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: De la Savane.",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-2/plamondon-prochaine.mp3",
+        "description": "Prochaine station: Plamondon.",
+        "stationNumber": 5,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/de-la-savane-prochaine.mp3"
-      }
-    ]
-  },
-  "de-la-savane": {
-    "title": "Arrival",
-    "description": "Station De la Savane.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/de-la-savane.mp3"
-      }
-    ]
-  },
-  "namur-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Namur.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/namur-prochaine.mp3"
-      }
-    ]
-  },
-  "namur": {
-    "title": "Arrival",
-    "description": "Station Namur.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/namur.mp3"
-      }
-    ]
-  },
-  "plamondon-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Plamondon.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/plamondon-prochaine.mp3"
-      }
-    ]
-  },
-  "plamondon": {
-    "title": "Arrival",
-    "description": "Station Plamondon.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/plamondon.mp3"
-      }
-    ]
-  },
-  "cote-ste-catherine-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Côte-Sainte-Catherine.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/cote-ste-catherine-prochaine.mp3"
-      }
-    ]
-  },
-  "cote-ste-catherine": {
-    "title": "Arrival",
-    "description": "Station Côte-Sainte-Catherine.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/cote-ste-catherine.mp3"
-      }
-    ]
-  },
-  "snowdon-prochaine": {
-    "title": "Next Station",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-2/cote-ste-catherine-prochaine.mp3",
+        "description": "Prochaine station: Côte-Sainte-Catherine.",
+        "stationNumber": 6,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
         "title": "Ligne Orange",
         "description": "Prochaine station: Snowdon. Correspondance avec la ligne bleue.",
@@ -246,7 +176,8 @@
         ],
         "metadata": {
           "rollingStock": "MPM-10 (AZUR)"
-        }
+        },
+        "stationNumber": 7
       },
       {
         "title": "Ligne Bleue",
@@ -257,13 +188,148 @@
         ],
         "metadata": {
           "rollingStock": "MR-73"
-        }
+        },
+        "stationNumber": 1
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/villa-maria-prochaine.mp3",
+        "description": "Prochaine station: Villa Maria.",
+        "stationNumber": 8,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/vendome-prochaine.mp3",
+        "description": "Prochaine station: Vendôme.",
+        "stationNumber": 9,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/place-st-henri-prochaine.mp3",
+        "description": "Prochaine station: Place-Saint-Henri.",
+        "stationNumber": 10,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/georges-vanier-prochaine.mp3",
+        "description": "Prochaine station: Georges-Vanier.",
+        "stationNumber": 12,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/lucien-lallier-prochaine.mp3",
+        "description": "Prochaine station: Lucien-L'Allier.",
+        "stationNumber": 13,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/montmorency-prochaine.mp3",
+        "description": "Prochaine station: Montmorency.",
+        "stationNumber": 31,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-4/berri-uqam-prochaine.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "MR-73"
+        },
+        "description": "Prochaine station: Berri-UQAM. Correspondance avec les lignes orange et verte.",
+        "stationNumber": 1
+      },
+      {
+        "src": "assets/audio/canada/stm/line-4/jean-drapeau-prochaine.mp3",
+        "description": "Prochaine station: Jean-Drapeau.",
+        "stationNumber": 2,
+        "lineIds": [
+          "line-4"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-4/longueuil-udes-prochaine.mp3",
+        "description": "Prochaine station: Longueuil–Université-de-Sherbrooke.",
+        "stationNumber": 3,
+        "lineIds": [
+          "line-4"
+        ]
       }
     ]
   },
-  "snowdon": {
+  "arrival": {
     "title": "Arrival",
     "audio": [
+      {
+        "src": "assets/audio/canada/stm/line-2/lionel-groulx.mp3",
+        "lineIds": [
+          "line-2"
+        ],
+        "metadata": {
+          "rollingStock": "MPM-10"
+        },
+        "description": "Station Lionel-Groulx. Ouverture des portes de l'autre côté.",
+        "stationNumber": 11
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/cote-vertu.mp3",
+        "description": "Station Côte-Vertu, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+        "stationNumber": 1,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/du-college.mp3",
+        "description": "Station Du Collège.",
+        "stationNumber": 2,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/de-la-savane.mp3",
+        "description": "Station De la Savane.",
+        "stationNumber": 3,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/namur.mp3",
+        "description": "Station Namur.",
+        "stationNumber": 4,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/plamondon.mp3",
+        "description": "Station Plamondon.",
+        "stationNumber": 5,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/cote-ste-catherine.mp3",
+        "description": "Station Côte-Sainte-Catherine.",
+        "stationNumber": 6,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
         "title": "Ligne Orange",
         "description": "Station Snowdon.",
@@ -273,7 +339,8 @@
         ],
         "metadata": {
           "rollingStock": "MPM-10"
-        }
+        },
+        "stationNumber": 7
       },
       {
         "title": "Ligne Bleue",
@@ -284,136 +351,57 @@
         ],
         "metadata": {
           "rollingStock": "MR-73"
-        }
-      }
-    ]
-  },
-  "villa-maria-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Villa Maria.",
-    "audio": [
+        },
+        "stationNumber": 1
+      },
       {
-        "src": "assets/audio/canada/stm/line-2/villa-maria-prochaine.mp3"
-      }
-    ]
-  },
-  "villa-maria": {
-    "title": "Arrival",
-    "description": "Station Villa Maria.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/villa-maria.mp3"
-      }
-    ]
-  },
-  "vendome-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Vendôme.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/vendome-prochaine.mp3"
-      }
-    ]
-  },
-  "vendome": {
-    "title": "Arrival",
-    "description": "Station Vendôme.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/vendome.mp3"
-      }
-    ]
-  },
-  "place-st-henri-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Place-Saint-Henri.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/place-st-henri-prochaine.mp3"
-      }
-    ]
-  },
-  "place-st-henri": {
-    "title": "Arrival",
-    "description": "Station Place-Saint-Henri.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/place-st-henri.mp3"
-      }
-    ]
-  },
-  "georges-vanier-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Georges-Vanier.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/georges-vanier-prochaine.mp3"
-      }
-    ]
-  },
-  "georges-vanier": {
-    "title": "Arrival",
-    "description": "Station Georges-Vanier.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/georges-vanier.mp3"
-      }
-    ]
-  },
-  "lucien-lallier-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Lucien-L'Allier.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/lucien-lallier-prochaine.mp3"
-      }
-    ]
-  },
-  "lucien-lallier": {
-    "title": "Arrival",
-    "description": "Station Lucien-L'Allier.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/lucien-lallier.mp3"
-      }
-    ]
-  },
-  "montmorency-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Montmorency.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/montmorency-prochaine.mp3"
-      }
-    ]
-  },
-  "montmorency": {
-    "title": "Arrival",
-    "description": "Station Montmorency, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-2/montmorency.mp3"
-      }
-    ]
-  },
-  "berri-uqam-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Berri-UQAM. Correspondance avec les lignes orange et verte.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-4/berri-uqam-prochaine.mp3",
+        "src": "assets/audio/canada/stm/line-2/villa-maria.mp3",
+        "description": "Station Villa Maria.",
+        "stationNumber": 8,
         "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "MR-73"
-        }
-      }
-    ]
-  },
-  "berri-uqam": {
-    "title": "Arrival",
-    "audio": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/vendome.mp3",
+        "description": "Station Vendôme.",
+        "stationNumber": 9,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/place-st-henri.mp3",
+        "description": "Station Place-Saint-Henri.",
+        "stationNumber": 10,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/georges-vanier.mp3",
+        "description": "Station Georges-Vanier.",
+        "stationNumber": 12,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/lucien-lallier.mp3",
+        "description": "Station Lucien-L'Allier.",
+        "stationNumber": 13,
+        "lineIds": [
+          "line-2"
+        ]
+      },
+      {
+        "src": "assets/audio/canada/stm/line-2/montmorency.mp3",
+        "description": "Station Montmorency, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+        "stationNumber": 31,
+        "lineIds": [
+          "line-2"
+        ]
+      },
       {
         "title": "Ligne Jaune",
         "description": "Station Berri-UQAM, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
@@ -423,52 +411,24 @@
         ],
         "metadata": {
           "rollingStock": "MR-73"
-        }
-      }
-    ]
-  },
-  "jean-drapeau-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Jean-Drapeau.",
-    "audio": [
+        },
+        "stationNumber": 1
+      },
       {
-        "src": "assets/audio/canada/stm/line-4/jean-drapeau-prochaine.mp3"
-      }
-    ]
-  },
-  "zone-b-attention": {
-    "title": "Fare Zone Warning",
-    "description": "Attention! Dernière sortie avant d'atteindre la zone tarifaire B. Vous devez détenir un titre de transport tout mode AB, ABC, ou ABCD pour continuer vers la station Longueuil–Université-de-Sherbrooke.",
-    "audio": [
+        "src": "assets/audio/canada/stm/line-4/jean-drapeau.mp3",
+        "description": "Station Jean-Drapeau.",
+        "stationNumber": 2,
+        "lineIds": [
+          "line-4"
+        ]
+      },
       {
-        "src": "assets/audio/canada/stm/line-4/zone-b-attention.mp3"
-      }
-    ]
-  },
-  "jean-drapeau": {
-    "title": "Arrival",
-    "description": "Station Jean-Drapeau.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-4/jean-drapeau.mp3"
-      }
-    ]
-  },
-  "longueuil-udes-prochaine": {
-    "title": "Next Station",
-    "description": "Prochaine station: Longueuil–Université-de-Sherbrooke.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-4/longueuil-udes-prochaine.mp3"
-      }
-    ]
-  },
-  "longueuil-udes": {
-    "title": "Arrival",
-    "description": "Station Longueuil–Université-de-Sherbrooke, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/stm/line-4/longueuil-udes.mp3"
+        "src": "assets/audio/canada/stm/line-4/longueuil-udes.mp3",
+        "description": "Station Longueuil–Université-de-Sherbrooke, terminus. N'oubliez pas vos effets personnels. Merci d'avoir voyagé avec la STM.",
+        "stationNumber": 3,
+        "lineIds": [
+          "line-4"
+        ]
       }
     ]
   }

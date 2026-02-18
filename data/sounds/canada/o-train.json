@@ -57,9 +57,8 @@
       }
     ]
   },
-  "bayview-next": {
+  "next-station": {
     "title": "Next Station",
-    "description": "Next station: Bayview. Prochaine station: Bayview.",
     "audio": [
       {
         "title": "LINT",
@@ -71,14 +70,10 @@
           "origin": "Self-Recorded",
           "yearCaptured": 2026,
           "rollingStock": "Alstom Coradia LINT 41"
-        }
-      }
-    ]
-  },
-  "corso-italia-next": {
-    "title": "Next Station",
-    "description": "Next station: Corso Italia. Prochaine station: Corso Italia.",
-    "audio": [
+        },
+        "description": "Next station: Bayview. Prochaine station: Bayview.",
+        "stationNumber": 1
+      },
       {
         "title": "LINT",
         "src": "assets/audio/canada/o-train/line-2/corso-italia-next-lint.mp3",
@@ -86,13 +81,17 @@
           "origin": "Self-Recorded",
           "yearCaptured": 2026,
           "rollingStock": "Alstom Coradia LINT 41"
-        }
+        },
+        "description": "Next station: Corso Italia. Prochaine station: Corso Italia.",
+        "stationNumber": 2,
+        "lineIds": [
+          "line-2"
+        ]
       }
     ]
   },
-  "dows-lake": {
+  "arrival": {
     "title": "Arrival",
-    "description": "Dow's Lake Station. Station Lac Dow.",
     "audio": [
       {
         "src": "assets/audio/canada/o-train/line-2/dows-lake-lint.mp3",
@@ -100,7 +99,12 @@
           "origin": "Self-Recorded",
           "yearCaptured": 2026,
           "rollingStock": "Alstom Coradia LINT 41"
-        }
+        },
+        "description": "Dow's Lake Station. Station Lac Dow.",
+        "stationNumber": 3,
+        "lineIds": [
+          "line-2"
+        ]
       }
     ]
   }

@@ -46,7 +46,7 @@
         ]
       ],
       "soundIds": [
-        "bayview-next"
+        "next-station"
       ]
     },
     "corso-italia": {
@@ -58,7 +58,7 @@
         ]
       ],
       "soundIds": [
-        "corso-italia-next"
+        "next-station"
       ]
     },
     "dows-lake": {
@@ -70,7 +70,7 @@
         ]
       ],
       "soundIds": [
-        "dows-lake"
+        "arrival"
       ]
     }
   }

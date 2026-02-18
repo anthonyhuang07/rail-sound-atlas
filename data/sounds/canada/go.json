@@ -25,29 +25,32 @@
       }
     ]
   },
-  "exhibition": {
+  "arrival": {
     "title": "Arrival",
-    "description": "Now arriving at: Exhibition. Arrivée à: Exhibition. Please remember to tap off. N'oubliez pas de présenter votre carte à la sortie.",
     "audio": [
       {
         "src": "assets/audio/canada/go/lakeshore-w/exhibition.mp3",
         "metadata": {
           "origin": "Self-Recorded",
           "yearCaptured": 2026
-        }
-      }
-    ]
-  },
-  "oakville": {
-    "title": "Arrival",
-    "description": "Now arriving at: Oakville. Arrivée à: Oakville.",
-    "audio": [
+        },
+        "description": "Now arriving at: Exhibition. Arrivée à: Exhibition. Please remember to tap off. N'oubliez pas de présenter votre carte à la sortie.",
+        "stationNumber": 2,
+        "lineIds": [
+          "lakeshore-w"
+        ]
+      },
       {
         "src": "assets/audio/canada/go/lakeshore-w/oakville.mp3",
         "metadata": {
           "origin": "Self-Recorded",
           "yearCaptured": 2026
-        }
+        },
+        "description": "Now arriving at: Oakville. Arrivée à: Oakville.",
+        "stationNumber": 7,
+        "lineIds": [
+          "lakeshore-w"
+        ]
       }
     ]
   }

@@ -7,6 +7,12 @@
       "data": "data/countries/canada.json"
     },
     {
+      "id": "china",
+      "name": "China",
+      "image": "assets/images/china/flag.png",
+      "data": "data/countries/china.json"
+    },
+    {
       "id": "japan",
       "name": "Japan",
       "image": "assets/images/japan/flag.webp",

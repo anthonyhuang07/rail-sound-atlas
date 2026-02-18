@@ -80,9 +80,8 @@
       }
     ]
   },
-  "vaughan-next": {
+  "next-station": {
     "title": "Next Station",
-    "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
     "audio": [
       {
         "src": "assets/audio/canada/ttc/line-1/vaughan-next.mp3",
@@ -91,13 +90,102 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
+        },
+        "description": "Next station is: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+        "stationNumber": 1
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-1/union-next.mp3",
+        "lineIds": [
+          "line-1"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Union. Union Station.",
+        "stationNumber": 22
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-4/sheppard-yonge-next.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change for Line 1.",
+        "stationNumber": 1
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-1/finch-next.mp3",
+        "lineIds": [
+          "line-1"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Finch. Finch Station. This is a terminal station.",
+        "stationNumber": 38
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-2/kipling-next.mp3",
+        "lineIds": [
+          "line-2"
+        ],
+        "metadata": {
+          "rollingStock": "T1"
+        },
+        "description": "The next station is Kipling, Kipling Station.",
+        "stationNumber": 1
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-4/bayview-next.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Bayview. Bayview Station.",
+        "stationNumber": 2
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-4/bessarion-next.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Bessarion. Bessarion Station.",
+        "stationNumber": 3
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-4/leslie-next.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Leslie. Leslie Station.",
+        "stationNumber": 4
+      },
+      {
+        "src": "assets/audio/canada/ttc/line-4/don-mills-next.mp3",
+        "lineIds": [
+          "line-4"
+        ],
+        "metadata": {
+          "rollingStock": "Toronto Rocket"
+        },
+        "description": "Next station is: Don Mills. Don Mills Station. This is a terminal station.",
+        "stationNumber": 5
       }
     ]
   },
-  "vaughan": {
+  "arrival": {
     "title": "Arrival",
-    "description": "Arriving at: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
     "audio": [
       {
         "src": "assets/audio/canada/ttc/line-1/vaughan.mp3",
@@ -106,29 +194,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "union-next": {
-    "title": "Next Station",
-    "description": "Next station is: Union. Union Station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-1/union-next.mp3",
-        "lineIds": [
-          "line-1"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "union": {
-    "title": "Arrival",
-    "description": "Arriving at: Union. Union Station. Doors will open on the right.",
-    "audio": [
+        },
+        "description": "Arriving at: Vaughan Metropolitan Centre. Vaughan Metropolitan Centre Station. This is a terminal station.",
+        "stationNumber": 1
+      },
       {
         "src": "assets/audio/canada/ttc/line-1/union.mp3",
         "lineIds": [
@@ -136,29 +205,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "sheppard-yonge-next": {
-    "title": "Next Station",
-    "description": "Next station is: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change for Line 1.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-4/sheppard-yonge-next.mp3",
-        "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "sheppard-yonge": {
-    "title": "Arrival",
-    "description": "Arriving at: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change here for Line 1.",
-    "audio": [
+        },
+        "description": "Arriving at: Union. Union Station. Doors will open on the right.",
+        "stationNumber": 22
+      },
       {
         "src": "assets/audio/canada/ttc/line-4/sheppard-yonge.mp3",
         "lineIds": [
@@ -166,29 +216,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "finch-next": {
-    "title": "Next Station",
-    "description": "Next station is: Finch. Finch Station. This is a terminal station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-1/finch-next.mp3",
-        "lineIds": [
-          "line-1"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "finch": {
-    "title": "Arrival",
-    "description": "Arriving at: Finch. Finch Station. This is a terminal station.",
-    "audio": [
+        },
+        "description": "Arriving at: Sheppard-Yonge. Sheppard-Yonge Station. This is a terminal station. Change here for Line 1.",
+        "stationNumber": 1
+      },
       {
         "src": "assets/audio/canada/ttc/line-1/finch.mp3",
         "lineIds": [
@@ -196,29 +227,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "kipling-next": {
-    "title": "Next Station",
-    "description": "The next station is Kipling, Kipling Station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-2/kipling-next.mp3",
-        "lineIds": [
-          "line-2"
-        ],
-        "metadata": {
-          "rollingStock": "T1"
-        }
-      }
-    ]
-  },
-  "kipling": {
-    "title": "Arrival",
-    "description": "Arriving at Kipling, Kipling Station. This is a terminal station.",
-    "audio": [
+        },
+        "description": "Arriving at: Finch. Finch Station. This is a terminal station.",
+        "stationNumber": 38
+      },
       {
         "src": "assets/audio/canada/ttc/line-2/kipling.mp3",
         "lineIds": [
@@ -226,29 +238,10 @@
         ],
         "metadata": {
           "rollingStock": "T1"
-        }
-      }
-    ]
-  },
-  "bayview-next": {
-    "title": "Next Station",
-    "description": "Next station is: Bayview. Bayview Station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-4/bayview-next.mp3",
-        "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "bayview": {
-    "title": "Arrival",
-    "description": "Arriving at: Bayview. Bayview Station. Doors will open on the left.",
-    "audio": [
+        },
+        "description": "Arriving at Kipling, Kipling Station. This is a terminal station.",
+        "stationNumber": 1
+      },
       {
         "src": "assets/audio/canada/ttc/line-4/bayview.mp3",
         "lineIds": [
@@ -256,29 +249,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "bessarion-next": {
-    "title": "Next Station",
-    "description": "Next station is: Bessarion. Bessarion Station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-4/bessarion-next.mp3",
-        "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "bessarion": {
-    "title": "Arrival",
-    "description": "Arriving at: Bessarion. Bessarion Station. Doors will open on the left.",
-    "audio": [
+        },
+        "description": "Arriving at: Bayview. Bayview Station. Doors will open on the left.",
+        "stationNumber": 2
+      },
       {
         "src": "assets/audio/canada/ttc/line-4/bessarion.mp3",
         "lineIds": [
@@ -286,29 +260,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "leslie-next": {
-    "title": "Next Station",
-    "description": "Next station is: Leslie. Leslie Station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-4/leslie-next.mp3",
-        "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "leslie": {
-    "title": "Arrival",
-    "description": "Arriving at: Leslie. Leslie Station. Doors will open on the left.",
-    "audio": [
+        },
+        "description": "Arriving at: Bessarion. Bessarion Station. Doors will open on the left.",
+        "stationNumber": 3
+      },
       {
         "src": "assets/audio/canada/ttc/line-4/leslie.mp3",
         "lineIds": [
@@ -316,29 +271,10 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "don-mills-next": {
-    "title": "Next Station",
-    "description": "Next station is: Don Mills. Don Mills Station. This is a terminal station.",
-    "audio": [
-      {
-        "src": "assets/audio/canada/ttc/line-4/don-mills-next.mp3",
-        "lineIds": [
-          "line-4"
-        ],
-        "metadata": {
-          "rollingStock": "Toronto Rocket"
-        }
-      }
-    ]
-  },
-  "don-mills": {
-    "title": "Arrival",
-    "description": "Arriving at: Don Mills. Don Mills Station. This is a terminal station.",
-    "audio": [
+        },
+        "description": "Arriving at: Leslie. Leslie Station. Doors will open on the left.",
+        "stationNumber": 4
+      },
       {
         "src": "assets/audio/canada/ttc/line-4/don-mills.mp3",
         "lineIds": [
@@ -346,7 +282,9 @@
         ],
         "metadata": {
           "rollingStock": "Toronto Rocket"
-        }
+        },
+        "description": "Arriving at: Don Mills. Don Mills Station. This is a terminal station.",
+        "stationNumber": 5
       }
     ]
   }

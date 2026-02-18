@@ -92,8 +92,8 @@
         ]
       ],
       "soundIds": [
-        "vaughan-next",
-        "vaughan"
+        "next-station",
+        "arrival"
       ]
     },
     "highway-407": {
@@ -321,8 +321,8 @@
         ]
       ],
       "soundIds": [
-        "union-next",
-        "union"
+        "next-station",
+        "arrival"
       ]
     },
     "king": {
@@ -476,8 +476,8 @@
         ]
       ],
       "soundIds": [
-        "sheppard-yonge-next",
-        "sheppard-yonge"
+        "next-station",
+        "arrival"
       ]
     },
     "north-york-centre": {
@@ -499,8 +499,8 @@
         ]
       ],
       "soundIds": [
-        "finch-next",
-        "finch"
+        "next-station",
+        "arrival"
       ]
     },
     "kipling": {
@@ -512,8 +512,8 @@
         ]
       ],
       "soundIds": [
-        "kipling-next",
-        "kipling"
+        "next-station",
+        "arrival"
       ]
     },
     "islington": {
@@ -799,8 +799,8 @@
         ]
       ],
       "soundIds": [
-        "bayview-next",
-        "bayview"
+        "next-station",
+        "arrival"
       ]
     },
     "bessarion": {
@@ -812,8 +812,8 @@
         ]
       ],
       "soundIds": [
-        "bessarion-next",
-        "bessarion"
+        "next-station",
+        "arrival"
       ]
     },
     "leslie": {
@@ -825,8 +825,8 @@
         ]
       ],
       "soundIds": [
-        "leslie-next",
-        "leslie"
+        "next-station",
+        "arrival"
       ]
     },
     "don-mills": {
@@ -838,8 +838,8 @@
         ]
       ],
       "soundIds": [
-        "don-mills-next",
-        "don-mills"
+        "next-station",
+        "arrival"
       ]
     },
     "mt-dennis": {

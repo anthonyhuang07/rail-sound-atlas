@@ -1,0 +1,14 @@
+{
+  "guangdong": {
+    "name": "Guangdong",
+    "systems": [
+      {
+        "id": "shenzhen-metro",
+        "name": "Shenzhen Metro",
+        "logo": "assets/images/china/shenzhen-metro/logo.png",
+        "data": "data/countries/china/shenzhen-metro.json",
+        "soundData": "data/sounds/china/shenzhen-metro.json"
+      }
+    ]
+  }
+}

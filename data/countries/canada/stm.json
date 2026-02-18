@@ -165,8 +165,8 @@
         ]
       ],
       "soundIds": [
-        "lionel-groulx-prochaine",
-        "lionel-groulx"
+        "next-station",
+        "arrival"
       ]
     },
     "atwater": {
@@ -358,8 +358,8 @@
         ]
       ],
       "soundIds": [
-        "cote-vertu-prochaine",
-        "cote-vertu"
+        "next-station",
+        "arrival"
       ]
     },
     "du-college": {
@@ -371,8 +371,8 @@
         ]
       ],
       "soundIds": [
-        "du-college-prochaine",
-        "du-college"
+        "next-station",
+        "arrival"
       ]
     },
     "de-la-savane": {
@@ -384,8 +384,8 @@
         ]
       ],
       "soundIds": [
-        "de-la-savane-prochaine",
-        "de-la-savane"
+        "next-station",
+        "arrival"
       ]
     },
     "namur": {
@@ -397,8 +397,8 @@
         ]
       ],
       "soundIds": [
-        "namur-prochaine",
-        "namur"
+        "next-station",
+        "arrival"
       ]
     },
     "plamondon": {
@@ -410,8 +410,8 @@
         ]
       ],
       "soundIds": [
-        "plamondon-prochaine",
-        "plamondon"
+        "next-station",
+        "arrival"
       ]
     },
     "cote-ste-catherine": {
@@ -423,8 +423,8 @@
         ]
       ],
       "soundIds": [
-        "cote-ste-catherine-prochaine",
-        "cote-ste-catherine"
+        "next-station",
+        "arrival"
       ]
     },
     "snowdon": {
@@ -440,8 +440,8 @@
         ]
       ],
       "soundIds": [
-        "snowdon-prochaine",
-        "snowdon"
+        "next-station",
+        "arrival"
       ]
     },
     "villa-maria": {
@@ -453,8 +453,8 @@
         ]
       ],
       "soundIds": [
-        "villa-maria-prochaine",
-        "villa-maria"
+        "next-station",
+        "arrival"
       ]
     },
     "vendome": {
@@ -466,8 +466,8 @@
         ]
       ],
       "soundIds": [
-        "vendome-prochaine",
-        "vendome"
+        "next-station",
+        "arrival"
       ]
     },
     "place-st-henri": {
@@ -479,8 +479,8 @@
         ]
       ],
       "soundIds": [
-        "place-st-henri-prochaine",
-        "place-st-henri"
+        "next-station",
+        "arrival"
       ]
     },
     "georges-vanier": {
@@ -492,8 +492,8 @@
         ]
       ],
       "soundIds": [
-        "georges-vanier-prochaine",
-        "georges-vanier"
+        "next-station",
+        "arrival"
       ]
     },
     "lucien-lallier": {
@@ -505,8 +505,8 @@
         ]
       ],
       "soundIds": [
-        "lucien-lallier-prochaine",
-        "lucien-lallier"
+        "next-station",
+        "arrival"
       ]
     },
     "bonaventure": {
@@ -682,8 +682,8 @@
         ]
       ],
       "soundIds": [
-        "montmorency-prochaine",
-        "montmorency"
+        "next-station",
+        "arrival"
       ]
     },
     "berri-uqam": {
@@ -703,8 +703,8 @@
         ]
       ],
       "soundIds": [
-        "berri-uqam-prochaine",
-        "berri-uqam"
+        "next-station",
+        "arrival"
       ]
     },
     "jean-drapeau": {
@@ -716,9 +716,9 @@
         ]
       ],
       "soundIds": [
-        "jean-drapeau-prochaine",
         "zone-b-attention",
-        "jean-drapeau"
+        "next-station",
+        "arrival"
       ]
     },
     "longueuil-udes": {
@@ -730,8 +730,8 @@
         ]
       ],
       "soundIds": [
-        "longueuil-udes-prochaine",
-        "longueuil-udes"
+        "next-station",
+        "arrival"
       ]
     },
     "cote-des-neiges": {

@@ -269,11 +269,31 @@ const stationLineOrder = (station, lineId) => {
   return line ? line[1] : undefined;
 };
 
-const filterItemsByLine = (items, lineId) =>
+const audioMatchesStation = (audio, station, lineId = null) => {
+  if (!station || audio.stationNumber === undefined) return true;
+  const lines = Array.isArray(station.lines) ? station.lines : [];
+  if (lineId) {
+    const order = stationLineOrder(station, lineId);
+    if (!Number.isFinite(order)) return false;
+    if (Array.isArray(audio.lineIds) && audio.lineIds.length && !audio.lineIds.includes(lineId)) {
+      return false;
+    }
+    return Number(audio.stationNumber) === order;
+  }
+  return lines.some(([id, order]) => {
+    if (Array.isArray(audio.lineIds) && audio.lineIds.length && !audio.lineIds.includes(id)) {
+      return false;
+    }
+    return Number(audio.stationNumber) === order;
+  });
+};
+
+const filterItemsByLine = (items, lineId, station = null) =>
   (items || [])
     .map((item) => {
       const sourceAudio = item.audio || [];
       const filteredAudio = sourceAudio.filter((audio, _, list) => {
+        if (!audioMatchesStation(audio, station, lineId)) return false;
         const hasScopedAudio = list.some((entry) => Array.isArray(entry.lineIds) && entry.lineIds.length);
         if (hasScopedAudio) {
           return Array.isArray(audio.lineIds) && audio.lineIds.includes(lineId);
@@ -465,7 +485,13 @@ const renderStationPopup = (stationData) => {
   popupSubtitle.textContent = stationLineIds(stationData)
     .map((lineId) => state.systemData.lines[lineId].title)
     .join(", ");
-  renderSoundCards(popupSoundList, stationData.items || []);
+  const stationItems = (stationData.items || [])
+    .map((item) => ({
+      ...item,
+      audio: (item.audio || []).filter((audio) => audioMatchesStation(audio, stationData)),
+    }))
+    .filter((item) => item.audio.length > 0);
+  renderSoundCards(popupSoundList, stationItems);
 };
 
 const openPanel = () => {
@@ -539,7 +565,7 @@ const renderSystemListView = () => {
     })
     .map((station) => ({
       ...(() => {
-        const scopedItems = filterItemsByLine(station.items, state.selectedLineId);
+        const scopedItems = filterItemsByLine(station.items, state.selectedLineId, station);
         const uniqueTitles = [...new Set(scopedItems.map((item) => item.title))];
         const commonTitle = uniqueTitles.length === 1 ? uniqueTitles[0] : "";
         return {
@@ -841,8 +867,6 @@ const updateLineIcons = (container, lineIds) => {
     const img = document.createElement("img");
     img.className = "line-icon";
     img.alt = `${id} icon`;
-    img.width = 18;
-    img.height = 18;
     img.src = iconUrl;
     container.append(img);
   });
@@ -1509,8 +1533,8 @@ const renderCountries = (countries) => {
       countryId: country.id,
       onClick: async () => {
         const data = await fetch(country.data).then((res) => res.json());
-        crumbCountry.textContent = data.country.name;
-        renderSystems(data.regions);
+        crumbCountry.textContent = country.name;
+        renderSystems(Object.values(data));
         setView("country");
       },
     });

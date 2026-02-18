@@ -1,57 +1,62 @@
 {
-  "country": {
-    "id": "canada",
-    "name": "Canada"
+  "british-columbia": {
+    "name": "British Columbia",
+    "systems": [
+      {
+        "id": "skytrain",
+        "name": "SkyTrain",
+        "logo": "assets/images/canada/skytrain/logo.png",
+        "map": "assets/maps/canada/skytrain.svg",
+        "data": "data/countries/canada/skytrain.json",
+        "soundData": "data/sounds/canada/skytrain.json"
+      }
+    ]
   },
-  "regions": [
-    {
-      "id": "quebec",
-      "name": "Québec",
-      "systems": [
-        {
-          "id": "stm",
-          "name": "Montréal Metro",
-          "logo": "assets/images/canada/stm/stm.png",
-          "map": "assets/maps/canada/stm.svg",
-          "data": "data/countries/canada/stm.json",
-          "soundData": "data/sounds/canada/stm.json"
-        },
-        {
-          "id": "rem",
-          "name": "Réseau Express Métropolitain",
-          "logo": "assets/images/canada/rem/logo.png",
-          "data": "data/countries/canada/rem.json",
-          "soundData": "data/sounds/canada/rem.json"
-        }
-      ]
-    },
-    {
-      "id": "ontario",
-      "name": "Ontario",
-      "systems": [
-        {
-          "id": "ttc",
-          "name": "Toronto Subway",
-          "logo": "assets/images/canada/ttc/ttc.png",
-          "map": "assets/maps/canada/ttc.svg",
-          "data": "data/countries/canada/ttc.json",
-          "soundData": "data/sounds/canada/ttc.json"
-        },
-        {
-          "id": "go",
-          "name": "GO Transit",
-          "logo": "assets/images/canada/go/logo.webp",
-          "data": "data/countries/canada/go.json",
-          "soundData": "data/sounds/canada/go.json"
-        },
-        {
-          "id": "o-train",
-          "name": "O-Train",
-          "logo": "assets/images/canada/o-train/logo.jpg",
-          "data": "data/countries/canada/o-train.json",
-          "soundData": "data/sounds/canada/o-train.json"
-        }
-      ]
-    }
-  ]
+  "ontario": {
+    "name": "Ontario",
+    "systems": [
+      {
+        "id": "ttc",
+        "name": "Toronto Subway",
+        "logo": "assets/images/canada/ttc/ttc.png",
+        "map": "assets/maps/canada/ttc.svg",
+        "data": "data/countries/canada/ttc.json",
+        "soundData": "data/sounds/canada/ttc.json"
+      },
+      {
+        "id": "go",
+        "name": "GO Transit",
+        "logo": "assets/images/canada/go/logo.webp",
+        "data": "data/countries/canada/go.json",
+        "soundData": "data/sounds/canada/go.json"
+      },
+      {
+        "id": "o-train",
+        "name": "O-Train",
+        "logo": "assets/images/canada/o-train/logo.jpg",
+        "data": "data/countries/canada/o-train.json",
+        "soundData": "data/sounds/canada/o-train.json"
+      }
+    ]
+  },
+  "quebec": {
+    "name": "Québec",
+    "systems": [
+      {
+        "id": "stm",
+        "name": "Montréal Metro",
+        "logo": "assets/images/canada/stm/stm.png",
+        "map": "assets/maps/canada/stm.svg",
+        "data": "data/countries/canada/stm.json",
+        "soundData": "data/sounds/canada/stm.json"
+      },
+      {
+        "id": "rem",
+        "name": "Réseau Express Métropolitain",
+        "logo": "assets/images/canada/rem/logo.png",
+        "data": "data/countries/canada/rem.json",
+        "soundData": "data/sounds/canada/rem.json"
+      }
+    ]
+  }
 }

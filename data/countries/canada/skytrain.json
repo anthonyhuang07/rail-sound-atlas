@@ -1,0 +1,33 @@
+{
+  "system": {
+    "id": "skytrain",
+    "name": "SkyTrain",
+    "description": "Vancouver, British Columbia — Est. 1985",
+    "soundIds": [
+    ]
+  },
+  "lines": {
+    "expo": {
+      "title": "Expo Line",
+      "subtitle": "ICTS Mark I, ART Mark II/III, Alstom Mark V",
+      "icon": "assets/images/canada/skytrain/expo.png",
+      "soundIds": [
+      ]
+    },
+    "millennium": {
+      "title": "Millennium Line",
+      "subtitle": "ART Mark II",
+      "icon": "assets/images/canada/skytrain/millennium.png",
+      "soundIds": [
+      ]
+    },
+    "canada-line": {
+        "title": "Canada Line",
+        "subtitle": "Rotem EMU",
+        "icon": "assets/images/canada/skytrain/canada.png",
+        "soundIds": [
+        ]
+    }
+  },
+  "stations": {}
+}
