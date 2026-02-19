@@ -35,9 +35,14 @@
           "yearCaptured": 2026
         },
         "description": "Now arriving at: Exhibition. Arrivée à: Exhibition. Please remember to tap off. N'oubliez pas de présenter votre carte à la sortie.",
-        "stationNumber": 2,
         "lineIds": [
           "lakeshore-w"
+        ],
+        "targets": [
+          {
+            "stationId": "exhibition",
+            "lineId": "lakeshore-w"
+          }
         ]
       },
       {
@@ -47,9 +52,14 @@
           "yearCaptured": 2026
         },
         "description": "Now arriving at: Oakville. Arrivée à: Oakville.",
-        "stationNumber": 7,
         "lineIds": [
           "lakeshore-w"
+        ],
+        "targets": [
+          {
+            "stationId": "oakville",
+            "lineId": "lakeshore-w"
+          }
         ]
       }
     ]

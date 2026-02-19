@@ -252,7 +252,7 @@ const normalizeSystemData = (raw) => {
 
   const stations = {};
   Object.entries(raw.stations || {}).forEach(([stationId, station]) => {
-    stations[stationId] = resolveItems(station);
+    stations[stationId] = { ...resolveItems(station), id: stationId };
   });
 
   return {
@@ -270,21 +270,11 @@ const stationLineOrder = (station, lineId) => {
 };
 
 const audioMatchesStation = (audio, station, lineId = null) => {
-  if (!station || audio.stationNumber === undefined) return true;
-  const lines = Array.isArray(station.lines) ? station.lines : [];
-  if (lineId) {
-    const order = stationLineOrder(station, lineId);
-    if (!Number.isFinite(order)) return false;
-    if (Array.isArray(audio.lineIds) && audio.lineIds.length && !audio.lineIds.includes(lineId)) {
-      return false;
-    }
-    return Number(audio.stationNumber) === order;
-  }
-  return lines.some(([id, order]) => {
-    if (Array.isArray(audio.lineIds) && audio.lineIds.length && !audio.lineIds.includes(id)) {
-      return false;
-    }
-    return Number(audio.stationNumber) === order;
+  if (!station || !Array.isArray(audio.targets) || !audio.targets.length) return true;
+  return audio.targets.some((target) => {
+    if (target.stationId !== station.id) return false;
+    if (!lineId) return true;
+    return !target.lineId || target.lineId === lineId;
   });
 };
 
@@ -294,9 +284,17 @@ const filterItemsByLine = (items, lineId, station = null) =>
       const sourceAudio = item.audio || [];
       const filteredAudio = sourceAudio.filter((audio, _, list) => {
         if (!audioMatchesStation(audio, station, lineId)) return false;
-        const hasScopedAudio = list.some((entry) => Array.isArray(entry.lineIds) && entry.lineIds.length);
+        const hasScopedAudio = list.some(
+          (entry) =>
+            (Array.isArray(entry.lineIds) && entry.lineIds.length) ||
+            (Array.isArray(entry.targets) && entry.targets.some((target) => target.lineId))
+        );
         if (hasScopedAudio) {
-          return Array.isArray(audio.lineIds) && audio.lineIds.includes(lineId);
+          return (
+            (Array.isArray(audio.lineIds) && audio.lineIds.includes(lineId)) ||
+            (Array.isArray(audio.targets) &&
+              audio.targets.some((target) => target.lineId === lineId))
+          );
         }
         return !audio.lineIds || audio.lineIds.includes(lineId);
       });

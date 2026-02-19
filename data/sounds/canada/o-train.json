@@ -72,7 +72,12 @@
           "rollingStock": "Alstom Coradia LINT 41"
         },
         "description": "Next station: Bayview. Prochaine station: Bayview.",
-        "stationNumber": 1
+        "targets": [
+          {
+            "stationId": "bayview",
+            "lineId": "line-2"
+          }
+        ]
       },
       {
         "title": "LINT",
@@ -83,9 +88,14 @@
           "rollingStock": "Alstom Coradia LINT 41"
         },
         "description": "Next station: Corso Italia. Prochaine station: Corso Italia.",
-        "stationNumber": 2,
         "lineIds": [
           "line-2"
+        ],
+        "targets": [
+          {
+            "stationId": "corso-italia",
+            "lineId": "line-2"
+          }
         ]
       }
     ]
@@ -101,9 +111,14 @@
           "rollingStock": "Alstom Coradia LINT 41"
         },
         "description": "Dow's Lake Station. Station Lac Dow.",
-        "stationNumber": 3,
         "lineIds": [
           "line-2"
+        ],
+        "targets": [
+          {
+            "stationId": "dows-lake",
+            "lineId": "line-2"
+          }
         ]
       }
     ]
