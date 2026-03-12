@@ -19,7 +19,6 @@
       "soundIds": [
         "doors-opening",
         "doors-closing",
-        "psd",
         "accel"
       ]
     }
