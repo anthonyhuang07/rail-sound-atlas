@@ -1674,3 +1674,16 @@ const init = async () => {
 };
 
 init();
+
+// IMPLEMENT IN JSON LATER
+
+/*
+
+    {
+      "id": "china",
+      "name": "China",
+      "image": "assets/images/china/flag.png",
+      "data": "data/countries/china.json"
+    },
+
+*/
