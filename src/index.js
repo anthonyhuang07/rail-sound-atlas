@@ -33,6 +33,238 @@ const sepSystem = document.querySelector(".crumb-sep[data-sep=system]");
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
 let userSystemMode = null;
 
+const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const fetchSystemData = async (systemId) => {
+  const [
+    { data: systemRow, error: systemError },
+    { data: lines, error: linesError },
+    { data: stations, error: stationsError },
+    { data: stationLines, error: stationLinesError },
+    { data: stationSounds, error: stationSoundsError },
+    { data: soundFiles, error: soundFilesError },
+  ] = await Promise.all([
+    supabaseClient
+      .from("systems")
+      .select("id, name, description, theme, map_url, sound_ids")
+      .eq("id", systemId)
+      .single(),
+
+    supabaseClient
+      .from("lines")
+      .select("system_id, id, title, subtitle, icon_url, other_icons, sound_ids, sort_order")
+      .eq("system_id", systemId)
+      .order("sort_order", { ascending: true }),
+
+    supabaseClient
+      .from("stations")
+      .select("system_id, id, name")
+      .eq("system_id", systemId),
+
+    supabaseClient
+      .from("station_lines")
+      .select("system_id, station_id, line_id, line_order")
+      .eq("system_id", systemId),
+
+    supabaseClient
+      .from("station_sounds")
+      .select("system_id, station_id, sound_id")
+      .eq("system_id", systemId),
+
+    supabaseClient
+      .from("sound_files")
+      .select("system_id, sound_id, line_ids")
+      .eq("system_id", systemId),
+  ]);
+
+  if (systemError) throw systemError;
+  if (linesError) throw linesError;
+  if (stationsError) throw stationsError;
+  if (stationLinesError) throw stationLinesError;
+  if (stationSoundsError) throw stationSoundsError;
+  if (soundFilesError) throw soundFilesError;
+
+  const stationLineRowsByStationId = new Map();
+  stationLines.forEach((row) => {
+    if (!stationLineRowsByStationId.has(row.station_id)) {
+      stationLineRowsByStationId.set(row.station_id, []);
+    }
+    stationLineRowsByStationId.get(row.station_id).push(row);
+  });
+
+  const stationSoundIdsByStationId = new Map();
+  stationSounds.forEach((row) => {
+    if (!stationSoundIdsByStationId.has(row.station_id)) {
+      stationSoundIdsByStationId.set(row.station_id, []);
+    }
+    stationSoundIdsByStationId.get(row.station_id).push(row.sound_id);
+  });
+
+  const linesObject = {};
+  lines.forEach((line) => {
+    linesObject[line.id] = {
+      title: line.title,
+      subtitle: line.subtitle || "",
+      icon: line.icon_url,
+      otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
+      soundIds: Array.isArray(line.sound_ids) ? line.sound_ids : [],
+    };
+  });
+
+  const stationsObject = {};
+  stations.forEach((station) => {
+    const lineRows = (stationLineRowsByStationId.get(station.id) || [])
+      .sort((a, b) => (a.line_order ?? 9999) - (b.line_order ?? 9999));
+
+    stationsObject[station.id] = {
+      name: station.name,
+      lines: lineRows.map((row) => [row.line_id, row.line_order]),
+      soundIds: stationSoundIdsByStationId.get(station.id) || [],
+    };
+  });
+
+  return {
+    system: {
+      id: systemRow.id,
+      name: systemRow.name,
+      description: systemRow.description || "",
+      soundIds: Array.isArray(systemRow.sound_ids) ? systemRow.sound_ids : [],
+    },
+    theme: systemRow.theme || {},
+    lines: linesObject,
+    stations: stationsObject,
+    mapUrl: systemRow.map_url || null,
+  };
+};
+
+const fetchSoundData = async (systemId) => {
+  const [
+    { data: sounds, error: soundsError },
+    { data: soundFiles, error: soundFilesError },
+    { data: soundFileTargets, error: soundFileTargetsError },
+  ] = await Promise.all([
+    supabaseClient
+      .from("sounds")
+      .select("system_id, id, title, description, category")
+      .eq("system_id", systemId),
+
+    supabaseClient
+      .from("sound_files")
+      .select("id, system_id, sound_id, title, description, src, source_url, year_captured, rolling_stock, line_ids")
+      .eq("system_id", systemId),
+
+    supabaseClient
+      .from("sound_file_targets")
+      .select("sound_file_id, system_id, station_id, line_id")
+      .eq("system_id", systemId),
+  ]);
+
+  if (soundsError) throw soundsError;
+  if (soundFilesError) throw soundFilesError;
+  if (soundFileTargetsError) throw soundFileTargetsError;
+
+  const targetsBySoundFileId = new Map();
+  soundFileTargets.forEach((row) => {
+    if (!targetsBySoundFileId.has(row.sound_file_id)) {
+      targetsBySoundFileId.set(row.sound_file_id, []);
+    }
+    targetsBySoundFileId.get(row.sound_file_id).push({
+      stationId: row.station_id,
+      lineId: row.line_id || undefined,
+    });
+  });
+
+  const filesBySoundId = new Map();
+
+  soundFiles.forEach((file) => {
+    const audioEntry = {
+      title: file.title || undefined,
+      description: file.description || undefined,
+      src: file.src,
+      lineIds: Array.isArray(file.line_ids) && file.line_ids.length ? file.line_ids : undefined,
+      targets: targetsBySoundFileId.get(file.id) || [],
+      metadata: {
+        ...(file.source_url ? { origin: file.source_url } : {}),
+        ...(file.year_captured ? { yearCaptured: file.year_captured } : {}),
+        ...(file.rolling_stock ? { rollingStock: file.rolling_stock } : {}),
+      },
+    };
+
+    if (!filesBySoundId.has(file.sound_id)) {
+      filesBySoundId.set(file.sound_id, []);
+    }
+    filesBySoundId.get(file.sound_id).push(audioEntry);
+  });
+
+  const soundData = {};
+  sounds.forEach((sound) => {
+    soundData[sound.id] = {
+      title: sound.title,
+      description: sound.description || "",
+      audio: filesBySoundId.get(sound.id) || [],
+    };
+  });
+
+  return soundData;
+};
+
+const fetchCountries = async () => {
+  const { data, error } = await supabaseClient
+    .from("countries")
+    .select("id, name, image_url")
+    .order("name", { ascending: true });
+
+  if (error) throw error;
+
+  return (data || []).map((country) => ({
+    id: country.id,
+    name: country.name,
+    image: country.image_url,
+  }));
+};
+
+const fetchCountrySystems = async (countryId) => {
+  const { data, error } = await supabaseClient
+    .from("systems")
+    .select("id, name, logo_url, map_url, region")
+    .eq("country_id", countryId)
+    .order("region", { ascending: true })
+    .order("name", { ascending: true });
+
+  if (error) throw error;
+
+  const grouped = {};
+  (data || []).forEach((system) => {
+    const regionKey = system.region || "Other";
+
+    if (!grouped[regionKey]) {
+      grouped[regionKey] = {
+        name: regionKey,
+        systems: [],
+      };
+    }
+
+    grouped[regionKey].systems.push({
+      id: system.id,
+      name: system.name,
+      logo: system.logo_url,
+      map: system.map_url,
+      db: true,
+    });
+  });
+
+  return Object.values(grouped);
+};
+
+const getStorageAudioUrl = (src) => { // Get audio URL from Supabase Storage
+  if (!src) return "";
+  if (/^https?:\/\//i.test(src)) return src;
+  return `${SUPABASE_URL}/storage/v1/object/public/audio/${src.replace(/^assets\/audio\//, "")}`;
+};
+
 const stationTooltip = document.createElement("div");
 stationTooltip.className = "station-tooltip";
 const DOWNLOAD_ICON =
@@ -41,6 +273,7 @@ const PLAY_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M8 6.5v11a1 1 0 0 0 1.5.86l8.5-5.5a1 1 0 0 0 0-1.72l-8.5-5.5A1 1 0 0 0 8 6.5z\"/></svg>";
 const STOP_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M7 7h10v10H7z\"/></svg>";
+const LOADING_SPINNER = "<span class=\"play-spinner\" aria-hidden=\"true\"></span>";
 const CHEVRON_DOWN_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M6.7 9.3a1 1 0 0 1 1.4 0L12 13.2l3.9-3.9a1 1 0 1 1 1.4 1.4l-4.6 4.6a1 1 0 0 1-1.4 0L6.7 10.7a1 1 0 0 1 0-1.4z\"/></svg>";
 const CHEVRON_UP_ICON =
@@ -116,14 +349,14 @@ const openInfoModal = (audioData) => {
     infoModalBody.append(row);
   });
   if (infoModalDownload) {
-    infoModalDownload.href = audioData.src;
+    infoModalDownload.href = getStorageAudioUrl(audioData.src);
     infoModalDownload.innerHTML = DOWNLOAD_ICON;
   }
   infoModal.hidden = false;
 };
 
 const createSoundActions = (audioData) => {
-  const audioSrc = audioData.src;
+  const audioSrc = getStorageAudioUrl(audioData.src);
   const playButton = document.createElement("button");
   playButton.type = "button";
   playButton.style.position = "relative";
@@ -148,6 +381,7 @@ const createSoundActions = (audioData) => {
   playButton.append(progressFill, label);
   let audio = null;
   let progressFrame = null;
+  let isLoading = false;
 
   const setProgress = (value) => {
     progressFill.style.transform = `scaleX(${Math.max(0, Math.min(1, value || 0))})`;
@@ -159,15 +393,24 @@ const createSoundActions = (audioData) => {
     progressFrame = null;
   };
 
-  const setPlaying = (isPlaying) => {
-    label.innerHTML = isPlaying ? STOP_ICON : PLAY_ICON;
+  const setButtonVisual = (mode) => {
+    label.innerHTML = mode === "loading" ? LOADING_SPINNER : mode === "playing" ? STOP_ICON : PLAY_ICON;
     const icon = label.querySelector("svg");
     if (icon) {
       icon.style.width = "1.35rem";
       icon.style.height = "1.35rem";
       icon.style.display = "block";
     }
-    playButton.setAttribute("aria-label", isPlaying ? "Stop audio" : "Play audio");
+    playButton.setAttribute(
+      "aria-label",
+      mode === "loading" ? "Loading audio" : mode === "playing" ? "Stop audio" : "Play audio"
+    );
+  };
+
+  const setLoading = (loading) => {
+    isLoading = loading;
+    playButton.disabled = loading;
+    setButtonVisual(loading ? "loading" : audio ? "playing" : "idle");
   };
 
   const controller = {
@@ -177,13 +420,16 @@ const createSoundActions = (audioData) => {
       audio.pause();
       audio.currentTime = 0;
       audio = null;
+      isLoading = false;
       state.audioControllers.delete(controller);
       setProgress(0);
-      setPlaying(false);
+      playButton.disabled = false;
+      setButtonVisual("idle");
     },
   };
 
   playButton.addEventListener("click", async () => {
+    if (isLoading) return;
     if (audio) {
       controller.stop();
       return;
@@ -191,7 +437,7 @@ const createSoundActions = (audioData) => {
     audio = new Audio(audioSrc);
     state.audioControllers.add(controller);
     setProgress(0);
-    setPlaying(true);
+    setLoading(true);
     audio.addEventListener("ended", controller.stop, { once: true });
     audio.addEventListener("error", controller.stop, { once: true });
     const tickProgress = () => {
@@ -199,9 +445,11 @@ const createSoundActions = (audioData) => {
       setProgress(audio.duration ? audio.currentTime / audio.duration : 0);
       progressFrame = requestAnimationFrame(tickProgress);
     };
-    progressFrame = requestAnimationFrame(tickProgress);
     try {
       await audio.play();
+      setLoading(false);
+      setButtonVisual("playing");
+      progressFrame = requestAnimationFrame(tickProgress);
     } catch {
       controller.stop();
     }
@@ -209,11 +457,11 @@ const createSoundActions = (audioData) => {
 
   const actions = document.createElement("div");
   actions.className = "sound-actions";
-  setPlaying(false);
+  setButtonVisual("idle");
   setProgress(0);
   const hasMetadata = Boolean(
     audioData.metadata &&
-      (audioData.metadata.rollingStock || audioData.metadata.origin || audioData.metadata.yearCaptured)
+    (audioData.metadata.rollingStock || audioData.metadata.origin || audioData.metadata.yearCaptured)
   );
   actions.style.gridTemplateColumns = "1fr 2.25rem";
   if (hasMetadata) {
@@ -305,7 +553,6 @@ const filterItemsByLine = (items, lineId, station = null) =>
       };
     })
     .filter((item) => item.audio.length > 0);
-
 const filterSystemItems = (items) =>
   (items || [])
     .map((item) => ({
@@ -622,40 +869,40 @@ const renderSystemListView = () => {
     const row = document.createElement("div");
     row.className = "line-selector-row";
     rowEntries.forEach(([lineId, line]) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "line-chip";
-    if (lineId === state.selectedLineId) {
-      button.classList.add("is-active");
-    }
-    const iconWrap = document.createElement("span");
-    iconWrap.className = "line-chip-icons";
-
-    const icon = document.createElement("img");
-    icon.src = line.icon;
-    icon.alt = `${line.title} icon`;
-    iconWrap.append(icon);
-
-    if (Array.isArray(line.otherIcons)) {
-      line.otherIcons.forEach((iconUrl, index) => {
-        const extraIcon = document.createElement("img");
-        extraIcon.src = iconUrl;
-        extraIcon.alt = `${line.title} extra icon ${index + 1}`;
-        iconWrap.append(extraIcon);
-      });
-    }
-
-    const label = document.createElement("span");
-    label.textContent = line.title;
-    button.append(iconWrap, label);
-    button.addEventListener("click", () => {
-      if (noSystemSounds && state.selectedLineId === lineId) {
-        return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "line-chip";
+      if (lineId === state.selectedLineId) {
+        button.classList.add("is-active");
       }
-      stopActiveAudio();
-      state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
-      renderSystemListView();
-    });
+      const iconWrap = document.createElement("span");
+      iconWrap.className = "line-chip-icons";
+
+      const icon = document.createElement("img");
+      icon.src = line.icon;
+      icon.alt = `${line.title} icon`;
+      iconWrap.append(icon);
+
+      if (Array.isArray(line.otherIcons)) {
+        line.otherIcons.forEach((iconUrl, index) => {
+          const extraIcon = document.createElement("img");
+          extraIcon.src = iconUrl;
+          extraIcon.alt = `${line.title} extra icon ${index + 1}`;
+          iconWrap.append(extraIcon);
+        });
+      }
+
+      const label = document.createElement("span");
+      label.textContent = line.title;
+      button.append(iconWrap, label);
+      button.addEventListener("click", () => {
+        if (noSystemSounds && state.selectedLineId === lineId) {
+          return;
+        }
+        stopActiveAudio();
+        state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
+        renderSystemListView();
+      });
       row.append(button);
     });
     lineSelector.append(row);
@@ -1488,16 +1735,18 @@ const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
   stopActiveAudio();
   const [systemDataRaw, soundDataRaw] = await Promise.all([
-    fetch(system.data).then((res) => res.json()),
-    fetch(system.soundData).then((res) => res.json()),
+    fetchSystemData(system.id),
+    fetchSoundData(system.id),
   ]);
   if (loadToken !== state.systemLoadToken) return;
   state.systemInfo = system;
   state.systemData = normalizeSystemData({ ...systemDataRaw, sounds: soundDataRaw });
   state.selectedLineId = null;
   let mapAvailable = false;
-  if (system.map) {
-    mapAvailable = await loadMap(system.map, state.systemData.theme);
+  const mapPath = systemDataRaw.mapUrl || system.map;
+
+  if (mapPath) {
+    mapAvailable = await loadMap(mapPath, state.systemData.theme);
     if (loadToken !== state.systemLoadToken) return;
   } else {
     mapContainer.innerHTML = "";
@@ -1530,9 +1779,9 @@ const renderCountries = (countries) => {
       title: country.name,
       countryId: country.id,
       onClick: async () => {
-        const data = await fetch(country.data).then((res) => res.json());
+        const regions = await fetchCountrySystems(country.id);
         crumbCountry.textContent = country.name;
-        renderSystems(Object.values(data));
+        renderSystems(regions);
         setView("country");
       },
     });
@@ -1572,9 +1821,8 @@ const renderSystems = (regions) => {
 };
 
 const init = async () => {
-  const response = await fetch("data/countries.json");
-  const data = await response.json();
-  renderCountries(data.countries);
+  const countries = await fetchCountries();
+  renderCountries(countries);
   crumbCountry.textContent = "";
   crumbSystem.textContent = "";
 
@@ -1674,16 +1922,3 @@ const init = async () => {
 };
 
 init();
-
-// IMPLEMENT IN JSON LATER
-
-/*
-
-    {
-      "id": "china",
-      "name": "China",
-      "image": "assets/images/china/flag.png",
-      "data": "data/countries/china.json"
-    },
-
-*/

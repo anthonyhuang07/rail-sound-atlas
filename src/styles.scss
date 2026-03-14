@@ -196,6 +196,22 @@ body.is-system .system-mode-toggle {
   }
 }
 
+.play-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 0.125rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: play-spinner-rotate 0.8s linear infinite;
+}
+
+@keyframes play-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .info-modal {
   position: fixed;
   inset: 0;

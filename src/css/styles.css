@@ -219,6 +219,30 @@ body.is-system .system-mode-toggle {
       overscroll-behavior: contain;
 }
 
+.play-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 0.125rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  -webkit-animation: play-spinner-rotate 0.8s linear infinite;
+          animation: play-spinner-rotate 0.8s linear infinite;
+}
+
+@-webkit-keyframes play-spinner-rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes play-spinner-rotate {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 .info-modal {
   position: fixed;
   inset: 0;
