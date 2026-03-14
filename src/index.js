@@ -251,19 +251,17 @@ const fetchCountrySystems = async (countryId) => {
       id: system.id,
       name: system.name,
       logo: system.logo_url,
-      map: system.map_url,
-      db: true,
+      map: system.map_url
     });
   });
 
   return Object.values(grouped);
 };
 
-const getStorageAudioUrl = (src) => { // Get audio URL from Supabase Storage
-  if (!src) return "";
-  if (/^https?:\/\//i.test(src)) return src;
-  return `${SUPABASE_URL}/storage/v1/object/public/audio/${src.replace(/^assets\/audio\//, "")}`;
-};
+const getStorageAudioUrl = (src) =>
+  src && !/^https?:\/\//i.test(src)
+    ? `${SUPABASE_URL}/storage/v1/object/public/audio/${src}`
+    : src || "";
 
 const stationTooltip = document.createElement("div");
 stationTooltip.className = "station-tooltip";
@@ -1743,7 +1741,7 @@ const loadSystem = async (system) => {
   state.systemData = normalizeSystemData({ ...systemDataRaw, sounds: soundDataRaw });
   state.selectedLineId = null;
   let mapAvailable = false;
-  const mapPath = systemDataRaw.mapUrl || system.map;
+  const mapPath = systemDataRaw.mapUrl
 
   if (mapPath) {
     mapAvailable = await loadMap(mapPath, state.systemData.theme);
