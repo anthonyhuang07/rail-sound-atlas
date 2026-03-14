@@ -117,7 +117,10 @@ const fetchSystemData = async (systemId) => {
   const stationsObject = {};
   stations.forEach((station) => {
     const lineRows = (stationLineRowsByStationId.get(station.id) || [])
-      .sort((a, b) => (a.line_order ?? 9999) - (b.line_order ?? 9999));
+    .sort((a, b) =>
+      (linesObject[a.line_id]?.sort_order ?? 9999) -
+      (linesObject[b.line_id]?.sort_order ?? 9999)
+    );
 
     stationsObject[station.id] = {
       name: station.name,
@@ -148,7 +151,7 @@ const fetchSoundData = async (systemId) => {
   ] = await Promise.all([
     supabaseClient
       .from("sounds")
-      .select("system_id, id, title, description, category")
+      .select("system_id, id, title, description")
       .eq("system_id", systemId),
 
     supabaseClient
