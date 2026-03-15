@@ -1,6 +1,3 @@
-<!-- ---
-permalink: /contribute
---- -->
 <!doctype html>
 <html lang="en">
 
@@ -8,77 +5,210 @@ permalink: /contribute
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Rail Sound Atlas</title>
-    <!-- Embed -->
-    <meta content="Rail Sound Atlas" property="og:title" />
-    <meta content="An interactive atlas for sounds of rail systems across the world!" property="og:description" />
-    <meta content="https://railsoundatlas.org" property="og:url" />
-    <meta
-        content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Translinkexpo.svg/960px-Translinkexpo.svg.png"
-        property="og:image" />
-    <!-- Favicon -->
+
+    <meta property="og:title" content="Rail Sound Atlas" />
+    <meta property="og:description" content="An interactive atlas for sounds of rail systems across the world!" />
+    <meta property="og:url" content="https://railsoundatlas.org" />
+    <meta property="og:image"
+        content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Translinkexpo.svg/960px-Translinkexpo.svg.png" />
+
     <link rel="icon" type="image/png"
         href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Translinkexpo.svg/960px-Translinkexpo.svg.png" />
 
     <link rel="stylesheet" href="src/css/contribute.css" />
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body class="contribute-page">
+
     <main class="contribute-main">
-        <h1>Submit Sound</h1>
 
-        <form id="submit-form" class="contribute-form">
+        <header class="contribute-header">
+            <h1>Rail Sound Atlas — Sound Contribution Form</h1>
+        </header>
 
-            <label for="country">Country</label>
-            <select id="country"></select>
+        <form id="submit-form" class="contribute-form" autocomplete="off">
 
-            <label for="system">System</label>
-            <select id="system"></select>
+            <section id="context-section" class="form-section">
 
-            <label for="scope">Sound Scope</label>
-            <select id="scope">
-                <option value="">Select</option>
-                <option value="system">System Sound</option>
-                <option value="line">Line Sound</option>
-                <option value="station">Station Sound</option>
-            </select>
+                <label>Country</label>
+                <select id="country">
+                    <option value="">Select</option>
+                </select>
 
-            <div id="line-group" class="hidden">
-                <label for="line">Line</label>
-                <select id="line" multiple></select>
-            </div>
+                <label id="system-label" class="hidden">System</label>
+                <div id="system-options" class="system-options hidden"></div>
+                <select id="system" class="hidden" disabled>
+                    <option value="">Select</option>
+                </select>
 
-            <div id="station-group" class="hidden">
-                <label for="station">Station</label>
-                <select id="station"></select>
-            </div>
+                <div id="scope-label-row" class="label-row hidden">
+                    <label>Sound Scope</label>
+                    <button type="button" class="label-info-btn" aria-label="What is sound scope?">i</button>
+                    <span class="label-info-tip">System Sound: played anywhere in the system<br><br>Line Sound: played anywhere on specific line(s)<br><br>Station Sound: mentions/played in a specific station</span>
+                </div>
+                <select id="scope" class="hidden" disabled>
+                    <option value="" selected>Select</option>
+                    <option value="system">System Sound</option>
+                    <option value="line">Line Sound</option>
+                    <option value="station">Station Sound</option>
+                </select>
 
-            <label for="sound">Sound Type</label>
-            <select id="sound"></select>
+            </section>
 
-            <label for="title">Title</label>
-            <input id="title" required />
+            <section id="target-section" class="form-section hidden">
 
-            <label for="description">Description</label>
-            <textarea id="description"></textarea>
+                <div id="line-group" class="hidden">
+                    <div class="label-row">
+                        <label id="line-label">Line(s)</label>
+                        <button type="button" class="label-info-btn" aria-label="What line should I select?">i</button>
+                        <span class="label-info-tip">Pick the line this sound applies to. In line scope, you can select
+                            multiple lines.</span>
+                    </div>
+                    <div id="line" class="line-checkboxes"></div>
+                    <p id="line-multi-hint" class="line-multi-hint hidden">You can select multiple lines.</p>
+                </div>
 
-            <label for="rolling_stock">Rolling Stock</label>
-            <input id="rolling_stock" />
+                <div id="station-group" class="hidden">
 
-            <label for="year_captured">Year Captured</label>
-            <input id="year_captured" type="number" />
+                    <div class="label-row">
+                        <label class="required-label">Station</label>
+                    </div>
 
-            <label for="source">Source</label>
-            <input id="source" required />
+                    <select id="station">
+                        <option value="">Select Line</option>
+                    </select>
 
-            <label for="audio">Audio File</label>
-            <input type="file" id="audio" accept="audio/*" required />
+                    <div id="new-station-group" class="hidden">
+                        <label class="required-label">New Station Name</label>
+                        <input id="new-station" />
+                        <label class="required-label">Line Order (On Selected Line)</label>
+                        <input id="new-station-order" type="number" min="1" step="1" />
+                        <label class="inline-check">
+                            <input id="new-station-has-other-lines" type="checkbox" />
+                            <span>Station is also on other lines</span>
+                        </label>
+                        <div id="new-station-other-lines-group" class="hidden">
+                            <div id="new-station-other-lines" class="other-lines-list"></div>
+                            <button type="button" id="add-other-line" class="secondary-btn">Add Other Line</button>
+                        </div>
+                    </div>
 
-            <button type="submit">Submit</button>
+                </div>
+
+                <div id="sound-label-row" class="label-row hidden">
+                    <label id="sound-label" class="required-label">Sound Category</label>
+                    <button type="button" class="label-info-btn" aria-label="What is sound category?">i</button>
+                    <span class="label-info-tip">The name of the sound category, like Door Chime, Arrival, Next Station,
+                        or Acceleration.</span>
+                </div>
+                <div id="sound-picker" class="sound-picker hidden">
+                    <select id="sound" required disabled>
+                        <option value="">Select</option>
+                    </select>
+                    <input id="new-sound" class="hidden" placeholder="New Sound Category" />
+                    <button type="button" id="new-sound-toggle" class="secondary-btn">New Category</button>
+                </div>
+                <p id="sound-category-description" class="field-hint hidden"></p>
+                <textarea id="new-sound-description" class="field-hint hidden"
+                    placeholder="Category Description (optional)"></textarea>
+
+            </section>
+
+            <section id="metadata-section" class="form-section hidden">
+
+                <div class="label-row">
+                    <label>Title</label>
+                    <button type="button" class="label-info-btn" aria-label="What should title contain?">i</button>
+                    <span class="label-info-tip">Title of the variant sound within the sound category. For example, under "Departure Melody", use direction variants like "To X" or "To Y" as the title. For the same sound produced by a different rolling stock, use the rolling stock name as the title. If there is only one sound for the category and no variants are possible, leave this field blank.</span>
+                </div>
+                <input id="title" />
+
+                <div class="label-row">
+                    <label>Description</label>
+                    <button type="button" class="label-info-btn" aria-label="What should description contain?">i</button>
+                    <span class="label-info-tip">Transcription of the sound itself. Do not include if the sound category's transcription applies to every variant.</span>
+                </div>
+                <textarea id="description"></textarea>
+
+                <div class="label-row">
+                    <label>Rolling Stock</label>
+                    <button type="button" class="label-info-btn" aria-label="What is rolling stock?">i</button>
+                    <span class="label-info-tip">The train model which produces said sound. Do not include for sounds NOT made by the train (e.g. in-station announcements). Leave blank if unknown.</span>
+                </div>
+                <input id="rolling_stock" />
+
+                <div class="label-row">
+                    <label>Year Captured</label>
+                    <button type="button" class="label-info-btn" aria-label="What should year captured contain?">i</button>
+                    <span class="label-info-tip">The year this sound was recorded, not the first year of service. This could be either the date of an uploaded video (e.g. on YouTube) or the actual date of the recording. Leave blank if unknown.</span>
+                </div>
+                <input id="year_captured" type="number" min="1800" />
+
+                <div class="label-row">
+                    <label class="required-label">Source</label>
+                    <button type="button" class="label-info-btn" aria-label="What should source contain?">i</button>
+                    <span class="label-info-tip">A link to the original source of the sound. For sounds recorded by you, you may either write "User Recorded" (anonymous option) or if you would like credit, provide a link to a profile of yours.</span>
+                </div>
+                <input id="source" required />
+
+            </section>
+
+            <section id="file-section" class="form-section hidden">
+
+                <label class="required-label">Audio File</label>
+                <label id="audio-dropzone" for="audio" class="audio-dropzone" tabindex="0" role="button"
+                    aria-label="Upload audio file">
+                    <p>Drag and drop audio</p>
+                    <p>or click to choose a file</p>
+                </label>
+                <input type="file" id="audio" accept=".mp3,.wav,.ogg,.flac,.m4a,.aac,audio/*" required
+                    class="audio-input" />
+                <p class="file-caption">Max file size: 1 MB. Supported types: MP3, WAV, OGG, FLAC, M4A, AAC.</p>
+                <p id="audio-warning" class="file-warning hidden" role="alert"></p>
+
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACrBwHo_b4rrWkPi">
+                </div>
+
+
+                <button type="submit">Submit</button>
+
+            </section>
+
         </form>
+
+        <section id="audio-guidelines" class="guidelines hidden" aria-labelledby="guidelines-title">
+
+            <h2 id="guidelines-title">Audio Guidelines</h2>
+
+            <ul>
+                <li>Audio must be clear and free of unrelated background speech.</li>
+                <li>
+                    If the sound contains speech, it must be transcribed in its entirety in its original language.
+                    <ul>
+                        <li>For sound effects, unless there is a common name for it (e.g. Montréal's "Dou dou dou",
+                            Japan's「ポポポン」), leave the description blank.</li>
+                        <li>If a common name does exist, please wrap it in the native language's quotation marks.</li>
+                    </ul>
+                </li>
+                <li>Trim guidelines:
+                    <ul>
+                        <li>Trim must start at the exact beginning of said sound. There must not be any background noise
+                            before the sound plays.</li>
+                        <li>Trim must end at any reasonable time after the end of said sound, usually around 1-2
+                            seconds.
+                            Crossfade is optional but recommended.</li>
+                    </ul>
+                </li>
+            </ul>
+
+        </section>
+
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="src/scripts/contribute.js" type="module"></script>
+
 </body>
 
 </html>
