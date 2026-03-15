@@ -75,6 +75,7 @@ main {
 }
 
 .site-header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,6 +83,7 @@ main {
   border-bottom: 0.0625rem solid #232833;
 
   .header-right {
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -101,16 +103,20 @@ main {
   }
 
   .breadcrumb {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.85em;
+    font-size: 0.95em;
 
     .crumb {
       background: transparent;
       color: $text;
       border: 0.0625rem solid #2b313d;
-      padding: 0.25rem 0.625rem;
+      padding: 0.4rem 0.85rem;
+      min-height: 2.1em;
       border-radius: 999rem;
       cursor: pointer;
 
@@ -166,18 +172,39 @@ body.is-system .system-mode-toggle {
   display: none !important;
 }
 
+.contribute-link,
 .github-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
   border: 0.0625rem solid #2b313d;
-  border-radius: 999rem;
   color: $text;
   text-decoration: none;
   flex-shrink: 0;
+}
 
+.contribute-link {
+  width: auto;
+  min-width: 0;
+  height: 2rem;
+  padding: 0 0.9em;
+  border-radius: 999rem;
+  font-size: 0.8em;
+  font-weight: 400;
+  white-space: nowrap;
+
+  &::before {
+    content: none;
+  }
+}
+
+.github-link {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999rem;
+}
+
+.github-link {
   svg {
     width: 1rem;
     height: 1rem;
@@ -1276,15 +1303,20 @@ body.is-system .system-mode-toggle {
     }
 
     .breadcrumb {
+      position: static;
+      left: auto;
+      transform: none;
       order: 1;
-      flex: 1 1 auto;
+      flex: 1 1 100%;
       min-width: 0;
+      justify-content: center;
       flex-wrap: wrap;
       gap: 0.35rem;
-      font-size: 0.8em;
+      font-size: 0.86em;
 
       .crumb {
-        padding: 0.18rem 0.5rem;
+        padding: 0.34rem 0.72rem;
+        min-height: 2em;
       }
     }
 
@@ -1294,12 +1326,23 @@ body.is-system .system-mode-toggle {
       justify-content: flex-start;
     }
 
+    .contribute-link,
     .github-link {
       order: 2;
-      margin-left: auto;
-      width: 1.75rem;
       height: 1.75rem;
+    }
 
+    .contribute-link {
+      margin-left: auto;
+      padding: 0 0.6em;
+      font-size: 0.75em;
+    }
+
+    .github-link {
+      width: 1.75rem;
+    }
+
+    .github-link {
       svg {
         width: 0.9rem;
         height: 0.9rem;

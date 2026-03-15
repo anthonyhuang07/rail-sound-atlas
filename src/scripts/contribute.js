@@ -232,7 +232,7 @@ function isSoundCategoryComplete() {
     return !!soundSelect.value;
 }
 
-function isNewStationComplete() {
+function newStationComplete() {
     const name = newStationInput.value.trim();
     const order = Number(newStationOrderInput.value);
     if (!name || !Number.isFinite(order) || order < 1) return false;
@@ -254,7 +254,7 @@ function isTargetComplete() {
     if (scope === "station") {
         if (!selectedLines.length || !stationSelect.value || !hasSound) return false;
         if (stationSelect.value !== "__new_station__") return true;
-        return isNewStationComplete();
+        return newStationComplete();
     }
     return false;
 }
@@ -829,7 +829,7 @@ el("submit-form").addEventListener("submit", async e => {
     /* STATION */
 
     let stationId = null;
-    let isNewStation = false;
+    let newStation = false;
     let newStationName = null;
     let newStationPrimaryLineId = null;
     let newStationPrimaryLineOrder = null;
@@ -856,7 +856,7 @@ el("submit-form").addEventListener("submit", async e => {
                 return;
             }
 
-            isNewStation = true;
+            newStation = true;
             stationId = null;
             newStationName = name;
             newStationPrimaryLineId = lineId;
@@ -876,7 +876,7 @@ el("submit-form").addEventListener("submit", async e => {
         system_id: systemSelect.value,
         station_id: stationId,
         sound_id: soundId,
-        is_new_station: isNewStation,
+        new_station: newStation,
         new_station_name: newStationName,
         new_station_primary_line_id: newStationPrimaryLineId,
         new_station_primary_line_order: newStationPrimaryLineOrder,
@@ -895,32 +895,34 @@ el("submit-form").addEventListener("submit", async e => {
     };
 
 
-    /* SEND TO EDGE FUNCTION */
+/* SEND TO EDGE FUNCTION */
 
-    const formData = new FormData();
+const formData = new FormData();
 
-    formData.append("captcha", captchaToken);
-    formData.append("file", file);
-    formData.append("data", JSON.stringify(payload));
+formData.append("captcha", captchaToken);
+formData.append("data", JSON.stringify(payload));
+formData.append("file", file);
 
-    const res = await fetch(
-        "https://mvsfcsodvtojqrmvsjbi.supabase.co/functions/v1/verify-submission",
-        {
-            method: "POST",
-            headers: {
-                "apikey": SUPABASE_ANON_KEY,
-                "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
-            },
-            body: formData
-        }
-    );
+const res = await fetch(
+  "https://mvsfcsodvtojqrmvsjbi.supabase.co/functions/v1/verify-submission",
+  {
+    method: "POST",
+    headers: {
+      "apikey": SUPABASE_ANON_KEY
+    },
+    body: formData
+  }
+);
 
-    if (!res.ok) {
-        alert("Submission failed");
-        return;
-    }
+const text = await res.text();
+console.log("SERVER RESPONSE:", text);
 
-    alert("Submission sent!");
+if (!res.ok) {
+  alert("Submission failed.");
+  return;
+}
+
+alert("Submission sent!");
 
 });
 
