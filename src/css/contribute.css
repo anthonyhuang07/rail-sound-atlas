@@ -92,7 +92,35 @@ body {
   font-weight: 600;
   cursor: pointer;
 }
+.form-section button:disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+.form-section .submit-spinner {
+  width: 1em;
+  height: 1em;
+  border: 0.125rem solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-animation: submit-spin 0.8s linear infinite;
+          animation: submit-spin 0.8s linear infinite;
+}
 
+@-webkit-keyframes submit-spin {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes submit-spin {
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 .line-checkboxes {
   display: grid;
   gap: 0.4rem;
@@ -367,6 +395,12 @@ body {
   gap: 0.45rem;
   grid-template-columns: 1fr 8rem 6rem;
 }
+.other-line-row .secondary-btn {
+  margin-top: 0;
+  height: 100%;
+  -ms-flex-item-align: stretch;
+      align-self: stretch;
+}
 
 .secondary-btn {
   border: 0.0625rem solid #3a4257;
@@ -380,6 +414,7 @@ body {
   color: #f2f6ff;
 }
 
+.station-picker,
 .sound-picker {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -388,15 +423,20 @@ body {
       -ms-flex-align: stretch;
           align-items: stretch;
 }
-.sound-picker select {
+.station-picker select,
+.station-picker input,
+.sound-picker select,
+.sound-picker input {
   height: 100%;
 }
+.station-picker .secondary-btn,
 .sound-picker .secondary-btn {
-  min-width: 7.5rem;
+  width: 8.5rem;
   height: 100%;
   margin: 0;
   -ms-flex-item-align: stretch;
       align-self: stretch;
+  white-space: nowrap;
 }
 
 .field-hint {

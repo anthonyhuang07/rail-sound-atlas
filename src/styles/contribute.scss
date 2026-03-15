@@ -96,6 +96,28 @@ body {
     background: #1a2948;
     font-weight: 600;
     cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+  }
+
+  .submit-spinner {
+    width: 1em;
+    height: 1em;
+    border: 0.125rem solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    animation: submit-spin 0.8s linear infinite;
+  }
+}
+
+@keyframes submit-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -333,6 +355,12 @@ body {
   display: grid;
   gap: 0.45rem;
   grid-template-columns: 1fr 8rem 6rem;
+
+  .secondary-btn {
+    margin-top: 0;
+    height: 100%;
+    align-self: stretch;
+  }
 }
 
 .secondary-btn {
@@ -348,21 +376,24 @@ body {
   }
 }
 
+.station-picker,
 .sound-picker {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.45rem;
   align-items: stretch;
 
-  select {
+  select,
+  input {
     height: 100%;
   }
 
   .secondary-btn {
-    min-width: 7.5rem;
+    width: 8.5rem;
     height: 100%;
     margin: 0;
     align-self: stretch;
+    white-space: nowrap;
   }
 }
 

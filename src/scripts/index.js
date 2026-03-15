@@ -5,6 +5,7 @@ const sidePanel = document.getElementById("side-panel");
 const countryGrid = document.getElementById("country-grid");
 const systemGrid = document.getElementById("system-grid");
 const mapContainer = document.getElementById("map-container");
+const crumbHome = document.getElementById("crumb-home");
 const crumbCountry = document.getElementById("crumb-country");
 const crumbSystem = document.getElementById("crumb-system");
 const panelLineIcons = document.getElementById("panel-line-icons");
@@ -1203,6 +1204,10 @@ const handleMapClick = (event) => {
 };
 
 const updateBreadcrumb = () => {
+  const isMobile = window.matchMedia("(max-width: 720px)").matches;
+
+  crumbHome.classList.remove("is-hidden");
+
   if (state.view === "home") {
     crumbCountry.classList.add("is-hidden");
     crumbSystem.classList.add("is-hidden");
@@ -1218,6 +1223,11 @@ const updateBreadcrumb = () => {
     crumbSystem.classList.remove("is-hidden");
     sepCountry.classList.remove("is-hidden");
     sepSystem.classList.remove("is-hidden");
+
+    if (isMobile) {
+      crumbHome.classList.add("is-hidden");
+      sepCountry.classList.add("is-hidden");
+    }
   }
 
   document.querySelectorAll(".crumb").forEach((crumb) => {
@@ -1868,7 +1878,10 @@ const init = async () => {
   window.addEventListener("touchmove", onMobileSplitTouchMove, { passive: false });
   window.addEventListener("touchend", onMobileSplitTouchEnd, { passive: false });
   window.addEventListener("touchcancel", onMobileSplitTouchEnd, { passive: false });
-  window.addEventListener("resize", syncMobileSplitLayout);
+  window.addEventListener("resize", () => {
+    syncMobileSplitLayout();
+    updateBreadcrumb();
+  });
   if (window.visualViewport) {
     window.visualViewport.addEventListener("resize", syncMobileSplitLayout);
     window.visualViewport.addEventListener("scroll", syncMobileSplitLayout);

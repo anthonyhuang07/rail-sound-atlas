@@ -72,16 +72,18 @@
                 <div id="station-group" class="hidden">
 
                     <div class="label-row">
-                        <label class="required-label">Station</label>
+                        <label id="station-label" class="required-label">Station</label>
                     </div>
 
-                    <select id="station">
-                        <option value="">Select Line</option>
-                    </select>
+                    <div class="station-picker">
+                        <select id="station">
+                            <option value="">Select Line</option>
+                        </select>
+                        <input id="new-station" class="hidden" />
+                        <button type="button" id="new-station-toggle" class="secondary-btn">New Station</button>
+                    </div>
 
                     <div id="new-station-group" class="hidden">
-                        <label class="required-label">New Station Name</label>
-                        <input id="new-station" />
                         <label class="required-label">Line Order (On Selected Line)</label>
                         <input id="new-station-order" type="number" min="1" step="1" />
                         <label class="inline-check">
@@ -106,12 +108,12 @@
                     <select id="sound" required disabled>
                         <option value="">Select</option>
                     </select>
-                    <input id="new-sound" class="hidden" placeholder="New Sound Category" />
+                    <input id="new-sound" class="hidden" placeholder="Title" />
                     <button type="button" id="new-sound-toggle" class="secondary-btn">New Category</button>
                 </div>
                 <p id="sound-category-description" class="field-hint hidden"></p>
                 <textarea id="new-sound-description" class="field-hint hidden"
-                    placeholder="Category Description (optional)"></textarea>
+                    placeholder="Sound Transcription (optional, only include if transcription applies to all variants)"></textarea>
 
             </section>
 
@@ -200,6 +202,7 @@
                             Crossfade is optional but recommended.</li>
                     </ul>
                 </li>
+                <li>Try to name the file something that relates to the sound it represents.</li>
             </ul>
 
         </section>

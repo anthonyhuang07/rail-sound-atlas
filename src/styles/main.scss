@@ -1307,9 +1307,9 @@ body.is-system .system-mode-toggle {
       left: auto;
       transform: none;
       order: 1;
-      flex: 1 1 100%;
+      flex: 1 1 auto;
       min-width: 0;
-      justify-content: center;
+      justify-content: flex-start;
       flex-wrap: wrap;
       gap: 0.35rem;
       font-size: 0.86em;
