@@ -1,0 +1,84 @@
+<!-- ---
+permalink: /contribute
+--- -->
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rail Sound Atlas</title>
+    <!-- Embed -->
+    <meta content="Rail Sound Atlas" property="og:title" />
+    <meta content="An interactive atlas for sounds of rail systems across the world!" property="og:description" />
+    <meta content="https://railsoundatlas.org" property="og:url" />
+    <meta
+        content="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Translinkexpo.svg/960px-Translinkexpo.svg.png"
+        property="og:image" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/png"
+        href="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Translinkexpo.svg/960px-Translinkexpo.svg.png" />
+
+    <link rel="stylesheet" href="src/css/contribute.css" />
+</head>
+
+<body class="contribute-page">
+    <main class="contribute-main">
+        <h1>Submit Sound</h1>
+
+        <form id="submit-form" class="contribute-form">
+
+            <label for="country">Country</label>
+            <select id="country"></select>
+
+            <label for="system">System</label>
+            <select id="system"></select>
+
+            <label for="scope">Sound Scope</label>
+            <select id="scope">
+                <option value="">Select</option>
+                <option value="system">System Sound</option>
+                <option value="line">Line Sound</option>
+                <option value="station">Station Sound</option>
+            </select>
+
+            <div id="line-group" class="hidden">
+                <label for="line">Line</label>
+                <select id="line" multiple></select>
+            </div>
+
+            <div id="station-group" class="hidden">
+                <label for="station">Station</label>
+                <select id="station"></select>
+            </div>
+
+            <label for="sound">Sound Type</label>
+            <select id="sound"></select>
+
+            <label for="title">Title</label>
+            <input id="title" required />
+
+            <label for="description">Description</label>
+            <textarea id="description"></textarea>
+
+            <label for="rolling_stock">Rolling Stock</label>
+            <input id="rolling_stock" />
+
+            <label for="year_captured">Year Captured</label>
+            <input id="year_captured" type="number" />
+
+            <label for="source">Source</label>
+            <input id="source" required />
+
+            <label for="audio">Audio File</label>
+            <input type="file" id="audio" accept="audio/*" required />
+
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="src/scripts/contribute.js" type="module"></script>
+</body>
+
+</html>

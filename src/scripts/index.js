@@ -38,45 +38,47 @@ const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+function getLineSoundIds(lineId, soundData) {
+  return Object.entries(soundData)
+    .filter(([soundId, sound]) =>
+      sound.audio.some(a => (a.lineIds || []).includes(lineId))
+    )
+    .map(([soundId]) => soundId);
+}
+
 const fetchSystemData = async (systemId) => {
   const [
     { data: systemRow, error: systemError },
     { data: lines, error: linesError },
     { data: stations, error: stationsError },
     { data: stationLines, error: stationLinesError },
-    { data: stationSounds, error: stationSoundsError },
     { data: soundFiles, error: soundFilesError },
   ] = await Promise.all([
     supabaseClient
       .from("systems")
-      .select("id, name, description, theme, map_url, sound_ids")
+      .select("*")
       .eq("id", systemId)
       .single(),
 
     supabaseClient
       .from("lines")
-      .select("system_id, id, title, subtitle, icon_url, other_icons, sound_ids, sort_order")
+      .select("*")
       .eq("system_id", systemId)
       .order("sort_order", { ascending: true }),
 
     supabaseClient
       .from("stations")
-      .select("system_id, id, name")
+      .select("*")
       .eq("system_id", systemId),
 
     supabaseClient
       .from("station_lines")
-      .select("system_id, station_id, line_id, line_order")
-      .eq("system_id", systemId),
-
-    supabaseClient
-      .from("station_sounds")
-      .select("system_id, station_id, sound_id")
+      .select("*")
       .eq("system_id", systemId),
 
     supabaseClient
       .from("sound_files")
-      .select("system_id, sound_id, line_ids")
+      .select("*")
       .eq("system_id", systemId),
   ]);
 
@@ -84,7 +86,6 @@ const fetchSystemData = async (systemId) => {
   if (linesError) throw linesError;
   if (stationsError) throw stationsError;
   if (stationLinesError) throw stationLinesError;
-  if (stationSoundsError) throw stationSoundsError;
   if (soundFilesError) throw soundFilesError;
 
   const stationLineRowsByStationId = new Map();
@@ -95,14 +96,6 @@ const fetchSystemData = async (systemId) => {
     stationLineRowsByStationId.get(row.station_id).push(row);
   });
 
-  const stationSoundIdsByStationId = new Map();
-  stationSounds.forEach((row) => {
-    if (!stationSoundIdsByStationId.has(row.station_id)) {
-      stationSoundIdsByStationId.set(row.station_id, []);
-    }
-    stationSoundIdsByStationId.get(row.station_id).push(row.sound_id);
-  });
-
   const linesObject = {};
   lines.forEach((line) => {
     linesObject[line.id] = {
@@ -110,22 +103,22 @@ const fetchSystemData = async (systemId) => {
       subtitle: line.subtitle || "",
       icon: line.icon_url,
       otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
-      soundIds: Array.isArray(line.sound_ids) ? line.sound_ids : [],
+      soundIds: []
     };
   });
 
   const stationsObject = {};
   stations.forEach((station) => {
     const lineRows = (stationLineRowsByStationId.get(station.id) || [])
-    .sort((a, b) =>
-      (linesObject[a.line_id]?.sort_order ?? 9999) -
-      (linesObject[b.line_id]?.sort_order ?? 9999)
-    );
+      .sort((a, b) =>
+        (linesObject[a.line_id]?.sort_order ?? 9999) -
+        (linesObject[b.line_id]?.sort_order ?? 9999)
+      );
 
     stationsObject[station.id] = {
       name: station.name,
       lines: lineRows.map((row) => [row.line_id, row.line_order]),
-      soundIds: stationSoundIdsByStationId.get(station.id) || [],
+      soundIds: [],
     };
   });
 
@@ -146,39 +139,21 @@ const fetchSystemData = async (systemId) => {
 const fetchSoundData = async (systemId) => {
   const [
     { data: sounds, error: soundsError },
-    { data: soundFiles, error: soundFilesError },
-    { data: soundFileTargets, error: soundFileTargetsError },
+    { data: soundFiles, error: soundFilesError }
   ] = await Promise.all([
     supabaseClient
       .from("sounds")
-      .select("system_id, id, title, description")
+      .select("*")
       .eq("system_id", systemId),
 
     supabaseClient
       .from("sound_files")
-      .select("id, system_id, sound_id, title, description, src, source_url, year_captured, rolling_stock, line_ids")
-      .eq("system_id", systemId),
-
-    supabaseClient
-      .from("sound_file_targets")
-      .select("sound_file_id, system_id, station_id, line_id")
-      .eq("system_id", systemId),
+      .select("*")
+      .eq("system_id", systemId)
   ]);
 
   if (soundsError) throw soundsError;
   if (soundFilesError) throw soundFilesError;
-  if (soundFileTargetsError) throw soundFileTargetsError;
-
-  const targetsBySoundFileId = new Map();
-  soundFileTargets.forEach((row) => {
-    if (!targetsBySoundFileId.has(row.sound_file_id)) {
-      targetsBySoundFileId.set(row.sound_file_id, []);
-    }
-    targetsBySoundFileId.get(row.sound_file_id).push({
-      stationId: row.station_id,
-      lineId: row.line_id || undefined,
-    });
-  });
 
   const filesBySoundId = new Map();
 
@@ -188,31 +163,35 @@ const fetchSoundData = async (systemId) => {
       description: file.description || undefined,
       src: file.src,
       lineIds: Array.isArray(file.line_ids) && file.line_ids.length ? file.line_ids : undefined,
-      targets: targetsBySoundFileId.get(file.id) || [],
+      targets: file.station_id ? [{ stationId: file.station_id }] : [],
       metadata: {
         ...(file.source_url ? { origin: file.source_url } : {}),
         ...(file.year_captured ? { yearCaptured: file.year_captured } : {}),
-        ...(file.rolling_stock ? { rollingStock: file.rolling_stock } : {}),
-      },
+        ...(file.rolling_stock ? { rollingStock: file.rolling_stock } : {})
+      }
     };
 
     if (!filesBySoundId.has(file.sound_id)) {
       filesBySoundId.set(file.sound_id, []);
     }
+
     filesBySoundId.get(file.sound_id).push(audioEntry);
   });
 
   const soundData = {};
+
   sounds.forEach((sound) => {
     soundData[sound.id] = {
       title: sound.title,
       description: sound.description || "",
-      audio: filesBySoundId.get(sound.id) || [],
+      scope: sound.scope,
+      audio: filesBySoundId.get(sound.id) || []
     };
   });
 
   return soundData;
 };
+
 
 const fetchCountries = async () => {
   const { data, error } = await supabaseClient
@@ -1742,6 +1721,26 @@ const loadSystem = async (system) => {
   if (loadToken !== state.systemLoadToken) return;
   state.systemInfo = system;
   state.systemData = normalizeSystemData({ ...systemDataRaw, sounds: soundDataRaw });
+  Object.entries(state.systemData.lines).forEach(([lineId, line]) => {
+    line.items = Object.values(state.systemData.sounds || {})
+      .map(sound => ({
+        ...sound,
+        audio: (sound.audio || []).filter(
+          a => (a.lineIds || []).includes(lineId) && !a.targets?.length
+        )
+      }))
+      .filter(sound => sound.audio.length);
+  });
+  Object.entries(state.systemData.stations).forEach(([stationId, station]) => {
+  station.items = Object.values(state.systemData.sounds || {})
+    .map(sound => ({
+      ...sound,
+      audio: (sound.audio || []).filter(
+        a => a.targets?.some(t => t.stationId === stationId)
+      )
+    }))
+    .filter(sound => sound.audio.length);
+  });
   state.selectedLineId = null;
   let mapAvailable = false;
   const mapPath = systemDataRaw.mapUrl

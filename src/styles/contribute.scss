@@ -1,0 +1,58 @@
+.contribute-page {
+  min-height: 100dvh;
+  background: #0f1115;
+  color: #e6e6e6;
+}
+
+.contribute-main {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2rem;
+
+  h1 {
+    font-size: 1.35em;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+}
+
+.contribute-form {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+  border: 0.0625rem solid #2d3240;
+  background: #141823;
+
+  label {
+    font-size: 0.9em;
+    color: #c2c8d1;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    width: 100%;
+    border-radius: 0;
+    border: 0.0625rem solid #343a4a;
+    background: #0f1320;
+    color: #e6e6e6;
+    padding: 0.55rem 0.6rem;
+    font: inherit;
+  }
+
+  textarea {
+    min-height: 6rem;
+    resize: vertical;
+  }
+
+  button {
+    margin-top: 0.35rem;
+    background: #1a2133;
+    cursor: pointer;
+  }
+}
+
+.hidden {
+  display: none;
+}
