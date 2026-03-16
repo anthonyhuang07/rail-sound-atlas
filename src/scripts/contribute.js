@@ -43,6 +43,7 @@ const newSoundDescriptionInput = el("new-sound-description");
 const soundCategoryDescription = el("sound-category-description");
 const soundLabelText = el("sound-label");
 const titleInput = el("title");
+const titleWarning = el("title-warning");
 const descriptionInput = el("description");
 const descriptionLabel = descriptionInput?.previousElementSibling;
 const rollingStockInput = el("rolling_stock");
@@ -64,6 +65,7 @@ const state = {
   cachedSystemLines: [],
   cooldownUntil: 0,
   cooldownTimer: null,
+  cooldownSubmitted: false,
 };
 
 const RECENT_SUBMISSION_FINGERPRINTS_KEY = "rsa_recent_submission_fingerprints";
@@ -79,6 +81,8 @@ const slugify = (text) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
+
+const normalizeText = (value) => value.trim().replace(/\s+/g, " ").toLowerCase();
 
 const getSelectedLines = () =>
   [...lineList.querySelectorAll('input[name="line"]:checked')].map(input => input.value);
@@ -242,6 +246,26 @@ const syncSelectedSoundDescription = () => {
   soundCategoryDescription.textContent = show ? description : "";
 };
 
+const getCurrentSoundCategoryTitle = () =>
+  newSoundToggle.classList.contains("active")
+    ? newSoundInput.value.trim()
+    : (soundSelect.options[soundSelect.selectedIndex]?.textContent || "").trim();
+
+const validateTitleAgainstCategory = () => {
+  const title = titleInput.value.trim();
+  const categoryTitle = getCurrentSoundCategoryTitle();
+  const conflict =
+    !!title &&
+    !!categoryTitle &&
+    normalizeText(title) === normalizeText(categoryTitle);
+  const message = "Title must not be the same as the sound category title.";
+  if (titleWarning) {
+    titleWarning.classList.toggle("hidden", !conflict);
+    titleWarning.textContent = conflict ? message : "";
+  }
+  titleInput.setCustomValidity(conflict ? message : "");
+};
+
 const setNewSoundMode = (enabled) => {
   newSoundToggle.classList.toggle("active", enabled);
   soundLabelText.textContent = enabled ? "New Sound Category" : "Sound Category";
@@ -253,6 +277,7 @@ const setNewSoundMode = (enabled) => {
   newSoundInput.required = enabled;
   syncSelectedSoundDescription();
   syncMetadataDescriptionVisibility();
+  validateTitleAgainstCategory();
 };
 
 const syncMetadataDescriptionVisibility = () => {
@@ -647,11 +672,12 @@ const updateCooldownButtonState = () => {
   const remaining = getCooldownSecondsRemaining();
   if (remaining > 0) {
     submitButton.disabled = true;
-    submitButton.textContent = `Submit (${remaining}s)`;
+    submitButton.textContent = state.cooldownSubmitted ? `Submitted! (${remaining}s)` : `Submit (${remaining}s)`;
     return;
   }
   submitButton.disabled = false;
   submitButton.textContent = "Submit";
+  state.cooldownSubmitted = false;
   if (state.cooldownTimer) {
     clearInterval(state.cooldownTimer);
     state.cooldownTimer = null;
@@ -808,6 +834,7 @@ const restoreDraft = async () => {
   sourceInput.value = draft.source || "";
 
   syncMetadataDescriptionVisibility();
+  validateTitleAgainstCategory();
   syncSectionFlow();
 };
 
@@ -970,6 +997,7 @@ window.addEventListener("pageshow", () => {
 soundSelect.addEventListener("change", () => {
   syncSelectedSoundDescription();
   syncMetadataDescriptionVisibility();
+  validateTitleAgainstCategory();
   syncSectionFlow();
 });
 
@@ -980,6 +1008,8 @@ newSoundToggle.addEventListener("click", () => {
 
 audioInput.addEventListener("change", validateCurrentAudioSelection);
 newSoundInput.addEventListener("input", syncSectionFlow);
+newSoundInput.addEventListener("input", validateTitleAgainstCategory);
+titleInput.addEventListener("input", validateTitleAgainstCategory);
 newSoundDescriptionInput.addEventListener("input", () => {
   syncMetadataDescriptionVisibility();
   syncSectionFlow();
@@ -1181,6 +1211,7 @@ submitForm.addEventListener("submit", async (event) => {
 
     turnstile.reset();
     rememberSubmissionFingerprint(fingerprint);
+    state.cooldownSubmitted = true;
     startSubmitCooldown();
 
     alert("Submission Complete!");
@@ -1202,6 +1233,7 @@ const initForm = async () => {
   syncSectionFlow();
   await loadCountries();
   await restoreDraft();
+  validateTitleAgainstCategory();
   updateCooldownButtonState();
 };
 
