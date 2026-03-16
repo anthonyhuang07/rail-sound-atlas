@@ -264,6 +264,9 @@ const CHEVRON_UP_ICON =
 const state = {
   audioControllers: new Set(),
   view: "home",
+  countries: [],
+  countrySystems: {},
+  selectedCountryId: null,
   systemData: null,
   systemInfo: null,
   mapAvailable: false,
@@ -286,6 +289,32 @@ const state = {
   panStartedOnTarget: false,
   panStart: { x: 0, y: 0 },
   panDownTarget: null,
+};
+
+const buildRoutePath = (route) => {
+  if (route.view === "country" && route.countryId) return `/${encodeURIComponent(route.countryId)}`;
+  if (route.view === "system" && route.countryId && route.systemId) {
+    return `/${encodeURIComponent(route.countryId)}/${encodeURIComponent(route.systemId)}`;
+  }
+  return "/";
+};
+
+const parseRoute = () => {
+  const pathParts = window.location.pathname.split("/").filter(Boolean).map(decodeURIComponent);
+  if (pathParts.length) {
+    if (pathParts.length === 1) return { view: "country", countryId: pathParts[0] };
+    return { view: "system", countryId: pathParts[0], systemId: pathParts[1] };
+  }
+  const rawHash = (window.location.hash || "").replace(/^#/, "");
+  const hashParts = rawHash.split("/").filter(Boolean).map(decodeURIComponent);
+  if (!hashParts.length) return { view: "home" };
+  if (hashParts.length === 1) return { view: "country", countryId: hashParts[0] };
+  return { view: "system", countryId: hashParts[0], systemId: hashParts[1] };
+};
+
+const pushRoute = (route, replace = false) => {
+  const method = replace ? "replaceState" : "pushState";
+  history[method](route, "", buildRoutePath(route));
 };
 
 const stopActiveAudio = () => {
@@ -1783,6 +1812,74 @@ const loadSystem = async (system) => {
   }
 };
 
+const findCountryById = (countryId) => state.countries.find((country) => country.id === countryId) || null;
+
+const ensureCountrySystems = async (countryId) => {
+  if (!state.countrySystems[countryId]) {
+    state.countrySystems[countryId] = await fetchCountrySystems(countryId);
+  }
+  return state.countrySystems[countryId];
+};
+
+const findSystemInRegions = (regions, systemId) => {
+  for (const region of regions || []) {
+    const system = (region.systems || []).find((entry) => entry.id === systemId);
+    if (system) return system;
+  }
+  return null;
+};
+
+const openHomeView = () => {
+  state.selectedCountryId = null;
+  crumbCountry.textContent = "";
+  crumbSystem.textContent = "";
+  setView("home");
+};
+
+const openCountryView = async (countryId) => {
+  const country = findCountryById(countryId);
+  if (!country) {
+    openHomeView();
+    return;
+  }
+  const regions = await ensureCountrySystems(countryId);
+  state.selectedCountryId = countryId;
+  crumbCountry.textContent = country.name;
+  crumbSystem.textContent = "";
+  renderSystems(regions);
+  setView("country");
+};
+
+const openSystemView = async (countryId, systemId) => {
+  const country = findCountryById(countryId);
+  if (!country) {
+    openHomeView();
+    return;
+  }
+  const regions = await ensureCountrySystems(countryId);
+  const system = findSystemInRegions(regions, systemId);
+  if (!system) {
+    await openCountryView(countryId);
+    return;
+  }
+  state.selectedCountryId = countryId;
+  crumbCountry.textContent = country.name;
+  crumbSystem.textContent = system.name;
+  renderSystems(regions);
+  await loadSystem(system);
+};
+
+const navigateTo = async (route, push = true) => {
+  if (route.view === "home") {
+    openHomeView();
+  } else if (route.view === "country") {
+    await openCountryView(route.countryId);
+  } else if (route.view === "system") {
+    await openSystemView(route.countryId, route.systemId);
+  }
+  if (push) pushRoute(route);
+};
+
 const renderCountries = (countries) => {
   countryGrid.innerHTML = "";
   countries.forEach((country) => {
@@ -1791,12 +1888,7 @@ const renderCountries = (countries) => {
       alt: `${country.name} flag`,
       title: country.name,
       countryId: country.id,
-      onClick: async () => {
-        const regions = await fetchCountrySystems(country.id);
-        crumbCountry.textContent = country.name;
-        renderSystems(regions);
-        setView("country");
-      },
+      onClick: () => navigateTo({ view: "country", countryId: country.id }, true),
     });
     countryGrid.append(button);
   });
@@ -1820,10 +1912,7 @@ const renderSystems = (regions) => {
         image: system.logo,
         alt: `${system.name} logo`,
         title: system.name,
-        onClick: () => {
-          crumbSystem.textContent = system.name;
-          loadSystem(system);
-        },
+        onClick: () => navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: system.id }, true),
       });
       grid.append(button);
     });
@@ -1835,12 +1924,23 @@ const renderSystems = (regions) => {
 
 const init = async () => {
   const countries = await fetchCountries();
+  state.countries = countries;
   renderCountries(countries);
   crumbCountry.textContent = "";
   crumbSystem.textContent = "";
 
-  document.querySelectorAll(".crumb").forEach((button) => {
-    button.addEventListener("click", () => setView(button.dataset.view));
+  crumbHome.addEventListener("click", () => navigateTo({ view: "home" }, true));
+  crumbCountry.addEventListener("click", () => {
+    if (state.selectedCountryId) {
+      navigateTo({ view: "country", countryId: state.selectedCountryId }, true);
+    } else {
+      navigateTo({ view: "home" }, true);
+    }
+  });
+  crumbSystem.addEventListener("click", () => {
+    if (state.selectedCountryId && state.systemInfo?.id) {
+      navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: state.systemInfo.id }, true);
+    }
   });
   if (panelBack) {
     panelBack.addEventListener("click", () => {
@@ -1889,6 +1989,10 @@ const init = async () => {
     window.visualViewport.addEventListener("resize", syncMobileSplitLayout);
     window.visualViewport.addEventListener("scroll", syncMobileSplitLayout);
   }
+  window.addEventListener("popstate", async (event) => {
+    const route = event.state || parseRoute();
+    await navigateTo(route, false);
+  });
   // List mode line reset is handled by clicking the active line chip again.
   window.addEventListener("blur", resetInteractions);
   document.addEventListener("visibilitychange", () => {
@@ -1934,7 +2038,9 @@ const init = async () => {
   );
 
   resetMobileMenuRatio();
-  setView("home");
+  const initialRoute = parseRoute();
+  await navigateTo(initialRoute, false);
+  pushRoute(initialRoute, true);
 };
 
 init();
