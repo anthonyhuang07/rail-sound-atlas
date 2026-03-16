@@ -4,4 +4,8 @@
     <loc>https://railsoundatlas.org/</loc>
     <priority>1.0</priority>
   </url>
+  <url>
+    <loc>https://railsoundatlas.org/contribute</loc>
+    <priority>0.8</priority>
+  </url>
 </urlset>

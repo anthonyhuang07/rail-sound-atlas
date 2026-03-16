@@ -45,7 +45,9 @@
                 <div id="scope-label-row" class="label-row hidden">
                     <label>Sound Scope</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound scope?">i</button>
-                    <span class="label-info-tip">System Sound: played anywhere in the system<br><br>Line Sound: played anywhere on specific line(s)<br><br>Station Sound: mentions/played in a specific station</span>
+                    <span class="label-info-tip">System Sound: played anywhere in the system. If the system only has one
+                        line, select Line Sound instead.<br><br>Line Sound: played anywhere on specific
+                        line(s)<br><br>Station Sound: played in/mentions a specific station</span>
                 </div>
                 <select id="scope" class="hidden" disabled>
                     <option value="" selected>Select</option>
@@ -102,18 +104,18 @@
                     <label id="sound-label" class="required-label">Sound Category</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound category?">i</button>
                     <span class="label-info-tip">The name of the sound category, like Door Chime, Arrival, Next Station,
-                        or Acceleration.</span>
+                        or Acceleration.<br><br>Include a transcription only if the sound's transcription is the same
+                        across all sound variants.</span>
                 </div>
                 <div id="sound-picker" class="sound-picker hidden">
                     <select id="sound" required disabled>
                         <option value="">Select</option>
                     </select>
-                    <input id="new-sound" class="hidden" placeholder="Title" />
+                    <input id="new-sound" class="hidden" />
                     <button type="button" id="new-sound-toggle" class="secondary-btn">New Category</button>
                 </div>
                 <p id="sound-category-description" class="field-hint hidden"></p>
-                <textarea id="new-sound-description" class="field-hint hidden"
-                    placeholder="Sound Transcription (optional, only include if transcription applies to all variants)"></textarea>
+                <textarea id="new-sound-description" class="field-hint hidden"></textarea>
 
             </section>
 
@@ -122,35 +124,47 @@
                 <div class="label-row">
                     <label>Title</label>
                     <button type="button" class="label-info-btn" aria-label="What should title contain?">i</button>
-                    <span class="label-info-tip">Title of the variant sound within the sound category. For example, under "Departure Melody", use direction variants like "To X" or "To Y" as the title. For the same sound produced by a different rolling stock, use the rolling stock name as the title. If there is only one sound for the category and no variants are possible, leave this field blank.</span>
+                    <span class="label-info-tip">Title of the variant sound within the sound category. For example,
+                        under "Departure Melody", use direction variants like "To X" or "To Y" as the title. For the
+                        same sound produced by a different rolling stock, use the rolling stock name as the title. If
+                        there is only one sound for the category and no variants are possible, leave this field
+                        blank.</span>
                 </div>
                 <input id="title" />
 
                 <div class="label-row">
                     <label>Description</label>
-                    <button type="button" class="label-info-btn" aria-label="What should description contain?">i</button>
-                    <span class="label-info-tip">Transcription of the sound itself. Do not include if the sound category's transcription applies to every variant.</span>
+                    <button type="button" class="label-info-btn"
+                        aria-label="What should description contain?">i</button>
+                    <span class="label-info-tip">Transcription of the sound itself. Do not include if the sound
+                        category's transcription applies to every variant.</span>
                 </div>
                 <textarea id="description"></textarea>
 
                 <div class="label-row">
                     <label>Rolling Stock</label>
                     <button type="button" class="label-info-btn" aria-label="What is rolling stock?">i</button>
-                    <span class="label-info-tip">The train model which produces said sound. Do not include for sounds NOT made by the train (e.g. in-station announcements). Leave blank if unknown.</span>
+                    <span class="label-info-tip">The train model which produces said sound. Do not include for sounds
+                        NOT made by the train (e.g. in-station announcements). Leave blank if unknown.</span>
                 </div>
                 <input id="rolling_stock" />
 
                 <div class="label-row">
                     <label>Year Captured</label>
-                    <button type="button" class="label-info-btn" aria-label="What should year captured contain?">i</button>
-                    <span class="label-info-tip">The year this sound was recorded, not the first year of service. This could be either the date of an uploaded video (e.g. on YouTube) or the actual date of the recording. Leave blank if unknown.</span>
+                    <button type="button" class="label-info-btn"
+                        aria-label="What should year captured contain?">i</button>
+                    <span class="label-info-tip">The year this sound was recorded, not the first year of service. This
+                        could be either the date of an uploaded video (e.g. on YouTube) or the actual date of the
+                        recording. Leave blank if unknown.</span>
                 </div>
                 <input id="year_captured" type="number" min="1800" />
 
                 <div class="label-row">
                     <label class="required-label">Source</label>
                     <button type="button" class="label-info-btn" aria-label="What should source contain?">i</button>
-                    <span class="label-info-tip">A link to the original source of the sound. For sounds recorded by you, you may either write "User Recorded" (anonymous option) or if you would like credit, provide a link to a profile of yours.</span>
+                    <span class="label-info-tip">A link to the original source of the sound. For sounds recorded by you,
+                        you may either write "User Recorded" (anonymous option) or if you would like credit, provide a
+                        link to a profile of yours.</span>
                 </div>
                 <input id="source" required />
 
@@ -184,9 +198,11 @@
             <h2 id="guidelines-title">Audio Guidelines</h2>
 
             <ul>
-                <li>Audio must be clear and free of unrelated background speech.</li>
+                <li>Audio must be clear and free of unrelated background noise/speech. Extremely noisy recordings may be
+                    rejected.</li>
                 <li>
-                    If the sound contains speech, it must be transcribed in its entirety in its original language.
+                    If the sound contains speech, the description must contain the full transcription in its original
+                    language.
                     <ul>
                         <li>For sound effects, unless there is a common name for it (e.g. Montréal's "Dou dou dou",
                             Japan's「ポポポン」), leave the description blank.</li>
@@ -205,6 +221,17 @@
                 <li>Try to name the file something that relates to the sound it represents.</li>
             </ul>
 
+        </section>
+
+        <section class="guidelines" aria-labelledby="notes-title">
+            <h2 id="notes-title">Notes</h2>
+            <ul>
+                <li>Submissions are reviewed before they are added to the atlas.</li>
+                <li>If you would like to see a country or system added, please open a GitHub issue.</li>
+                <li>
+                    Before submitting, please check whether the sound already exists in the atlas to avoid duplicates.
+                </li>
+            </ul>
         </section>
 
     </main>

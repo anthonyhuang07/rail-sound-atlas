@@ -42,8 +42,11 @@ const newSoundInput = el("new-sound");
 const newSoundDescriptionInput = el("new-sound-description");
 const soundCategoryDescription = el("sound-category-description");
 const soundLabelText = el("sound-label");
+const titleInput = el("title");
 const descriptionInput = el("description");
 const descriptionLabel = descriptionInput?.previousElementSibling;
+const rollingStockInput = el("rolling_stock");
+const sourceInput = el("source");
 const audioWarning = el("audio-warning");
 const audioDropzone = el("audio-dropzone");
 const yearCapturedInput = el("year_captured");
@@ -244,12 +247,19 @@ const setNewSoundMode = (enabled) => {
 };
 
 const syncMetadataDescriptionVisibility = () => {
-  const hasCategoryDescription =
+  const selectedSound = soundSelect.options[soundSelect.selectedIndex];
+  const selectedSoundCategoryDescription = (selectedSound?.dataset?.description || "").trim();
+  const hasExistingCategoryDescription =
+    !newSoundToggle.classList.contains("active") &&
+    !!selectedSoundCategoryDescription;
+  const hasNewCategoryDescription =
     newSoundToggle.classList.contains("active") &&
     !!newSoundDescriptionInput.value.trim();
-  descriptionInput.classList.toggle("hidden", hasCategoryDescription);
-  if (descriptionLabel) descriptionLabel.classList.toggle("hidden", hasCategoryDescription);
-  descriptionInput.disabled = hasCategoryDescription;
+  const hideDescriptionInput = hasExistingCategoryDescription || hasNewCategoryDescription;
+
+  descriptionInput.classList.toggle("hidden", hideDescriptionInput);
+  descriptionLabel.classList.toggle("hidden", hideDescriptionInput);
+  descriptionInput.disabled = hideDescriptionInput;
 };
 
 const syncLineOptionButtons = () => {
@@ -620,10 +630,60 @@ const setSubmitting = (submitting) => {
   submitButton.innerHTML = submitting ? `<span class="submit-spinner" aria-hidden="true"></span>` : "Submit";
 };
 
+const applyScopePlaceholders = () => {
+  const byScope = {
+    system: {
+      title: "e.g. (blank)",
+      description: 'e.g. (blank)',
+      rollingStock: "e.g. (blank)",
+      source: "e.g. https://youtube.com/watch?v=...",
+      newStation: "",
+      newStationOrder: "",
+      newSound: "e.g. Station Announcement",
+      newSoundDescription: 'e.g. (blank)',
+      yearCaptured: "e.g. 2025",
+    },
+    line: {
+      title: "e.g. Towards Vaughan",
+      description: "e.g. Line 1 towards Vaughan.",
+      rollingStock: "e.g. Toronto Rocket",
+      source: "e.g. https://youtube.com/watch?v=...",
+      newStation: "",
+      newStationOrder: "",
+      newSound: "e.g. Doors Opening",
+      newSoundDescription: "e.g. (blank)",
+      yearCaptured: "e.g. 2025",
+    },
+    station: {
+      title: "e.g. Ligne Orange",
+      description: "e.g. Prochaine station: Lionel-Groulx. Correspondance avec la ligne verte.",
+      rollingStock: "e.g. AZUR",
+      source: "e.g. https://youtube.com/watch?v=...",
+      newStation: "e.g. Lionel-Groulx",
+      newStationOrder: "e.g. 8",
+      newSound: "e.g. Next Station",
+      newSoundDescription: "e.g. (blank)",
+      yearCaptured: "e.g. 2025",
+    }
+  };
+  const set = byScope[scopeSelect.value];
+  if (!set) return;
+  titleInput.placeholder = set.title;
+  descriptionInput.placeholder = set.description;
+  rollingStockInput.placeholder = set.rollingStock;
+  sourceInput.placeholder = set.source;
+  newStationInput.placeholder = set.newStation;
+  newStationOrderInput.placeholder = set.newStationOrder;
+  newSoundInput.placeholder = set.newSound;
+  newSoundDescriptionInput.placeholder = set.newSoundDescription;
+  yearCapturedInput.placeholder = set.yearCaptured;
+};
+
 countrySelect.addEventListener("change", async () => {
   await loadSystems(countrySelect.value);
   systemSelect.value = "";
   scopeSelect.value = "";
+  applyScopePlaceholders();
   setScopeVisibility(false);
   resetSoundSelectionState();
   systemSelect.dispatchEvent(new Event("change"));
@@ -634,6 +694,7 @@ systemSelect.addEventListener("change", async () => {
   const systemId = systemSelect.value;
   if (!systemId) {
     scopeSelect.value = "";
+    applyScopePlaceholders();
     setScopeVisibility(false);
     resetSoundSelectionState();
     resetStationSelectionState();
@@ -649,6 +710,7 @@ systemSelect.addEventListener("change", async () => {
 });
 
 scopeSelect.addEventListener("change", async () => {
+  applyScopePlaceholders();
   applyScopeLayout();
   syncLineOptionButtons();
 
@@ -720,11 +782,13 @@ addOtherLineButton.addEventListener("click", () => {
 
 window.addEventListener("pageshow", () => {
   scopeSelect.value = "";
+  applyScopePlaceholders();
   syncSectionFlow();
 });
 
 soundSelect.addEventListener("change", () => {
   syncSelectedSoundDescription();
+  syncMetadataDescriptionVisibility();
   syncSectionFlow();
 });
 
@@ -932,6 +996,7 @@ submitForm.addEventListener("submit", async (event) => {
 });
 
 scopeSelect.value = "";
+applyScopePlaceholders();
 yearCapturedInput.max = String(new Date().getFullYear());
 setSystemVisibility(false);
 setScopeVisibility(false);
