@@ -291,30 +291,25 @@ const state = {
   panDownTarget: null,
 };
 
-const buildRoutePath = (route) => {
-  if (route.view === "country" && route.countryId) return `/${encodeURIComponent(route.countryId)}`;
+const buildRouteHash = (route) => {
+  if (route.view === "country" && route.countryId) return `#/${route.countryId}`;
   if (route.view === "system" && route.countryId && route.systemId) {
-    return `/${encodeURIComponent(route.countryId)}/${encodeURIComponent(route.systemId)}`;
+    return `#/${route.countryId}/${route.systemId}`;
   }
-  return "/";
+  return "#/";
 };
 
-const parseRoute = () => {
-  const pathParts = window.location.pathname.split("/").filter(Boolean).map(decodeURIComponent);
-  if (pathParts.length) {
-    if (pathParts.length === 1) return { view: "country", countryId: pathParts[0] };
-    return { view: "system", countryId: pathParts[0], systemId: pathParts[1] };
-  }
-  const rawHash = (window.location.hash || "").replace(/^#/, "");
-  const hashParts = rawHash.split("/").filter(Boolean).map(decodeURIComponent);
-  if (!hashParts.length) return { view: "home" };
-  if (hashParts.length === 1) return { view: "country", countryId: hashParts[0] };
-  return { view: "system", countryId: hashParts[0], systemId: hashParts[1] };
+const parseRouteHash = () => {
+  const raw = (window.location.hash || "#/").replace(/^#/, "");
+  const parts = raw.split("/").filter(Boolean);
+  if (!parts.length) return { view: "home" };
+  if (parts.length === 1) return { view: "country", countryId: parts[0] };
+  return { view: "system", countryId: parts[0], systemId: parts[1] };
 };
 
 const pushRoute = (route, replace = false) => {
   const method = replace ? "replaceState" : "pushState";
-  history[method](route, "", buildRoutePath(route));
+  history[method](route, "", buildRouteHash(route));
 };
 
 const stopActiveAudio = () => {
@@ -1990,7 +1985,7 @@ const init = async () => {
     window.visualViewport.addEventListener("scroll", syncMobileSplitLayout);
   }
   window.addEventListener("popstate", async (event) => {
-    const route = event.state || parseRoute();
+    const route = event.state || parseRouteHash();
     await navigateTo(route, false);
   });
   // List mode line reset is handled by clicking the active line chip again.
@@ -2038,7 +2033,7 @@ const init = async () => {
   );
 
   resetMobileMenuRatio();
-  const initialRoute = parseRoute();
+  const initialRoute = parseRouteHash();
   await navigateTo(initialRoute, false);
   pushRoute(initialRoute, true);
 };
