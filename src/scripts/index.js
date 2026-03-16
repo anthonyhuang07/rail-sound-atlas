@@ -130,7 +130,6 @@ const fetchSystemData = async (systemId) => {
       id: systemRow.id,
       name: systemRow.name,
       description: systemRow.description || "",
-      soundIds: Array.isArray(systemRow.sound_ids) ? systemRow.sound_ids : [],
     },
     theme: systemRow.theme || {},
     lines: linesObject,
@@ -486,9 +485,11 @@ const normalizeSystemData = (raw) => {
     stations[stationId] = { ...resolveItems(station), id: stationId };
   });
 
+  const systemItems = Object.values(sounds).filter((sound) => sound.scope === "system");
+
   return {
     ...raw,
-    system: { ...raw.system, items: resolveSoundIds(raw.system.soundIds) },
+    system: { ...raw.system, items: systemItems },
     lines,
     stations,
   };
