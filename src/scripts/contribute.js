@@ -56,12 +56,21 @@ const FILE_SIZE_ERROR = "File must be 1MB or smaller.";
 const ALLOWED_EXTENSIONS = ["mp3", "wav", "ogg", "flac", "m4a", "aac"];
 const EMPTY_SELECT = `<option value="">Select</option>`;
 const SELECT_LINE = `<option>Select Line</option>`;
+const SUBMISSION_DRAFT_KEY = "rsa_contribute_submission_draft_v1";
 
 const state = {
   isCreatingNewStation: false,
   lastValidAudioFile: null,
   cachedSystemLines: [],
+  cooldownUntil: 0,
+  cooldownTimer: null,
 };
+
+const RECENT_SUBMISSION_FINGERPRINTS_KEY = "rsa_recent_submission_fingerprints";
+const COOLDOWN_SECONDS = 10;
+const recentSubmissionFingerprints = new Set(
+  JSON.parse(sessionStorage.getItem(RECENT_SUBMISSION_FINGERPRINTS_KEY) || "[]")
+);
 
 const slugify = (text) =>
   text
@@ -630,6 +639,178 @@ const setSubmitting = (submitting) => {
   submitButton.innerHTML = submitting ? `<span class="submit-spinner" aria-hidden="true"></span>` : "Submit";
 };
 
+const getCooldownSecondsRemaining = () =>
+  Math.max(0, Math.ceil((state.cooldownUntil - Date.now()) / 1000));
+
+const updateCooldownButtonState = () => {
+  if (!submitButton || submitButton.classList.contains("is-loading")) return;
+  const remaining = getCooldownSecondsRemaining();
+  if (remaining > 0) {
+    submitButton.disabled = true;
+    submitButton.textContent = `Submit (${remaining}s)`;
+    return;
+  }
+  submitButton.disabled = false;
+  submitButton.textContent = "Submit";
+  if (state.cooldownTimer) {
+    clearInterval(state.cooldownTimer);
+    state.cooldownTimer = null;
+  }
+};
+
+const startSubmitCooldown = () => {
+  state.cooldownUntil = Date.now() + COOLDOWN_SECONDS * 1000;
+  if (state.cooldownTimer) clearInterval(state.cooldownTimer);
+  updateCooldownButtonState();
+  state.cooldownTimer = setInterval(updateCooldownButtonState, 250);
+};
+
+const getSubmissionFingerprint = (payload, file) =>
+  JSON.stringify({
+    payload: {
+      system_id: payload.system_id,
+      station_id: payload.station_id,
+      sound_id: payload.sound_id,
+      new_sound_category: payload.new_sound_category,
+      new_sound_category_title: payload.new_sound_category_title,
+      new_sound_category_description: payload.new_sound_category_description,
+      new_sound_category_scope: payload.new_sound_category_scope,
+      new_station: payload.new_station,
+      new_station_name: payload.new_station_name,
+      new_station_primary_line_id: payload.new_station_primary_line_id,
+      new_station_primary_line_order: payload.new_station_primary_line_order,
+      new_station_other_lines: [...payload.new_station_other_lines].sort((a, b) =>
+        a.lineId.localeCompare(b.lineId) || a.lineOrder - b.lineOrder
+      ),
+      title: payload.title,
+      description: payload.description,
+      rolling_stock: payload.rolling_stock,
+      year_captured: payload.year_captured,
+      source: payload.source,
+      line_ids: [...payload.line_ids].sort(),
+    },
+    file: {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      lastModified: file.lastModified,
+    },
+  });
+
+const rememberSubmissionFingerprint = (fingerprint) => {
+  recentSubmissionFingerprints.add(fingerprint);
+  sessionStorage.setItem(
+    RECENT_SUBMISSION_FINGERPRINTS_KEY,
+    JSON.stringify([...recentSubmissionFingerprints])
+  );
+};
+
+const getDraft = () => {
+  try {
+    const raw = localStorage.getItem(SUBMISSION_DRAFT_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+};
+
+const saveDraft = () => {
+  const otherLines = [...newStationOtherLinesList.querySelectorAll(".other-line-row")].map((row) => ({
+    lineId: row.querySelector(".other-line-id")?.value || "",
+    lineOrder: row.querySelector(".other-line-order")?.value || "",
+  }));
+
+  const draft = {
+    countryId: countrySelect.value,
+    systemId: systemSelect.value,
+    scope: scopeSelect.value,
+    lineIds: getSelectedLines(),
+    stationId: stationSelect.value,
+    isCreatingNewStation: state.isCreatingNewStation,
+    newStationName: newStationInput.value,
+    newStationOrder: newStationOrderInput.value,
+    newStationHasOtherLines: newStationHasOtherLinesInput.checked,
+    newStationOtherLines: otherLines,
+    isNewSoundCategory: newSoundToggle.classList.contains("active"),
+    soundId: soundSelect.value,
+    newSoundTitle: newSoundInput.value,
+    newSoundDescription: newSoundDescriptionInput.value,
+    title: titleInput.value,
+    description: descriptionInput.value,
+    rollingStock: rollingStockInput.value,
+    yearCaptured: yearCapturedInput.value,
+    source: sourceInput.value,
+  };
+
+  localStorage.setItem(SUBMISSION_DRAFT_KEY, JSON.stringify(draft));
+};
+
+const restoreDraft = async () => {
+  const draft = getDraft();
+  if (!draft) return;
+
+  countrySelect.value = draft.countryId || "";
+  if (countrySelect.value) await loadSystems(countrySelect.value);
+
+  systemSelect.value = draft.systemId || "";
+  if (systemSelect.value) {
+    setScopeVisibility(true);
+    await loadLines(systemSelect.value);
+  }
+
+  scopeSelect.value = draft.scope || "";
+  applyScopePlaceholders();
+  applyScopeLayout();
+
+  if (scopeSelect.value && systemSelect.value) await loadSounds(systemSelect.value);
+
+  const requestedLines = Array.isArray(draft.lineIds) ? draft.lineIds : [];
+  lineList.querySelectorAll('input[name="line"]').forEach((input) => {
+    input.checked = requestedLines.includes(input.value);
+  });
+  if (scopeSelect.value === "station") enforceStationSingleLineSelection();
+  syncLineOptionButtons();
+
+  if (scopeSelect.value === "station" && getSelectedLines().length) {
+    setStationInputsDisabled(false);
+    await loadStations(systemSelect.value, getSelectedLines());
+  }
+
+  setNewStationMode(!!draft.isCreatingNewStation);
+  newStationInput.value = draft.newStationName || "";
+  newStationOrderInput.value = draft.newStationOrder || "";
+  newStationHasOtherLinesInput.checked = !!draft.newStationHasOtherLines;
+  newStationOtherLinesList.innerHTML = "";
+  if (newStationHasOtherLinesInput.checked) {
+    newStationOtherLinesGroup.classList.remove("hidden");
+    const rows = Array.isArray(draft.newStationOtherLines) ? draft.newStationOtherLines : [];
+    if (rows.length) {
+      rows.forEach((row) => createOtherLineRow(row.lineId || "", row.lineOrder || ""));
+    } else {
+      createOtherLineRow();
+    }
+  } else {
+    newStationOtherLinesGroup.classList.add("hidden");
+  }
+
+  stationSelect.value = draft.stationId || "";
+
+  setNewSoundMode(!!draft.isNewSoundCategory);
+  newSoundInput.value = draft.newSoundTitle || "";
+  newSoundDescriptionInput.value = draft.newSoundDescription || "";
+  if (!draft.isNewSoundCategory) soundSelect.value = draft.soundId || "";
+  syncSelectedSoundDescription();
+
+  titleInput.value = draft.title || "";
+  descriptionInput.value = draft.description || "";
+  rollingStockInput.value = draft.rollingStock || "";
+  yearCapturedInput.value = draft.yearCaptured || "";
+  sourceInput.value = draft.source || "";
+
+  syncMetadataDescriptionVisibility();
+  syncSectionFlow();
+};
+
 const applyScopePlaceholders = () => {
   const byScope = {
     system: {
@@ -845,7 +1026,9 @@ audioDropzone.addEventListener("drop", (event) => {
 
 submitForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (submitButton?.disabled) return;
+  saveDraft();
+  if (submitButton?.classList.contains("is-loading")) return;
+  if (getCooldownSecondsRemaining() > 0) return;
 
   try {
     setSubmitting(true);
@@ -906,9 +1089,12 @@ submitForm.addEventListener("submit", async (event) => {
     let newStationOtherLines = [];
 
     if (scopeSelect.value === "station") {
-      stationId = stationSelect.value;
-      if (state.isCreatingNewStation) {
-        const name = newStationInput.value.trim();
+      stationId = (stationSelect.value || "").trim();
+      const typedNewStationName = newStationInput.value.trim();
+      const shouldUseNewStation = state.isCreatingNewStation || !!typedNewStationName;
+
+      if (shouldUseNewStation) {
+        const name = typedNewStationName;
         const lineId = primaryLineId();
         const order = Number(newStationOrderInput.value);
         if (!name || !lineId || !Number.isFinite(order) || order < 1) {
@@ -933,6 +1119,16 @@ submitForm.addEventListener("submit", async (event) => {
         newStationPrimaryLineId = lineId;
         newStationPrimaryLineOrder = order;
         newStationOtherLines = otherLines;
+      } else {
+        if (!stationId) {
+          const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+          const selectedText = selectedOption?.textContent?.trim() || "";
+          stationId = selectedText ? slugify(selectedText) : "";
+        }
+        if (!stationId) {
+          alert("Please select a station.");
+          return;
+        }
       }
     }
 
@@ -966,6 +1162,13 @@ submitForm.addEventListener("submit", async (event) => {
       audio_storage_path: filePath,
     };
 
+    const fingerprint = getSubmissionFingerprint(payload, file);
+    if (recentSubmissionFingerprints.has(fingerprint)) {
+      alert("Duplicate submission blocked: exact same fields and audio were already submitted.");
+      turnstile.reset();
+      return;
+    }
+
     const formData = new FormData();
     formData.append("captcha", captchaToken);
     formData.append("data", JSON.stringify(payload));
@@ -987,21 +1190,29 @@ submitForm.addEventListener("submit", async (event) => {
     }
 
     turnstile.reset();
+    rememberSubmissionFingerprint(fingerprint);
+    startSubmitCooldown();
 
     alert("Submission Complete!");
-    window.location.href = "/";
   } finally {
     setSubmitting(false);
+    updateCooldownButtonState();
   }
 });
 
-scopeSelect.value = "";
-applyScopePlaceholders();
-yearCapturedInput.max = String(new Date().getFullYear());
-setSystemVisibility(false);
-setScopeVisibility(false);
-resetSoundSelectionState();
-resetStationSelectionState();
-syncMetadataDescriptionVisibility();
-syncSectionFlow();
-loadCountries();
+const initForm = async () => {
+  scopeSelect.value = "";
+  applyScopePlaceholders();
+  yearCapturedInput.max = String(new Date().getFullYear());
+  setSystemVisibility(false);
+  setScopeVisibility(false);
+  resetSoundSelectionState();
+  resetStationSelectionState();
+  syncMetadataDescriptionVisibility();
+  syncSectionFlow();
+  await loadCountries();
+  await restoreDraft();
+  updateCooldownButtonState();
+};
+
+initForm();

@@ -34,6 +34,8 @@ const sepSystem = document.querySelector(".crumb-sep[data-sep=system]");
 const mapSelector = "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]";
 let userSystemMode = null;
 
+/* #region DATABASE MANAGEMENT */
+
 const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 
