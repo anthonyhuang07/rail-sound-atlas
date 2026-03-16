@@ -1089,7 +1089,7 @@ submitForm.addEventListener("submit", async (event) => {
     let newStationOtherLines = [];
 
     if (scopeSelect.value === "station") {
-      stationId = (stationSelect.value || "").trim();
+      stationId = stationSelect.value;
       const typedNewStationName = newStationInput.value.trim();
       const shouldUseNewStation = state.isCreatingNewStation || !!typedNewStationName;
 
@@ -1119,16 +1119,6 @@ submitForm.addEventListener("submit", async (event) => {
         newStationPrimaryLineId = lineId;
         newStationPrimaryLineOrder = order;
         newStationOtherLines = otherLines;
-      } else {
-        if (!stationId) {
-          const selectedOption = stationSelect.options[stationSelect.selectedIndex];
-          const selectedText = selectedOption?.textContent?.trim() || "";
-          stationId = selectedText ? slugify(selectedText) : "";
-        }
-        if (!stationId) {
-          alert("Please select a station.");
-          return;
-        }
       }
     }
 
