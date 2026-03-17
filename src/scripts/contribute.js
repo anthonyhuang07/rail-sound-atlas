@@ -83,6 +83,15 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "");
 
 const normalizeText = (value) => value.trim().replace(/\s+/g, " ").toLowerCase();
+const normalizeWords = (value) =>
+  value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
 
 const getSelectedLines = () =>
   [...lineList.querySelectorAll('input[name="line"]:checked')].map(input => input.value);
@@ -251,19 +260,46 @@ const getCurrentSoundCategoryTitle = () =>
     ? newSoundInput.value.trim()
     : (soundSelect.options[soundSelect.selectedIndex]?.textContent || "").trim();
 
+const getCurrentStationName = () => {
+  if (scopeSelect.value !== "station") return "";
+  if (state.isCreatingNewStation) return newStationInput.value.trim();
+  return (stationSelect.options[stationSelect.selectedIndex]?.textContent || "").trim();
+};
+
+const titleContainsStationName = (title, stationName) => {
+  const titleWords = normalizeWords(title);
+  const stationWords = normalizeWords(stationName);
+  if (!titleWords.length || !stationWords.length) return false;
+  if (stationWords.length === 1) return titleWords.includes(stationWords[0]);
+
+  const titleNormalized = titleWords.join(" ");
+  const stationNormalized = stationWords.join(" ");
+  return titleNormalized.includes(stationNormalized);
+};
+
 const validateTitleAgainstCategory = () => {
   const title = titleInput.value.trim();
   const categoryTitle = getCurrentSoundCategoryTitle();
-  const conflict =
+  const sameAsCategory =
     !!title &&
     !!categoryTitle &&
     normalizeText(title) === normalizeText(categoryTitle);
-  const message = "Title must not be the same as the sound category title.";
+  const stationName = getCurrentStationName();
+  const includesStationName =
+    !!title &&
+    !!stationName &&
+    titleContainsStationName(title, stationName);
+  const message = sameAsCategory
+    ? "Title must not be the same as the sound category title."
+    : includesStationName
+      ? "For station scope, title must not contain the station name."
+      : "";
+
   if (titleWarning) {
-    titleWarning.classList.toggle("hidden", !conflict);
-    titleWarning.textContent = conflict ? message : "";
+    titleWarning.classList.toggle("hidden", !message);
+    titleWarning.textContent = message;
   }
-  titleInput.setCustomValidity(conflict ? message : "");
+  titleInput.setCustomValidity(message);
 };
 
 const setNewSoundMode = (enabled) => {
@@ -928,6 +964,7 @@ scopeSelect.addEventListener("change", async () => {
   }
 
   await loadSounds(systemSelect.value);
+  validateTitleAgainstCategory();
   syncSectionFlow();
 });
 
@@ -963,11 +1000,13 @@ lineList.addEventListener("change", async (event) => {
 
 stationSelect.addEventListener("change", () => {
   if (stationSelect.value) setNewStationMode(false);
+  validateTitleAgainstCategory();
   syncSectionFlow();
 });
 
 newStationToggle?.addEventListener("click", () => {
   setNewStationMode(!state.isCreatingNewStation);
+  validateTitleAgainstCategory();
   syncSectionFlow();
 });
 
@@ -1015,6 +1054,7 @@ newSoundDescriptionInput.addEventListener("input", () => {
   syncSectionFlow();
 });
 newStationInput.addEventListener("input", syncSectionFlow);
+newStationInput.addEventListener("input", validateTitleAgainstCategory);
 newStationOrderInput.addEventListener("input", syncSectionFlow);
 newStationOtherLinesList.addEventListener("input", syncSectionFlow);
 el("source").addEventListener("input", syncSectionFlow);
