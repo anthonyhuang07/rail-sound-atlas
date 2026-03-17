@@ -31,19 +31,19 @@
 
             <section id="context-section" class="form-section">
 
-                <label>Country</label>
+                <label class="required-label">Country</label>
                 <select id="country">
                     <option value="">Select</option>
                 </select>
 
-                <label id="system-label" class="hidden">System</label>
+                <label id="system-label" class="required-label hidden">System</label>
                 <div id="system-options" class="system-options hidden"></div>
                 <select id="system" class="hidden" disabled>
                     <option value="">Select</option>
                 </select>
 
                 <div id="scope-label-row" class="label-row hidden">
-                    <label>Sound Scope</label>
+                    <label class="required-label">Sound Scope</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound scope?">i</button>
                     <span class="label-info-tip">System Sound: played anywhere in the system. If the system only has one
                         line, select Line Sound instead.<br><br>Line Sound: played anywhere on specific
@@ -54,6 +54,17 @@
                     <option value="system">System Sound</option>
                     <option value="line">Line Sound</option>
                     <option value="station">Station Sound</option>
+                </select>
+
+                <div id="sound-active-label-row" class="label-row hidden">
+                    <label class="required-label">Sound Active?</label>
+                    <button type="button" class="label-info-btn" aria-label="What is sound active?">i</button>
+                    <span class="label-info-tip">Yes: sound is currently used.<br><br>No: historical/retired sound.<br><br>If unsure and the sound doesn't exist on the website yet, choose Yes.</span>
+                </div>
+                <select id="sound-active" class="hidden" disabled required>
+                    <option value="">Select</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
                 </select>
 
             </section>
@@ -104,7 +115,8 @@
                     <label id="sound-label" class="required-label">Sound Category</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound category?">i</button>
                     <span class="label-info-tip">The name of the sound category, like Door Chime, Arrival, Next Station,
-                        or Acceleration.<br><br>Include a transcription only if the sound's transcription is the same
+                        or Acceleration. Make sure to use proper Title Casing for the title.<br><br>Include a
+                        transcription only if the sound's transcription is the same
                         across all sound variants.</span>
                 </div>
                 <div id="sound-picker" class="sound-picker hidden">
@@ -124,9 +136,9 @@
                 <div class="label-row">
                     <label>Title</label>
                     <button type="button" class="label-info-btn" aria-label="What should title contain?">i</button>
-                    <span class="label-info-tip">Title of the variant sound within the sound category. For example,
-                        under "Departure Melody", use direction variants like "To X" or "To Y" as the title. For the
-                        same sound produced by a different rolling stock, use the rolling stock name as the title. If
+                    <span class="label-info-tip">Title of the variant sound within the sound category. Examples include
+                        directions "To (Terminus Station)", rolling stock variants "(Rolling Stock Name)". Make sure to
+                        use proper Title Casing for the title.<br><br>If
                         there is only one sound for the category and no variants are possible, leave this field
                         blank.</span>
                 </div>
@@ -138,7 +150,8 @@
                     <button type="button" class="label-info-btn"
                         aria-label="What should description contain?">i</button>
                     <span class="label-info-tip">Transcription of the sound itself. Do not include if the sound
-                        category's transcription applies to every variant.<br><br>If there is no speech, leave blank or include the name of the sound (if applicable.)</span>
+                        category's transcription applies to every variant.<br><br>If there is no speech, leave blank or
+                        include the name of the sound (if applicable.)</span>
                 </div>
                 <textarea id="description"></textarea>
 
@@ -228,7 +241,7 @@
             <h2 id="notes-title">Notes</h2>
             <ul>
                 <li>Submissions are reviewed before they are added to the atlas.</li>
-                <li>If you would like to see a country or system added, please open a GitHub issue.</li>
+                <li>If you would like to see a country or system added, please open a <a href="https://github.com/anthonyhuang07/rail-sound-atlas/issues/new" target="_blank" rel="noopener noreferrer">GitHub issue</a>.</li>
                 <li>Sounds uploaded must be currently used/most recently known used sound on the system.</li>
                 <li>
                     Before submitting, please check whether the sound already exists in the atlas to avoid duplicates.

@@ -188,6 +188,41 @@ body.is-system .system-mode-toggle {
   display: none !important;
 }
 
+.history-toggle {
+  display: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.25rem;
+  padding: 0.1875rem;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 999rem;
+  background: #0f1218;
+}
+.history-toggle .history-button {
+  background: transparent;
+  color: #f2f2f2;
+  border: 0.0625rem solid transparent;
+  border-radius: 999rem;
+  padding: 0.25rem 0.625rem;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+.history-toggle .history-button.is-active {
+  border-color: #3a4252;
+  background: #1a1f2a;
+}
+
+body.is-system .history-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.history-toggle[hidden] {
+  display: none !important;
+}
+
 .contribute-link,
 .github-link {
   display: -webkit-inline-box;
@@ -1499,6 +1534,17 @@ body.is-system .system-mode-toggle {
     min-height: 2em;
   }
   .site-header .system-mode-toggle {
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+  }
+  .site-header .history-toggle {
     -webkit-box-ordinal-group: 4;
         -ms-flex-order: 3;
             order: 3;

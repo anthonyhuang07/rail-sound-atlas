@@ -20,6 +20,9 @@ const popupClose = document.getElementById("popup-close");
 const systemModeToggle = document.getElementById("system-mode-toggle");
 const modeMapButton = document.getElementById("mode-map");
 const modeListButton = document.getElementById("mode-list");
+const historyToggle = document.getElementById("history-toggle");
+const historyActiveButton = document.getElementById("history-active");
+const historyHistoricalButton = document.getElementById("history-historical");
 const infoModal = document.getElementById("info-modal");
 const infoModalBody = document.getElementById("info-modal-body");
 const infoModalClose = document.getElementById("info-modal-close");
@@ -106,7 +109,9 @@ const fetchSystemData = async (systemId) => {
       subtitle: line.subtitle || "",
       icon: line.icon_url,
       otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
-      soundIds: []
+      soundIds: [],
+      sort_order: line.sort_order ?? 9999,
+      active: line.is_active ?? line.active,
     };
   });
 
@@ -122,6 +127,7 @@ const fetchSystemData = async (systemId) => {
       name: station.name,
       lines: lineRows.map((row) => [row.line_id, row.line_order]),
       soundIds: [],
+      active: station.is_active ?? station.active,
     };
   });
 
@@ -166,6 +172,7 @@ const fetchSoundData = async (systemId) => {
       src: file.src,
       lineIds: Array.isArray(file.line_ids) && file.line_ids.length ? file.line_ids : undefined,
       targets: file.station_id ? [{ stationId: file.station_id }] : [],
+      active: file.is_active ?? file.active,
       metadata: {
         ...(file.source_url ? { origin: file.source_url } : {}),
         ...(file.year_captured ? { yearCaptured: file.year_captured } : {}),
@@ -187,6 +194,7 @@ const fetchSoundData = async (systemId) => {
       title: sound.title,
       description: sound.description || "",
       scope: sound.scope,
+      active: sound.is_active ?? sound.active,
       audio: filesBySoundId.get(sound.id) || []
     };
   });
@@ -279,6 +287,7 @@ const state = {
   panActive: false,
   suppressClick: false,
   systemMode: "map",
+  historyMode: "active",
   selectedLineId: null,
   systemLoadToken: 0,
   mobileMenuHeightPx: 0,
@@ -535,11 +544,30 @@ const audioMatchesStation = (audio, station, lineId = null) => {
   });
 };
 
+const isVisibleByHistory = (audio, item) => {
+  const activeFlag = audio.active ?? item.active;
+  return state.historyMode === "historical" ? activeFlag === false : activeFlag !== false;
+};
+
+const getVisibleStationItems = (station) =>
+  (station?.items || [])
+    .map((item) => ({
+      ...item,
+      audio: (item.audio || []).filter((audio) => isVisibleByHistory(audio, item) && audioMatchesStation(audio, station)),
+    }))
+    .filter((item) => item.audio.length > 0);
+
+const stationHasVisibleSounds = (stationId) => {
+  const station = state.systemData?.stations?.[stationId];
+  return !!(station && getVisibleStationItems(station).length);
+};
+
 const filterItemsByLine = (items, lineId, station = null) =>
   (items || [])
     .map((item) => {
       const sourceAudio = item.audio || [];
       const filteredAudio = sourceAudio.filter((audio, _, list) => {
+        if (!isVisibleByHistory(audio, item)) return false;
         if (!audioMatchesStation(audio, station, lineId)) return false;
         const hasScopedAudio = list.some(
           (entry) =>
@@ -566,9 +594,23 @@ const filterSystemItems = (items) =>
   (items || [])
     .map((item) => ({
       ...item,
-      audio: (item.audio || []).filter((audio) => !audio.lineIds),
+      audio: (item.audio || []).filter((audio) => {
+        return isVisibleByHistory(audio, item) && !audio.lineIds;
+      }),
     }))
     .filter((item) => item.audio.length > 0);
+
+const stationItemsForLine = (station, lineId) => {
+  if (!station || !lineId) return [];
+  if (!stationLineIds(station).includes(lineId)) return [];
+  return filterItemsByLine(station.items, lineId, station);
+};
+
+const lineVisibleInCurrentMode = (lineId) => {
+  if (state.historyMode === "historical") return true;
+  const line = state.systemData?.lines?.[lineId];
+  return line?.active !== false;
+};
 
 const renderSoundCards = (container, items) => {
   container.innerHTML = "";
@@ -737,14 +779,10 @@ const renderStationPopup = (stationData) => {
   if (!popupSoundList) return;
   popupTitle.textContent = stationData.name;
   popupSubtitle.textContent = stationLineIds(stationData)
+    .filter((lineId) => lineVisibleInCurrentMode(lineId))
     .map((lineId) => state.systemData.lines[lineId].title)
     .join(", ");
-  const stationItems = (stationData.items || [])
-    .map((item) => ({
-      ...item,
-      audio: (item.audio || []).filter((audio) => audioMatchesStation(audio, stationData)),
-    }))
-    .filter((item) => item.audio.length > 0);
+  const stationItems = getVisibleStationItems(stationData);
   renderSoundCards(popupSoundList, stationItems);
 };
 
@@ -765,7 +803,10 @@ const showSystemPanel = () => {
   clearActive();
   panelTitle.textContent = state.systemData.system.name;
   panelSubtitle.textContent = state.systemData.system.description;
-  updateLineIcons(panelLineIcons, Object.keys(state.systemData.lines));
+  updateLineIcons(
+    panelLineIcons,
+    Object.keys(state.systemData.lines).filter((lineId) => lineVisibleInCurrentMode(lineId))
+  );
   if (panelSystemIcon && state.systemInfo) {
     panelSystemIcon.src = state.systemInfo.logo;
     panelSystemIcon.alt = `${state.systemInfo.name} logo`;
@@ -794,7 +835,9 @@ const renderListGrid = (container, items, emptyText) => {
 
 const renderSystemListView = () => {
   if (!state.systemData || !systemListView) return;
-  const lineEntries = Object.entries(state.systemData.lines);
+  const lineEntries = Object.entries(state.systemData.lines).filter(([lineId]) =>
+    lineVisibleInCurrentMode(lineId)
+  );
   const hasLines = lineEntries.length > 0;
   const systemItems = filterSystemItems(state.systemData.system.items);
   const noSystemSounds = !systemItems.length;
@@ -819,7 +862,7 @@ const renderSystemListView = () => {
     })
     .map((station) => ({
       ...(() => {
-        const scopedItems = filterItemsByLine(station.items, state.selectedLineId, station);
+        const scopedItems = stationItemsForLine(station, state.selectedLineId);
         const uniqueTitles = [...new Set(scopedItems.map((item) => item.title))];
         const commonTitle = uniqueTitles.length === 1 ? uniqueTitles[0] : "";
         return {
@@ -1166,6 +1209,7 @@ const openMapPopup = (content, lineIds) => {
 
 const setLine = (lineId, element) => {
   stopActiveAudio();
+  if (!lineVisibleInCurrentMode(lineId)) return;
   clearActive();
   if (element) {
     element.classList.add("is-active");
@@ -1185,7 +1229,7 @@ const setStation = (stationId, element) => {
     element.classList.add("is-active");
   }
   const stationData = state.systemData.stations[stationId];
-  const iconLineIds = stationLineIds(stationData);
+  const iconLineIds = stationLineIds(stationData).filter((lineId) => lineVisibleInCurrentMode(lineId));
   renderStationPopup(stationData);
   updateLineIcons(popupLineIcons, iconLineIds);
   mapPopup.hidden = false;
@@ -1279,10 +1323,34 @@ const setView = (viewId) => {
   if (systemModeToggle) {
     systemModeToggle.hidden = viewId !== "system" || !state.systemData || !state.mapAvailable;
   }
+  if (historyToggle) {
+    historyToggle.hidden = viewId !== "system";
+  }
   updateBreadcrumb();
   if (viewId !== "system") {
     closePanel();
     viewSystem.classList.remove("map-mode", "list-mode");
+  }
+};
+
+const setHistoryMode = (mode) => {
+  state.historyMode = mode === "historical" ? "historical" : "active";
+  historyActiveButton?.classList.toggle("is-active", state.historyMode === "active");
+  historyHistoricalButton?.classList.toggle("is-active", state.historyMode === "historical");
+  if (state.view === "system" && state.systemData) {
+    stopActiveAudio();
+    hideMapPopup();
+    clearActive();
+    const svg = mapContainer.querySelector("svg");
+    if (svg) {
+      applyMapTheme(svg, state.systemData.theme);
+      bringStationsToFront(svg);
+    }
+    if (state.systemMode === "list") {
+      renderSystemListView();
+    } else {
+      showSystemPanel();
+    }
   }
 };
 
@@ -1310,6 +1378,7 @@ const applyMapTheme = (svg, theme) => {
 
   svg.querySelectorAll(".line[data-line], .line[data-line-id]").forEach((lineEl) => {
     const key = lineEl.dataset.line || lineEl.dataset.lineId;
+    lineEl.style.display = lineVisibleInCurrentMode(key) ? "" : "none";
     if (theme.lineColors && theme.lineColors[key]) {
       if (lineEl.tagName.toLowerCase() === "path") {
         lineEl.setAttribute("stroke", theme.lineColors[key]);
@@ -1374,8 +1443,7 @@ const applyMapTheme = (svg, theme) => {
   svg.querySelectorAll(".station").forEach((stationEl) => {
     const classes = stationEl.classList;
     const stationId = stationEl.dataset.stationId || stationEl.getAttribute("data-station-id");
-    const stationData = stationId ? state.systemData?.stations?.[stationId] : null;
-    const hasSounds = !!(stationData && Array.isArray(stationData.items) && stationData.items.length);
+    const hasSounds = stationId ? stationHasVisibleSounds(stationId) : false;
     const variant = classes.contains("transfer")
       ? theme.transfer
       : classes.contains("terminus")
@@ -1962,6 +2030,16 @@ const init = async () => {
       setSystemMode("list");
     });
   }
+  if (historyActiveButton) {
+    historyActiveButton.addEventListener("click", () => {
+      setHistoryMode("active");
+    });
+  }
+  if (historyHistoricalButton) {
+    historyHistoricalButton.addEventListener("click", () => {
+      setHistoryMode("historical");
+    });
+  }
   if (infoModalClose) infoModalClose.addEventListener("click", closeInfoModal);
   if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
   document.addEventListener("keydown", (event) => {
@@ -2034,6 +2112,7 @@ const init = async () => {
   );
 
   resetMobileMenuRatio();
+  setHistoryMode("active");
   const initialRoute = parseRouteHash();
   await navigateTo(initialRoute, false);
   pushRoute(initialRoute, true);

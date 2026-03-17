@@ -172,6 +172,39 @@ body.is-system .system-mode-toggle {
   display: none !important;
 }
 
+.history-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.1875rem;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 999rem;
+  background: #0f1218;
+
+  .history-button {
+    background: transparent;
+    color: $text;
+    border: 0.0625rem solid transparent;
+    border-radius: 999rem;
+    padding: 0.25rem 0.625rem;
+    cursor: pointer;
+    font-size: 0.8em;
+
+    &.is-active {
+      border-color: #3a4252;
+      background: #1a1f2a;
+    }
+  }
+}
+
+body.is-system .history-toggle {
+  display: flex;
+}
+
+.history-toggle[hidden] {
+  display: none !important;
+}
+
 .contribute-link,
 .github-link {
   display: inline-flex;
@@ -1321,6 +1354,12 @@ body.is-system .system-mode-toggle {
     }
 
     .system-mode-toggle {
+      order: 3;
+      flex: 0 0 auto;
+      justify-content: flex-start;
+    }
+
+    .history-toggle {
       order: 3;
       flex: 0 0 auto;
       justify-content: flex-start;

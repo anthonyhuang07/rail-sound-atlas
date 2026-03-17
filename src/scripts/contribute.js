@@ -8,6 +8,7 @@ const el = id => document.getElementById(id);
 const countrySelect = el("country");
 const systemSelect = el("system");
 const scopeSelect = el("scope");
+const soundActiveSelect = el("sound-active");
 const lineList = el("line");
 const stationSelect = el("station");
 const stationLabel = el("station-label");
@@ -23,6 +24,7 @@ const audioGuidelines = el("audio-guidelines");
 const systemLabel = el("system-label");
 const systemOptions = el("system-options");
 const scopeLabelRow = el("scope-label-row");
+const soundActiveLabelRow = el("sound-active-label-row");
 const soundLabelRow = el("sound-label-row");
 const soundPicker = el("sound-picker");
 const lineGroup = el("line-group");
@@ -83,6 +85,23 @@ const slugify = (text) =>
     .replace(/^-+|-+$/g, "");
 
 const normalizeText = (value) => value.trim().replace(/\s+/g, " ").toLowerCase();
+const capitalizeFirstWordStart = (value) =>
+  value.replace(/^(\s*[^\p{L}]*)\p{Ll}/u, (match, prefix) => prefix + match.slice(prefix.length).toUpperCase());
+const TITLE_CASE_MINOR_WORDS = new Set([
+  "a", "an", "and", "as", "at", "but", "by", "for", "in", "nor", "of", "on", "or", "the", "to", "vs", "via"
+]);
+const toTitleCase = (value) => {
+  const words = value.trim().split(/\s+/);
+  return words
+    .map((word, index) => {
+      const isLast = index === words.length - 1;
+      const lower = word.toLowerCase();
+      if (index !== 0 && !isLast && TITLE_CASE_MINOR_WORDS.has(lower)) return lower;
+      if (word === word.toUpperCase() && /[A-Z]{2,}/.test(word)) return word;
+      return lower.replace(/^([^\p{L}]*)\p{L}/u, (m, p) => p + m.slice(p.length).toUpperCase());
+    })
+    .join(" ");
+};
 const normalizeWords = (value) =>
   value
     .normalize("NFD")
@@ -115,6 +134,9 @@ const setScopeVisibility = (visible) => {
   scopeLabelRow.classList.toggle("hidden", !visible);
   scopeSelect.classList.toggle("hidden", !visible);
   scopeSelect.disabled = !visible;
+  soundActiveLabelRow.classList.toggle("hidden", !visible);
+  soundActiveSelect.classList.toggle("hidden", !visible);
+  soundActiveSelect.disabled = !visible;
 };
 
 const fillSelect = (select, rows, label = "name") => {
@@ -156,6 +178,15 @@ const setAudioFile = (file) => {
   const transfer = new DataTransfer();
   transfer.items.add(file);
   audioInput.files = transfer.files;
+};
+
+const forceCapitalizedFirstWord = (input) => {
+  if (!input) return;
+  input.value = capitalizeFirstWordStart(input.value);
+};
+const forceTitleCase = (input) => {
+  if (!input) return;
+  input.value = toTitleCase(input.value);
 };
 
 const validateAudioFile = (file) => {
@@ -410,7 +441,11 @@ const createOtherLineRow = (lineId = "", lineOrder = "") => {
   refreshOtherLineSelectOptions();
 };
 
-const isContextComplete = () => !!countrySelect.value && !!systemSelect.value && !!scopeSelect.value;
+const isContextComplete = () =>
+  !!countrySelect.value &&
+  !!systemSelect.value &&
+  !!scopeSelect.value &&
+  !!soundActiveSelect.value;
 const isSoundCategoryComplete = () =>
   newSoundToggle.classList.contains("active") ? !!newSoundInput.value.trim() : !!soundSelect.value;
 
@@ -516,6 +551,13 @@ const renderSystemOptions = (systems) => {
   });
 };
 
+const syncSystemOptionSelection = () => {
+  const selected = systemSelect.value;
+  systemOptions.querySelectorAll(".system-option").forEach((button) => {
+    button.classList.toggle("active", button.dataset.id === selected);
+  });
+};
+
 const loadCountries = async () => {
   const { data } = await supabaseClient.from("countries").select("id,name").order("name");
   fillSelect(countrySelect, data);
@@ -544,15 +586,17 @@ const loadSystems = async (countryId) => {
   setSystemVisibility(!!data?.length);
   setScopeVisibility(false);
   scopeSelect.value = "";
+  soundActiveSelect.value = "";
   syncSectionFlow();
 };
 
 const loadLines = async (systemId) => {
-  const { data } = await supabaseClient
+  let query = supabaseClient
     .from("lines")
-    .select("id,title,icon_url,other_icons")
-    .eq("system_id", systemId)
-    .order("sort_order");
+    .select("id,title,icon_url,other_icons,active")
+    .eq("system_id", systemId);
+  if (soundActiveSelect.value === "true") query = query.eq("active", true);
+  const { data } = await query.order("sort_order");
 
   state.cachedSystemLines = data || [];
   lineList.innerHTML = "";
@@ -786,6 +830,7 @@ const saveDraft = () => {
     countryId: countrySelect.value,
     systemId: systemSelect.value,
     scope: scopeSelect.value,
+    soundActive: soundActiveSelect.value,
     lineIds: getSelectedLines(),
     stationId: stationSelect.value,
     isCreatingNewStation: state.isCreatingNewStation,
@@ -816,7 +861,9 @@ const restoreDraft = async () => {
 
   systemSelect.value = draft.systemId || "";
   if (systemSelect.value) {
+    syncSystemOptionSelection();
     setScopeVisibility(true);
+    soundActiveSelect.value = draft.soundActive || "";
     await loadLines(systemSelect.value);
   }
 
@@ -926,7 +973,9 @@ const applyScopePlaceholders = () => {
 countrySelect.addEventListener("change", async () => {
   await loadSystems(countrySelect.value);
   systemSelect.value = "";
+  syncSystemOptionSelection();
   scopeSelect.value = "";
+  soundActiveSelect.value = "";
   applyScopePlaceholders();
   setScopeVisibility(false);
   resetSoundSelectionState();
@@ -935,9 +984,11 @@ countrySelect.addEventListener("change", async () => {
 });
 
 systemSelect.addEventListener("change", async () => {
+  syncSystemOptionSelection();
   const systemId = systemSelect.value;
   if (!systemId) {
     scopeSelect.value = "";
+    soundActiveSelect.value = "";
     applyScopePlaceholders();
     setScopeVisibility(false);
     resetSoundSelectionState();
@@ -965,6 +1016,36 @@ scopeSelect.addEventListener("change", async () => {
 
   await loadSounds(systemSelect.value);
   validateTitleAgainstCategory();
+  syncSectionFlow();
+});
+
+soundActiveSelect.addEventListener("change", async () => {
+  const systemId = systemSelect.value;
+  if (!systemId) {
+    syncSectionFlow();
+    return;
+  }
+
+  const selectedBefore = new Set(getSelectedLines());
+  await loadLines(systemId);
+  lineList.querySelectorAll('input[name="line"]').forEach((input) => {
+    input.checked = selectedBefore.has(input.value);
+  });
+  if (scopeSelect.value === "station") enforceStationSingleLineSelection();
+  syncLineOptionButtons();
+
+  if (scopeSelect.value === "station") {
+    const lines = getSelectedLines();
+    if (!lines.length) {
+      stationSelect.innerHTML = SELECT_LINE;
+      setStationInputsDisabled(true);
+      setNewStationMode(false);
+    } else {
+      setStationInputsDisabled(false);
+      await loadStations(systemId, lines);
+    }
+  }
+
   syncSectionFlow();
 });
 
@@ -1029,6 +1110,7 @@ addOtherLineButton.addEventListener("click", () => {
 
 window.addEventListener("pageshow", () => {
   scopeSelect.value = "";
+  soundActiveSelect.value = "";
   applyScopePlaceholders();
   syncSectionFlow();
 });
@@ -1052,6 +1134,20 @@ titleInput.addEventListener("input", validateTitleAgainstCategory);
 newSoundDescriptionInput.addEventListener("input", () => {
   syncMetadataDescriptionVisibility();
   syncSectionFlow();
+});
+[
+  titleInput,
+  descriptionInput,
+  newSoundInput,
+  newSoundDescriptionInput,
+].forEach((input) => {
+  input?.addEventListener("blur", () => forceCapitalizedFirstWord(input));
+});
+[
+  titleInput,
+  newSoundInput,
+].forEach((input) => {
+  input?.addEventListener("blur", () => forceTitleCase(input));
 });
 newStationInput.addEventListener("input", syncSectionFlow);
 newStationInput.addEventListener("input", validateTitleAgainstCategory);
@@ -1096,6 +1192,9 @@ audioDropzone.addEventListener("drop", (event) => {
 
 submitForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  [titleInput, newSoundInput].forEach(forceTitleCase);
+  [titleInput, descriptionInput, newSoundInput, newSoundDescriptionInput]
+    .forEach(forceCapitalizedFirstWord);
   saveDraft();
   if (submitButton?.classList.contains("is-loading")) return;
   if (getCooldownSecondsRemaining() > 0) return;
@@ -1219,6 +1318,7 @@ submitForm.addEventListener("submit", async (event) => {
       year_captured: yearCapturedInput.value || null,
       source: el("source").value,
       line_ids: lineIds,
+      active: soundActiveSelect.value !== "false",
       audio_storage_path: filePath,
     };
 
@@ -1263,6 +1363,7 @@ submitForm.addEventListener("submit", async (event) => {
 
 const initForm = async () => {
   scopeSelect.value = "";
+  soundActiveSelect.value = "";
   applyScopePlaceholders();
   yearCapturedInput.max = String(new Date().getFullYear());
   setSystemVisibility(false);
