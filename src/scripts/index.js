@@ -1819,6 +1819,9 @@ const loadMap = async (mapPath, theme) => {
 
 const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
+  state.historyMode = "active";
+  historyActiveButton?.classList.add("is-active");
+  historyHistoricalButton?.classList.remove("is-active");
   stopActiveAudio();
   const [systemDataRaw, soundDataRaw] = await Promise.all([
     fetchSystemData(system.id),
