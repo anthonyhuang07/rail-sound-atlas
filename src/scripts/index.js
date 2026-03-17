@@ -194,7 +194,6 @@ const fetchSoundData = async (systemId) => {
       title: sound.title,
       description: sound.description || "",
       scope: sound.scope,
-      active: sound.is_active ?? sound.active,
       audio: filesBySoundId.get(sound.id) || []
     };
   });
@@ -544,8 +543,8 @@ const audioMatchesStation = (audio, station, lineId = null) => {
   });
 };
 
-const isVisibleByHistory = (audio, item) => {
-  const activeFlag = audio.active ?? item.active;
+const isVisibleByHistory = (audio) => {
+  const activeFlag = audio.active;
   return state.historyMode === "historical" ? activeFlag === false : activeFlag !== false;
 };
 
@@ -553,7 +552,7 @@ const getVisibleStationItems = (station) =>
   (station?.items || [])
     .map((item) => ({
       ...item,
-      audio: (item.audio || []).filter((audio) => isVisibleByHistory(audio, item) && audioMatchesStation(audio, station)),
+      audio: (item.audio || []).filter((audio) => isVisibleByHistory(audio) && audioMatchesStation(audio, station)),
     }))
     .filter((item) => item.audio.length > 0);
 
@@ -567,7 +566,7 @@ const filterItemsByLine = (items, lineId, station = null) =>
     .map((item) => {
       const sourceAudio = item.audio || [];
       const filteredAudio = sourceAudio.filter((audio, _, list) => {
-        if (!isVisibleByHistory(audio, item)) return false;
+        if (!isVisibleByHistory(audio)) return false;
         if (!audioMatchesStation(audio, station, lineId)) return false;
         const hasScopedAudio = list.some(
           (entry) =>
@@ -595,7 +594,7 @@ const filterSystemItems = (items) =>
     .map((item) => ({
       ...item,
       audio: (item.audio || []).filter((audio) => {
-        return isVisibleByHistory(audio, item) && !audio.lineIds;
+        return isVisibleByHistory(audio) && !audio.lineIds;
       }),
     }))
     .filter((item) => item.audio.length > 0);
