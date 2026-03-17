@@ -441,6 +441,7 @@ const createSoundActions = (audioData) => {
       return;
     }
     audio = new Audio(audioSrc);
+    audio.preload = "none";
     state.audioControllers.add(controller);
     setProgress(0);
     setLoading(true);
