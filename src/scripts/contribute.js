@@ -1313,7 +1313,7 @@ submitForm.addEventListener("submit", async (event) => {
       new_station_primary_line_order: newStationPrimaryLineOrder,
       new_station_other_lines: newStationOtherLines,
       title: el("title").value,
-      description: el("description").value,
+      description: descriptionInput.disabled ? "" : el("description").value,
       rolling_stock: el("rolling_stock").value,
       year_captured: yearCapturedInput.value || null,
       source: el("source").value,
