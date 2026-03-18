@@ -24,6 +24,7 @@ const audioGuidelines = el("audio-guidelines");
 const systemLabel = el("system-label");
 const systemOptions = el("system-options");
 const scopeLabelRow = el("scope-label-row");
+const scopeWarning = el("scope-warning");
 const soundActiveLabelRow = el("sound-active-label-row");
 const soundLabelRow = el("sound-label-row");
 const soundPicker = el("sound-picker");
@@ -65,6 +66,7 @@ const state = {
   isCreatingNewStation: false,
   lastValidAudioFile: null,
   cachedSystemLines: [],
+  scopeSystemBlocked: false,
   cooldownUntil: 0,
   cooldownTimer: null,
   cooldownSubmitted: false,
@@ -137,6 +139,43 @@ const setScopeVisibility = (visible) => {
   soundActiveLabelRow.classList.toggle("hidden", !visible);
   soundActiveSelect.classList.toggle("hidden", !visible);
   soundActiveSelect.disabled = !visible;
+  if (!visible && scopeWarning) {
+    scopeWarning.classList.add("hidden");
+    scopeWarning.textContent = "";
+  }
+};
+
+const setScopeWarning = (message = "") => {
+  if (!scopeWarning) return;
+  const hasMessage = !!message;
+  scopeWarning.textContent = message;
+  scopeWarning.classList.toggle("hidden", !hasMessage);
+};
+
+const applyScopeSystemConstraints = (lineCount, hasSystemSounds) => {
+  const blockSystemScope = lineCount === 1 && !hasSystemSounds;
+  state.scopeSystemBlocked = blockSystemScope;
+  const systemOption = scopeSelect.querySelector('option[value="system"]');
+  if (systemOption) {
+    systemOption.disabled = blockSystemScope;
+    if (blockSystemScope && scopeSelect.value === "system") scopeSelect.value = "line";
+  }
+  setScopeWarning(
+    blockSystemScope
+      ? "This system only has one line, meaning the entire system is considered a single line. For system sounds, please use 'Line' scope instead."
+      : ""
+  );
+};
+
+const enforceSingleAvailableLineSelection = () => {
+  const lineInputs = [...lineList.querySelectorAll('input[name="line"]')];
+  const singleAvailable = lineInputs.length === 1;
+  lineInputs.forEach((input) => {
+    input.disabled = false;
+  });
+  if (!singleAvailable || !["line", "station"].includes(scopeSelect.value)) return;
+  lineInputs[0].checked = true;
+  lineInputs[0].disabled = true;
 };
 
 const fillSelect = (select, rows, label = "name") => {
@@ -568,6 +607,7 @@ const loadSystems = async (countryId) => {
     fillSelect(systemSelect, []);
     systemOptions.innerHTML = "";
     setSystemVisibility(false);
+    applyScopeSystemConstraints(0, true);
     scopeSelect.value = "";
     setScopeVisibility(false);
     syncSectionFlow();
@@ -584,6 +624,7 @@ const loadSystems = async (countryId) => {
   systemSelect.value = "";
   renderSystemOptions(data || []);
   setSystemVisibility(!!data?.length);
+  applyScopeSystemConstraints(0, true);
   setScopeVisibility(false);
   scopeSelect.value = "";
   soundActiveSelect.value = "";
@@ -636,7 +677,20 @@ const loadLines = async (systemId) => {
     lineList.append(label);
   });
 
+  enforceSingleAvailableLineSelection();
   syncLineOptionButtons();
+};
+
+const loadScopeConstraints = async (systemId) => {
+  if (!systemId) {
+    applyScopeSystemConstraints(0, true);
+    return;
+  }
+  const [{ data: lines }, { data: systemSounds }] = await Promise.all([
+    supabaseClient.from("lines").select("id").eq("system_id", systemId),
+    supabaseClient.from("sounds").select("id").eq("system_id", systemId).eq("scope", "system"),
+  ]);
+  applyScopeSystemConstraints((lines || []).length, (systemSounds || []).length > 0);
 };
 
 const loadStations = async (systemId, lineIds = []) => {
@@ -709,6 +763,7 @@ const applyScopeLayout = () => {
   const scope = scopeSelect.value;
 
   setNewStationMode(false);
+  enforceSingleAvailableLineSelection();
 
   if (scope === "station") {
     enforceStationSingleLineSelection();
@@ -863,11 +918,15 @@ const restoreDraft = async () => {
   if (systemSelect.value) {
     syncSystemOptionSelection();
     setScopeVisibility(true);
+    await loadScopeConstraints(systemSelect.value);
     soundActiveSelect.value = draft.soundActive || "";
     await loadLines(systemSelect.value);
   }
 
   scopeSelect.value = draft.scope || "";
+  if (state.scopeSystemBlocked && scopeSelect.value === "system") {
+    scopeSelect.value = "line";
+  }
   applyScopePlaceholders();
   applyScopeLayout();
 
@@ -884,6 +943,7 @@ const restoreDraft = async () => {
     setStationInputsDisabled(false);
     await loadStations(systemSelect.value, getSelectedLines());
   }
+  enforceSingleAvailableLineSelection();
 
   setNewStationMode(!!draft.isCreatingNewStation);
   newStationInput.value = draft.newStationName || "";
@@ -991,6 +1051,7 @@ systemSelect.addEventListener("change", async () => {
     soundActiveSelect.value = "";
     applyScopePlaceholders();
     setScopeVisibility(false);
+    applyScopeSystemConstraints(0, true);
     resetSoundSelectionState();
     resetStationSelectionState();
     syncSectionFlow();
@@ -998,6 +1059,7 @@ systemSelect.addEventListener("change", async () => {
   }
 
   setScopeVisibility(true);
+  await loadScopeConstraints(systemId);
   resetStationSelectionState();
   await loadLines(systemId);
   await loadSounds(systemId);
@@ -1005,6 +1067,9 @@ systemSelect.addEventListener("change", async () => {
 });
 
 scopeSelect.addEventListener("change", async () => {
+  if (state.scopeSystemBlocked && scopeSelect.value === "system") {
+    scopeSelect.value = "line";
+  }
   applyScopePlaceholders();
   applyScopeLayout();
   syncLineOptionButtons();
@@ -1031,6 +1096,7 @@ soundActiveSelect.addEventListener("change", async () => {
   lineList.querySelectorAll('input[name="line"]').forEach((input) => {
     input.checked = selectedBefore.has(input.value);
   });
+  enforceSingleAvailableLineSelection();
   if (scopeSelect.value === "station") enforceStationSingleLineSelection();
   syncLineOptionButtons();
 
@@ -1051,6 +1117,10 @@ soundActiveSelect.addEventListener("change", async () => {
 
 lineList.addEventListener("change", async (event) => {
   const changed = event?.target;
+  if (changed?.name === "line" && changed?.disabled) {
+    changed.checked = true;
+    return;
+  }
   if (scopeSelect.value === "station" && changed?.name === "line" && changed.checked) {
     lineList.querySelectorAll('input[name="line"]').forEach((input) => {
       if (input !== changed) input.checked = false;
@@ -1059,6 +1129,7 @@ lineList.addEventListener("change", async (event) => {
 
   syncLineOptionButtons();
   refreshOtherLineSelectOptions();
+  enforceSingleAvailableLineSelection();
 
   if (scopeSelect.value !== "station") {
     syncSectionFlow();
