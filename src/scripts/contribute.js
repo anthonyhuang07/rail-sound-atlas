@@ -405,7 +405,13 @@ const syncMetadataDescriptionVisibility = () => {
 const syncLineOptionButtons = () => {
   lineList.querySelectorAll(".line-option").forEach((option) => {
     const input = option.querySelector('input[name="line"]');
-    option.classList.toggle("active", !!input?.checked);
+    const active = !!input?.checked;
+    option.classList.toggle("active", active);
+    const mark = option.querySelector(".line-option-mark");
+    if (mark) {
+      mark.style.background = active ? "#f2f6ff" : "transparent";
+      mark.style.borderColor = active ? "#f2f6ff" : "#5a657c";
+    }
   });
 };
 
