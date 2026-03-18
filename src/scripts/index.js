@@ -371,11 +371,14 @@ const openInfoModal = (audioData) => {
 
 const createSoundActions = (audioData) => {
   const audioSrc = getStorageAudioUrl(audioData.src);
+  const actions = document.createElement("div");
+  actions.className = "sound-actions";
   const playButton = document.createElement("button");
   playButton.type = "button";
   playButton.style.position = "relative";
   playButton.style.overflow = "hidden";
   playButton.style.isolation = "isolate";
+
   const progressFill = document.createElement("span");
   progressFill.style.position = "absolute";
   progressFill.style.inset = "0";
@@ -384,6 +387,7 @@ const createSoundActions = (audioData) => {
   progressFill.style.transform = "scaleX(0)";
   progressFill.style.zIndex = "0";
   progressFill.style.pointerEvents = "none";
+
   const label = document.createElement("span");
   label.style.position = "relative";
   label.style.zIndex = "1";
@@ -393,12 +397,21 @@ const createSoundActions = (audioData) => {
   label.style.alignItems = "center";
   label.style.justifyContent = "center";
   playButton.append(progressFill, label);
+
   let audio = null;
   let progressFrame = null;
   let isLoading = false;
+  let isScrubbing = false;
+  let pendingSeekRatio = null;
+  let pointerDown = false;
+  let pointerMoved = false;
+  let pointerId = null;
+  let pointerStartX = 0;
+  let suppressClick = false;
 
   const setProgress = (value) => {
-    progressFill.style.transform = `scaleX(${Math.max(0, Math.min(1, value || 0))})`;
+    const clamped = Math.max(0, Math.min(1, value || 0));
+    progressFill.style.transform = `scaleX(${clamped})`;
   };
 
   const clearProgressTimer = () => {
@@ -427,6 +440,29 @@ const createSoundActions = (audioData) => {
     setButtonVisual(loading ? "loading" : audio ? "playing" : "idle");
   };
 
+  const tickProgress = () => {
+    if (!audio) return;
+    if (!isScrubbing) setProgress(audio.duration ? audio.currentTime / audio.duration : 0);
+    progressFrame = requestAnimationFrame(tickProgress);
+  };
+
+  const ratioFromClientX = (clientX) => {
+    const rect = playButton.getBoundingClientRect();
+    if (!rect.width) return 0;
+    return Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  };
+
+  const seekToRatio = (ratio) => {
+    const clamped = Math.max(0, Math.min(1, ratio || 0));
+    setProgress(clamped);
+    if (!audio) return;
+    if (audio.duration && Number.isFinite(audio.duration)) {
+      audio.currentTime = audio.duration * clamped;
+    } else {
+      pendingSeekRatio = clamped;
+    }
+  };
+
   const controller = {
     stop: () => {
       clearProgressTimer();
@@ -435,6 +471,7 @@ const createSoundActions = (audioData) => {
       audio.currentTime = 0;
       audio = null;
       isLoading = false;
+      pendingSeekRatio = null;
       state.audioControllers.delete(controller);
       setProgress(0);
       playButton.disabled = false;
@@ -442,7 +479,7 @@ const createSoundActions = (audioData) => {
     },
   };
 
-  playButton.addEventListener("click", async () => {
+  const togglePlayback = async () => {
     if (isLoading) return;
     if (audio) {
       controller.stop();
@@ -455,30 +492,78 @@ const createSoundActions = (audioData) => {
     setLoading(true);
     audio.addEventListener("ended", controller.stop, { once: true });
     audio.addEventListener("error", controller.stop, { once: true });
-    const tickProgress = () => {
-      if (!audio) return;
-      setProgress(audio.duration ? audio.currentTime / audio.duration : 0);
-      progressFrame = requestAnimationFrame(tickProgress);
-    };
+    audio.addEventListener("loadedmetadata", () => {
+      if (pendingSeekRatio === null || !audio || !audio.duration) return;
+      audio.currentTime = audio.duration * pendingSeekRatio;
+      pendingSeekRatio = null;
+    }, { once: true });
     try {
       await audio.play();
       setLoading(false);
       setButtonVisual("playing");
+      clearProgressTimer();
       progressFrame = requestAnimationFrame(tickProgress);
     } catch {
       controller.stop();
     }
+  };
+
+  playButton.addEventListener("pointerdown", (event) => {
+    if (isLoading) return;
+    pointerDown = true;
+    pointerMoved = false;
+    pointerId = event.pointerId;
+    pointerStartX = event.clientX;
+    if (audio) {
+      isScrubbing = true;
+      playButton.setPointerCapture(pointerId);
+    }
+    event.stopPropagation();
   });
 
-  const actions = document.createElement("div");
-  actions.className = "sound-actions";
+  playButton.addEventListener("pointermove", (event) => {
+    if (!pointerDown || event.pointerId !== pointerId || !audio) return;
+    if (Math.abs(event.clientX - pointerStartX) > 4) pointerMoved = true;
+    if (pointerMoved) seekToRatio(ratioFromClientX(event.clientX));
+    event.stopPropagation();
+  });
+
+  const finishPointer = (event) => {
+    if (!pointerDown || event.pointerId !== pointerId) return;
+    if (audio && pointerMoved) {
+      seekToRatio(ratioFromClientX(event.clientX));
+      suppressClick = true;
+    }
+    if (playButton.hasPointerCapture(pointerId)) {
+      playButton.releasePointerCapture(pointerId);
+    }
+    pointerDown = false;
+    pointerMoved = false;
+    pointerId = null;
+    isScrubbing = false;
+    event.stopPropagation();
+  };
+
+  playButton.addEventListener("pointerup", finishPointer);
+  playButton.addEventListener("pointercancel", finishPointer);
+
+  playButton.addEventListener("click", async (event) => {
+    if (suppressClick) {
+      suppressClick = false;
+      event.stopPropagation();
+      return;
+    }
+    await togglePlayback();
+    event.stopPropagation();
+  });
+
   setButtonVisual("idle");
   setProgress(0);
+  actions.style.gridTemplateColumns = "1fr 2.25rem";
   const hasMetadata = Boolean(
     audioData.metadata &&
     (audioData.metadata.rollingStock || audioData.metadata.origin || audioData.metadata.yearCaptured)
   );
-  actions.style.gridTemplateColumns = "1fr 2.25rem";
   if (hasMetadata) {
     const infoButton = document.createElement("button");
     infoButton.type = "button";
@@ -498,6 +583,7 @@ const createSoundActions = (audioData) => {
     downloadButton.innerHTML = DOWNLOAD_ICON;
     actions.append(playButton, downloadButton);
   }
+
   return actions;
 };
 
@@ -2122,3 +2208,8 @@ const init = async () => {
 };
 
 init();
+    audio.addEventListener("loadedmetadata", () => {
+      if (pendingSeekRatio === null || !audio || !audio.duration) return;
+      audio.currentTime = audio.duration * pendingSeekRatio;
+      pendingSeekRatio = null;
+    }, { once: true });
