@@ -1339,6 +1339,7 @@ const setHistoryMode = (mode) => {
   if (state.view === "system" && state.systemData) {
     stopActiveAudio();
     hideMapPopup();
+    state.selectedLineId = null;
     clearActive();
     const svg = mapContainer.querySelector("svg");
     if (svg) {
