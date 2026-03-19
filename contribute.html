@@ -45,8 +45,7 @@
                 <div id="scope-label-row" class="label-row hidden">
                     <label class="required-label">Sound Scope</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound scope?">i</button>
-                    <span class="label-info-tip">System Sound: played anywhere in the system. If the system only has one
-                        line, select Line Sound instead.<br><br>Line Sound: played anywhere on specific
+                    <span class="label-info-tip">System Sound: played anywhere in the system.<br><br>Line Sound: played anywhere on specific
                         line(s)<br><br>Station Sound: played in/mentions a specific station (e.g. Next Station/Arriving at)</span>
                 </div>
                 <select id="scope" class="hidden" disabled>
@@ -76,8 +75,7 @@
                     <div class="label-row">
                         <label id="line-label">Line(s)</label>
                         <button type="button" class="label-info-btn" aria-label="What line should I select?">i</button>
-                        <span class="label-info-tip">Pick the line this sound applies to. In line scope, you can select
-                            multiple lines.</span>
+                        <span class="label-info-tip">Pick the line this sound applies to.</span>
                     </div>
                     <div id="line" class="line-checkboxes"></div>
                     <p id="line-multi-hint" class="line-multi-hint hidden">You can select multiple lines.</p>
@@ -116,7 +114,7 @@
                     <label id="sound-label" class="required-label">Sound Category</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound category?">i</button>
                     <span class="label-info-tip">The name of the sound category, like Door Chime, Arrival, Next Station,
-                        or Acceleration. Make sure to use proper Title Casing for the title.<br><br>Include a
+                        or Acceleration.<br><br>Include a
                         transcription only if the sound's transcription is the same
                         across all sound variants.</span>
                 </div>
@@ -138,8 +136,7 @@
                     <label>Title</label>
                     <button type="button" class="label-info-btn" aria-label="What should title contain?">i</button>
                     <span class="label-info-tip">Title of the variant sound within the sound category. Examples include
-                        directions "To (Terminus Station)", rolling stock variants "(Rolling Stock Name)". Make sure to
-                        use proper Title Casing for the title.<br><br>If
+                        directions "To (Terminus Station)", rolling stock variants "(Rolling Stock Name)".<br><br>If
                         there is only one sound for the category and no variants are possible, leave this field
                         blank.</span>
                 </div>
@@ -150,9 +147,7 @@
                     <label>Description</label>
                     <button type="button" class="label-info-btn"
                         aria-label="What should description contain?">i</button>
-                    <span class="label-info-tip">Transcription of the sound itself. Do not include if the sound
-                        category's transcription applies to every variant.<br><br>If there is no speech, leave blank or
-                        include the name of the sound (if applicable.)</span>
+                    <span class="label-info-tip">Either the transcription of the sound or the name of the sound (if exists).<br><br>If there is no speech nor does the sound have a known name, leave this field blank.</span>
                 </div>
                 <textarea id="description"></textarea>
 
