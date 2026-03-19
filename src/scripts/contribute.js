@@ -1186,11 +1186,13 @@ addOtherLineButton.addEventListener("click", () => {
 });
 
 window.addEventListener("pageshow", () => {
-  scopeSelect.value = "";
-  soundActiveSelect.value = "";
-  applyScopePlaceholders();
+  syncSystemOptionSelection();
+  syncLineOptionButtons();
   syncSectionFlow();
 });
+
+submitForm.addEventListener("input", saveDraft);
+submitForm.addEventListener("change", saveDraft);
 
 soundSelect.addEventListener("change", () => {
   syncSelectedSoundDescription();
@@ -1218,13 +1220,19 @@ newSoundDescriptionInput.addEventListener("input", () => {
   newSoundInput,
   newSoundDescriptionInput,
 ].forEach((input) => {
-  input?.addEventListener("blur", () => forceCapitalizedFirstWord(input));
+  input?.addEventListener("blur", () => {
+    forceCapitalizedFirstWord(input);
+    saveDraft();
+  });
 });
 [
   titleInput,
   newSoundInput,
 ].forEach((input) => {
-  input?.addEventListener("blur", () => forceTitleCase(input));
+  input?.addEventListener("blur", () => {
+    forceTitleCase(input);
+    saveDraft();
+  });
 });
 newStationInput.addEventListener("input", syncSectionFlow);
 newStationInput.addEventListener("input", validateTitleAgainstCategory);
