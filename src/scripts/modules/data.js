@@ -39,8 +39,9 @@ export const fetchSystemData = async (systemId) => {
   });
 
   const toValidSort = (value) => {
+    if (value === null || value === undefined || value === "") return null;
     const n = Number(value);
-    return Number.isFinite(n) && n > 0 ? n : null;
+    return Number.isFinite(n) ? n : null;
   };
 
   const sortedLines = [...(lines || [])].sort((a, b) => {
