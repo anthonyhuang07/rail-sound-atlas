@@ -38,10 +38,17 @@ export const fetchSystemData = async (systemId) => {
     stationLineRowsByStationId.get(row.station_id).push(row);
   });
 
+  const toValidSort = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) && n > 0 ? n : null;
+  };
+
   const sortedLines = [...(lines || [])].sort((a, b) => {
-    const aHasSort = Number.isFinite(Number(a.sort_order));
-    const bHasSort = Number.isFinite(Number(b.sort_order));
-    if (aHasSort && bHasSort) return Number(a.sort_order) - Number(b.sort_order);
+    const aSort = toValidSort(a.sort_order);
+    const bSort = toValidSort(b.sort_order);
+    const aHasSort = aSort !== null;
+    const bHasSort = bSort !== null;
+    if (aHasSort && bHasSort) return aSort - bSort;
     if (aHasSort) return -1;
     if (bHasSort) return 1;
     return String(a.title || "").localeCompare(String(b.title || ""));
