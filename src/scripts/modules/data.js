@@ -18,7 +18,7 @@ export const fetchSystemData = async (systemId) => {
     { data: soundFiles, error: soundFilesError },
   ] = await Promise.all([
     supabaseClient.from("systems").select("*").eq("id", systemId).single(),
-    supabaseClient.from("lines").select("*").eq("system_id", systemId).order("sort_order", { ascending: true }),
+    supabaseClient.from("lines").select("*").eq("system_id", systemId),
     supabaseClient.from("stations").select("*").eq("system_id", systemId),
     supabaseClient.from("station_lines").select("*").eq("system_id", systemId),
     supabaseClient.from("sound_files").select("*").eq("system_id", systemId),
@@ -38,15 +38,25 @@ export const fetchSystemData = async (systemId) => {
     stationLineRowsByStationId.get(row.station_id).push(row);
   });
 
+  const sortedLines = [...(lines || [])].sort((a, b) => {
+    const aHasSort = Number.isFinite(Number(a.sort_order));
+    const bHasSort = Number.isFinite(Number(b.sort_order));
+    if (aHasSort && bHasSort) return Number(a.sort_order) - Number(b.sort_order);
+    if (aHasSort) return -1;
+    if (bHasSort) return 1;
+    return String(a.title || "").localeCompare(String(b.title || ""));
+  });
+
   const linesObject = {};
-  lines.forEach((line) => {
+  sortedLines.forEach((line, index) => {
     linesObject[line.id] = {
       title: line.title,
       subtitle: line.subtitle || "",
       icon: line.icon_url,
       otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
       soundIds: [],
-      sort_order: line.sort_order ?? 9999,
+      sort_order: line.sort_order ?? null,
+      sort_index: index,
       active: line.is_active ?? line.active,
     };
   });
@@ -54,7 +64,7 @@ export const fetchSystemData = async (systemId) => {
   const stationsObject = {};
   stations.forEach((station) => {
     const lineRows = (stationLineRowsByStationId.get(station.id) || []).sort(
-      (a, b) => (linesObject[a.line_id]?.sort_order ?? 9999) - (linesObject[b.line_id]?.sort_order ?? 9999),
+      (a, b) => (linesObject[a.line_id]?.sort_index ?? 9999) - (linesObject[b.line_id]?.sort_index ?? 9999),
     );
 
     stationsObject[station.id] = {
