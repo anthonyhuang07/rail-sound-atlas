@@ -673,24 +673,18 @@ const renderSystemListView = () => {
       }
       const iconWrap = document.createElement("span");
       iconWrap.className = "line-chip-icons";
-
-      const icon = document.createElement("img");
-      icon.src = line.icon;
-      icon.alt = `${line.title} icon`;
-      iconWrap.append(icon);
-
-      if (Array.isArray(line.otherIcons)) {
-        line.otherIcons.forEach((iconUrl, index) => {
-          const extraIcon = document.createElement("img");
-          extraIcon.src = iconUrl;
-          extraIcon.alt = `${line.title} extra icon ${index + 1}`;
-          iconWrap.append(extraIcon);
-        });
-      }
+      const iconUrls = [line.icon, ...(Array.isArray(line.otherIcons) ? line.otherIcons : [])].filter(Boolean);
+      iconUrls.forEach((iconUrl, index) => {
+        const icon = document.createElement("img");
+        icon.src = iconUrl;
+        icon.alt = `${line.title} icon ${index + 1}`;
+        iconWrap.append(icon);
+      });
 
       const label = document.createElement("span");
       label.textContent = line.title;
-      button.append(iconWrap, label);
+      if (iconUrls.length) button.append(iconWrap);
+      button.append(label);
       button.addEventListener("click", () => {
         if (noSystemSounds && state.selectedLineId === lineId) {
           return;
@@ -892,13 +886,14 @@ const updateLineIcons = (container, lineIds) => {
   container.innerHTML = "";
   lineIds.forEach((id) => {
     const iconUrl = state.systemData.lines[id].icon;
+    if (!iconUrl) return;
     const img = document.createElement("img");
     img.className = "line-icon";
     img.alt = `${id} icon`;
     img.src = iconUrl;
     container.append(img);
   });
-  container.hidden = lineIds.length === 0;
+  container.hidden = container.children.length === 0;
 };
 
 const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
