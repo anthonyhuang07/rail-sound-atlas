@@ -585,10 +585,11 @@ const renderSystemListView = () => {
   const hasLines = lineEntries.length > 0;
   const systemItems = filterSystemItems(state.systemData.system.items);
   const noSystemSounds = !systemItems.length;
+  const requireLineSelection = noSystemSounds && lineEntries.length === 1;
   if (state.selectedLineId && !state.systemData.lines[state.selectedLineId]) {
     state.selectedLineId = null;
   }
-  if (noSystemSounds && !state.selectedLineId) {
+  if (requireLineSelection && !state.selectedLineId) {
     state.selectedLineId = lineEntries[0] ? lineEntries[0][0] : null;
   }
   const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
@@ -686,7 +687,7 @@ const renderSystemListView = () => {
       if (iconUrls.length) button.append(iconWrap);
       button.append(label);
       button.addEventListener("click", () => {
-        if (noSystemSounds && state.selectedLineId === lineId) {
+        if (requireLineSelection && state.selectedLineId === lineId) {
           return;
         }
         stopActiveAudio();
