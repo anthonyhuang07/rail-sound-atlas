@@ -441,12 +441,22 @@ body.is-system .history-toggle {
 }
 
 .card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
   gap: 0.75rem;
   -webkit-box-align: start;
       -ms-flex-align: start;
-          align-items: start;
+          align-items: flex-start;
   margin-top: 1rem;
 }
 .card-grid .card {
@@ -467,7 +477,14 @@ body.is-system .history-toggle {
   gap: 0;
   font-size: 1em;
   width: 100%;
+  min-width: 13.5rem;
+  max-width: 15.625rem;
   height: 15.625rem;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 13.5rem;
+          flex: 1 1 13.5rem;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
   overflow: hidden;
 }
 .card-grid .card:disabled {
