@@ -444,19 +444,19 @@ body.is-system .history-toggle {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
   gap: 0.75rem;
   -webkit-box-align: start;
       -ms-flex-align: start;
-          align-items: flex-start;
+          align-items: start;
   margin-top: 1rem;
 }
 .card-grid .card {
@@ -476,15 +476,13 @@ body.is-system .history-toggle {
           flex-direction: column;
   gap: 0;
   font-size: 1em;
-  width: 100%;
-  min-width: 13.5rem;
+  width: 15.625rem;
+  min-width: 0;
   max-width: 15.625rem;
   height: 15.625rem;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 13.5rem;
-          flex: 1 1 13.5rem;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 15.625rem;
+          flex: 0 0 15.625rem;
   overflow: hidden;
 }
 .card-grid .card:disabled {
@@ -1490,7 +1488,12 @@ body.is-system .history-toggle {
   }
   .card-grid .card {
     width: 100%;
+    min-width: 0;
+    max-width: none;
     height: auto;
+    -webkit-box-flex: 0;
+        -ms-flex: none;
+            flex: none;
     aspect-ratio: 1/1;
   }
   .site-header {

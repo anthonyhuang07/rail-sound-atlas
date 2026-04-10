@@ -402,11 +402,11 @@ body.is-system .history-toggle {
 
 .card-grid {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
+  flex-direction: row;
   justify-content: flex-start;
   gap: 0.75rem;
-  align-items: flex-start;
+  align-items: start;
   margin-top: 1rem;
 
   .card {
@@ -421,12 +421,11 @@ body.is-system .history-toggle {
     flex-direction: column;
     gap: 0;
     font-size: 1em;
-    width: 100%;
-    min-width: 13.5rem;
+    width: 15.625rem;
+    min-width: 0;
     max-width: 15.625rem;
     height: 15.625rem;
-    flex: 1 1 13.5rem;
-    align-self: flex-start;
+    flex: 0 0 15.625rem;
     overflow: hidden;
 
     &:disabled {
@@ -1317,7 +1316,10 @@ body.is-system .history-toggle {
 
     .card {
       width: 100%;
+      min-width: 0;
+      max-width: none;
       height: auto;
+      flex: none;
       aspect-ratio: 1 / 1;
     }
   }
