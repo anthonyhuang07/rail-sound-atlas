@@ -27,6 +27,7 @@ const {
   systemModeToggle,
   modeMapButton,
   modeListButton,
+  surpriseButton,
   historyToggle,
   historyActiveButton,
   historyHistoricalButton,
@@ -75,6 +76,7 @@ const state = {
   panStartedOnTarget: false,
   panStart: { x: 0, y: 0 },
   panDownTarget: null,
+  surpriseInFlight: false,
 };
 
 const {
@@ -144,6 +146,8 @@ const createSoundActions = (audioData) => {
   actions.className = "sound-actions";
   const playButton = document.createElement("button");
   playButton.type = "button";
+  playButton.className = "play-button";
+  playButton.dataset.audioSrc = audioData.src || "";
   playButton.style.position = "relative";
   playButton.style.overflow = "hidden";
   playButton.style.isolation = "isolate";
@@ -245,6 +249,7 @@ const createSoundActions = (audioData) => {
       setProgress(0);
       playButton.disabled = false;
       setButtonVisual("idle");
+      clearSurpriseHighlight();
     },
   };
 
@@ -718,6 +723,121 @@ const renderSystemListView = () => {
       systemItems,
       "No system sounds."
     );
+  }
+};
+
+const randomOf = (items) => items[Math.floor(Math.random() * items.length)];
+
+const clearSurpriseHighlight = () => {
+  document.querySelectorAll(".sound-card.is-surprise-highlight").forEach((card) => {
+    card.classList.remove("is-surprise-highlight");
+  });
+  document.querySelectorAll(".sound-variation.is-surprise-highlight").forEach((row) => {
+    row.classList.remove("is-surprise-highlight");
+  });
+};
+
+const buildSurpriseCandidates = () => {
+  if (!state.systemData) return [];
+  const candidates = [];
+  const pushCandidates = (items, scope, lineId = null) => {
+    (items || []).forEach((item) => {
+      (item.audio || []).forEach((audio) => {
+        if (!audio?.src) return;
+        candidates.push({ scope, lineId, src: audio.src });
+      });
+    });
+  };
+
+  pushCandidates(filterSystemItems(state.systemData.system.items), "system");
+
+  Object.entries(state.systemData.lines)
+    .filter(([lineId]) => lineVisibleInCurrentMode(lineId))
+    .forEach(([lineId, line]) => {
+      pushCandidates(filterItemsByLine(line.items, lineId), "line", lineId);
+    });
+
+  Object.values(state.systemData.stations).forEach((station) => {
+    stationLineIds(station)
+      .filter((lineId) => lineVisibleInCurrentMode(lineId))
+      .forEach((lineId) => {
+        pushCandidates(stationItemsForLine(station, lineId), "station", lineId);
+      });
+  });
+
+  return candidates;
+};
+
+const playSurpriseCandidate = async (candidate) => {
+  userSystemMode = "list";
+  setSystemMode("list");
+  state.selectedLineId = candidate.scope === "system" ? null : candidate.lineId;
+  renderSystemListView();
+  await new Promise((resolve) => requestAnimationFrame(resolve));
+
+  const wrapId =
+    candidate.scope === "system" ? "system-sounds-wrap" : candidate.scope === "line" ? "line-sounds-wrap" : "station-sounds-wrap";
+  const wrap = document.getElementById(wrapId);
+  if (!wrap) return false;
+
+  const selector = `.play-button[data-audio-src="${CSS.escape(candidate.src)}"]`;
+  let playButton = wrap.querySelector(selector);
+  if (!playButton) return false;
+
+  const collapsible = playButton.closest(".sound-card--collapsible");
+  if (collapsible && !collapsible.classList.contains("is-expanded")) {
+    collapsible.querySelector(".sound-card-header")?.click();
+    playButton = wrap.querySelector(selector);
+    if (!playButton) return false;
+  }
+
+  const soundRow = playButton.closest(".sound-variation");
+  const soundCard = playButton.closest(".sound-card");
+  clearSurpriseHighlight();
+  if (soundRow) {
+    soundRow.classList.add("is-surprise-highlight");
+    soundRow.scrollIntoView({ behavior: "smooth", block: "center" });
+  } else if (soundCard) {
+    soundCard.classList.add("is-surprise-highlight");
+    soundCard.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  playButton.click();
+  return true;
+};
+
+const runSurprise = async () => {
+  if (state.surpriseInFlight || !state.countries.length) return;
+  state.surpriseInFlight = true;
+  if (surpriseButton) surpriseButton.disabled = true;
+  clearSurpriseHighlight();
+  stopActiveAudio();
+
+  try {
+    const systems = [];
+    for (const country of state.countries) {
+      const regions = await ensureCountrySystems(country.id);
+      regions.forEach((region) => {
+        (region.systems || []).forEach((system) => {
+          systems.push({ countryId: country.id, systemId: system.id });
+        });
+      });
+    }
+    for (let i = systems.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [systems[i], systems[j]] = [systems[j], systems[i]];
+    }
+
+    while (systems.length) {
+      const target = systems.pop();
+      await navigateTo({ view: "system", countryId: target.countryId, systemId: target.systemId }, true);
+      const candidates = buildSurpriseCandidates();
+      if (!candidates.length) continue;
+      const played = await playSurpriseCandidate(randomOf(candidates));
+      if (played) break;
+    }
+  } finally {
+    state.surpriseInFlight = false;
+    if (surpriseButton) surpriseButton.disabled = false;
   }
 };
 
@@ -1319,6 +1439,11 @@ const init = async () => {
       setSystemMode("list");
     });
   }
+  if (surpriseButton) {
+    surpriseButton.addEventListener("click", () => {
+      runSurprise();
+    });
+  }
   if (historyActiveButton) {
     historyActiveButton.addEventListener("click", () => {
       setHistoryMode("active");
@@ -1333,6 +1458,13 @@ const init = async () => {
   if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") closeInfoModal();
+  });
+  document.addEventListener("pointerdown", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (!target.closest(".sound-card, .sound-variation")) {
+      clearSurpriseHighlight();
+    }
   });
   if (sidePanelHead) {
     sidePanelHead.addEventListener("pointerdown", onMobileSplitPointerDown);

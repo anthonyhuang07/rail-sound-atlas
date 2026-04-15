@@ -23,6 +23,7 @@ export const dom = {
   systemModeToggle: document.getElementById("system-mode-toggle"),
   modeMapButton: document.getElementById("mode-map"),
   modeListButton: document.getElementById("mode-list"),
+  surpriseButton: document.getElementById("surprise-button"),
   historyToggle: document.getElementById("history-toggle"),
   historyActiveButton: document.getElementById("history-active"),
   historyHistoricalButton: document.getElementById("history-historical"),

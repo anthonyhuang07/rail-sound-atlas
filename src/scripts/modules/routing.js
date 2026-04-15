@@ -4,7 +4,7 @@ export const buildRouteHash = (route) => {
     return `#/${route.countryId}/${route.systemId}`;
   }
   return "#/";
-};
+}; // URL Route Format
 
 export const parseRouteHash = () => {
   const raw = (window.location.hash || "#/").replace(/^#/, "");

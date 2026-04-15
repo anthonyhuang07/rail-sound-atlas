@@ -223,6 +223,7 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
+.surprise-link,
 .contribute-link,
 .github-link {
   display: -webkit-inline-box;
@@ -241,6 +242,7 @@ body.is-system .history-toggle {
       flex-shrink: 0;
 }
 
+.surprise-link,
 .contribute-link {
   width: auto;
   min-width: 0;
@@ -250,7 +252,10 @@ body.is-system .history-toggle {
   font-size: 0.8em;
   font-weight: 400;
   white-space: nowrap;
+  background: transparent;
+  cursor: pointer;
 }
+.surprise-link::before,
 .contribute-link::before {
   content: none;
 }
@@ -510,6 +515,15 @@ body.is-system .history-toggle {
   padding: 0.625rem 0.75rem;
 }
 
+.sound-card {
+  -webkit-transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease;
+}
+.sound-card.is-surprise-highlight {
+  border-color: #f1cf4d;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
 .sound-card .sound-card-subtitle {
   margin: 0;
   color: #9aa0a6;
@@ -610,6 +624,13 @@ body.is-system .history-toggle {
   -ms-flex-line-pack: start;
       align-content: start;
   min-width: 0;
+  -webkit-transition: border-color 0.25s ease;
+  transition: border-color 0.25s ease;
+}
+.sound-card .sound-variation.is-surprise-highlight {
+  border-color: #f1cf4d;
+  -webkit-box-shadow: none;
+          box-shadow: none;
 }
 .sound-card .sound-variation-label {
   color: #f2f2f2;
@@ -645,13 +666,33 @@ body.is-system .history-toggle {
   border-radius: 0;
   padding: 0;
 }
-.sound-card--grouped-multi .sound-variation + .sound-variation {
+.sound-card--grouped-multi .sound-variation.is-surprise-highlight {
+  border: 0.0625rem solid #f1cf4d;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+.sound-card--grouped-multi .sound-variation + .sound-variation:not(.is-surprise-highlight) {
   border-top: 0.0625rem solid #222732;
   padding-top: 0.5rem;
+}
+.sound-card--grouped-multi .sound-variation.is-surprise-highlight + .sound-variation {
+  border-top: 0;
+  padding-top: 0.5rem;
+}
+.sound-card--grouped-multi .sound-variation.is-surprise-highlight {
+  position: relative;
+  z-index: 1;
 }
 
 .sound-card.sound-card--described-multi .sound-variations {
   grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sound-list .sound-card.is-surprise-highlight,
+.list-sounds-grid .sound-card.is-surprise-highlight {
+  border-color: #f1cf4d;
 }
 
 .map-wrap {
@@ -1568,6 +1609,7 @@ body.is-system .history-toggle {
         -ms-flex-pack: start;
             justify-content: flex-start;
   }
+  .site-header .surprise-link,
   .site-header .contribute-link,
   .site-header .github-link {
     -webkit-box-ordinal-group: 3;
@@ -1575,10 +1617,13 @@ body.is-system .history-toggle {
             order: 2;
     height: 1.75rem;
   }
+  .site-header .surprise-link,
   .site-header .contribute-link {
-    margin-left: auto;
     padding: 0 0.6em;
     font-size: 0.75em;
+  }
+  .site-header .surprise-link {
+    margin-left: auto;
   }
   .site-header .github-link {
     width: 1.75rem;

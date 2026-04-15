@@ -205,6 +205,7 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
+.surprise-link,
 .contribute-link,
 .github-link {
   display: inline-flex;
@@ -216,6 +217,7 @@ body.is-system .history-toggle {
   flex-shrink: 0;
 }
 
+.surprise-link,
 .contribute-link {
   width: auto;
   min-width: 0;
@@ -225,6 +227,8 @@ body.is-system .history-toggle {
   font-size: 0.8em;
   font-weight: 400;
   white-space: nowrap;
+  background: transparent;
+  cursor: pointer;
 
   &::before {
     content: none;
@@ -457,6 +461,13 @@ body.is-system .history-toggle {
 }
 
 .sound-card {
+  transition: border-color 0.25s ease;
+
+  &.is-surprise-highlight {
+    border-color: #f1cf4d;
+    box-shadow: none;
+  }
+
   .sound-card-subtitle {
     margin: 0;
     color: $muted;
@@ -552,6 +563,12 @@ body.is-system .history-toggle {
     gap: 0.375rem;
     align-content: start;
     min-width: 0;
+    transition: border-color 0.25s ease;
+
+    &.is-surprise-highlight {
+      border-color: #f1cf4d;
+      box-shadow: none;
+    }
   }
 
   .sound-variation-label {
@@ -593,11 +610,28 @@ body.is-system .history-toggle {
     border: 0;
     border-radius: 0;
     padding: 0;
+
+    &.is-surprise-highlight {
+      border: 0.0625rem solid #f1cf4d;
+      border-radius: 0.5rem;
+      padding: 0.5rem;
+      box-shadow: none;
+    }
   }
 
-  .sound-variation + .sound-variation {
+  .sound-variation + .sound-variation:not(.is-surprise-highlight) {
     border-top: 0.0625rem solid #222732;
     padding-top: 0.5rem;
+  }
+
+  .sound-variation.is-surprise-highlight + .sound-variation {
+    border-top: 0;
+    padding-top: 0.5rem;
+  }
+
+  .sound-variation.is-surprise-highlight {
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -605,6 +639,11 @@ body.is-system .history-toggle {
   .sound-variations {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+
+.sound-list .sound-card.is-surprise-highlight,
+.list-sounds-grid .sound-card.is-surprise-highlight {
+  border-color: #f1cf4d;
 }
 
 .map-wrap {
@@ -1372,16 +1411,21 @@ body.is-system .history-toggle {
       justify-content: flex-start;
     }
 
+    .surprise-link,
     .contribute-link,
     .github-link {
       order: 2;
       height: 1.75rem;
     }
 
+    .surprise-link,
     .contribute-link {
-      margin-left: auto;
       padding: 0 0.6em;
       font-size: 0.75em;
+    }
+
+    .surprise-link {
+      margin-left: auto;
     }
 
     .github-link {
