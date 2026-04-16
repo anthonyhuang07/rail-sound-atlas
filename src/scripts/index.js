@@ -392,6 +392,7 @@ const renderSoundCards = (container, items) => {
     card.setAttribute("role", "listitem");
     const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
     const groupTitleText = `${item.groupTitle || item.group_title || ""}`.trim();
+    const showSingleVariantTitle = item.scope === "station" || item.isStationScope === true;
     if (singleAudio) {
       if (item.forceBoxedSingle) {
         const title = document.createElement("h3");
@@ -403,6 +404,13 @@ const renderSoundCards = (container, items) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
         const singleDescription = singleAudio.description || item.description || "";
+        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
+        if (singleTitle && showSingleVariantTitle) {
+          const label = document.createElement("span");
+          label.className = singleDescription ? "sound-variation-label" : "sound-group-title";
+          label.textContent = singleTitle;
+          row.append(label);
+        }
         if (singleDescription && singleDescription.trim() !== "") {
           const description = document.createElement("p");
           description.className = "sound-variation-description";
@@ -420,6 +428,13 @@ const renderSoundCards = (container, items) => {
       title.textContent = item.title;
       card.append(title);
 
+      const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
+      if (singleTitle && showSingleVariantTitle) {
+        const subTitle = document.createElement("div");
+        subTitle.className = "sound-group-title";
+        subTitle.textContent = singleTitle;
+        card.append(subTitle);
+      }
       const singleDescription =
         singleAudio.description || item.description || "";
       if (singleDescription && singleDescription.trim() !== "") {
@@ -610,6 +625,7 @@ const renderSystemListView = () => {
         return {
           title: station.name,
           description: "",
+          isStationScope: true,
           groupTitle: commonTitle,
           forceBoxedSingle: true,
           audio: scopedItems.flatMap((item) => {
