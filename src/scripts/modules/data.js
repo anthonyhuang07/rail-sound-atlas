@@ -1,3 +1,5 @@
+// Fetch data from Supabase
+
 export const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
 export const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 

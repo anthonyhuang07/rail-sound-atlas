@@ -59,6 +59,9 @@ main {
   height: 100%;
   position: relative;
 }
+#view-system.is-loading > *:not(#system-loading) {
+  display: none !important;
+}
 #view-system.is-active {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -78,7 +81,59 @@ main {
 
 #view-home,
 #view-country {
+  position: relative;
   padding: 1.25rem;
+}
+#view-home.is-loading #country-grid,
+#view-home.is-loading #system-grid,
+#view-country.is-loading #country-grid,
+#view-country.is-loading #system-grid {
+  display: none;
+}
+
+.view-loading {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #f2f2f2;
+  font-size: 1em;
+  z-index: 10;
+}
+
+.view-loading[hidden] {
+  display: none !important;
+}
+
+#system-loading {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #f2f2f2;
+  font-size: 1.05em;
+  background: #000000;
+  z-index: 10;
+}
+
+#system-loading[hidden] {
+  display: none !important;
 }
 
 .site-header {

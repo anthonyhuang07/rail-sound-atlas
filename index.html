@@ -60,14 +60,17 @@ permalink: /
 
     <main>
       <section class="view is-active" id="view-home">
+        <p class="view-loading" id="home-loading" hidden>Loading...</p>
         <div class="card-grid" id="country-grid"></div>
       </section>
 
       <section class="view" id="view-country">
+        <p class="view-loading" id="country-loading" hidden>Loading...</p>
         <div id="system-grid"></div>
       </section>
 
       <section class="view" id="view-system">
+        <p class="view-loading" id="system-loading" hidden>Loading...</p>
         <div class="map-wrap">
           <div id="map-container" aria-label="System map"></div>
           <aside class="map-popup" id="map-popup" aria-live="polite" hidden>

@@ -11,6 +11,12 @@ const {
   sidePanel,
   countryGrid,
   systemGrid,
+  viewHome,
+  viewCountry,
+  viewSystem,
+  homeLoading,
+  countryLoading,
+  systemLoading,
   mapContainer,
   crumbHome,
   crumbCountry,
@@ -37,7 +43,6 @@ const {
   infoModalBackdrop,
   infoModalDownload,
   systemListView,
-  viewSystem,
   mapWrap,
   sidePanelHead,
   sepCountry,
@@ -386,6 +391,7 @@ const renderSoundCards = (container, items) => {
     card.className = "sound-card";
     card.setAttribute("role", "listitem");
     const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
+    const groupTitleText = `${item.groupTitle || item.group_title || ""}`.trim();
     if (singleAudio) {
       if (item.forceBoxedSingle) {
         const title = document.createElement("h3");
@@ -397,13 +403,6 @@ const renderSoundCards = (container, items) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
         const singleDescription = singleAudio.description || item.description || "";
-        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
-        if (singleTitle && !item.hideSingleAudioTitle) {
-          const label = document.createElement("span");
-          label.className = singleDescription ? "sound-variation-label" : "sound-group-title";
-          label.textContent = singleTitle;
-          row.append(label);
-        }
         if (singleDescription && singleDescription.trim() !== "") {
           const description = document.createElement("p");
           description.className = "sound-variation-description";
@@ -421,13 +420,6 @@ const renderSoundCards = (container, items) => {
       title.textContent = item.title;
       card.append(title);
 
-      const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
-      if (singleTitle && !item.hideSingleAudioTitle) {
-        const subTitle = document.createElement("div");
-        subTitle.className = "sound-group-title";
-        subTitle.textContent = singleTitle;
-        card.append(subTitle);
-      }
       const singleDescription =
         singleAudio.description || item.description || "";
       if (singleDescription && singleDescription.trim() !== "") {
@@ -441,7 +433,7 @@ const renderSoundCards = (container, items) => {
     }
 
     card.classList.add("sound-card--collapsible");
-    if (item.groupTitle && item.groupTitle.trim() !== "") {
+    if (groupTitleText) {
       card.classList.add("sound-card--grouped-multi");
     }
 
@@ -474,10 +466,10 @@ const renderSoundCards = (container, items) => {
     content.className = "sound-card-content";
     content.hidden = true;
 
-    if (item.groupTitle && item.groupTitle.trim() !== "") {
+    if (groupTitleText) {
       const groupTitle = document.createElement("div");
       groupTitle.className = "sound-group-title";
-      groupTitle.textContent = item.groupTitle;
+      groupTitle.textContent = groupTitleText;
       content.append(groupTitle);
     }
 
@@ -1007,6 +999,37 @@ const clearActive = () => {
   });
 };
 
+const waitForImages = (images) => {
+  const pending = images.filter((img) => img && !img.complete);
+  if (!pending.length) return Promise.resolve();
+  return Promise.all(
+    pending.map(
+      (img) =>
+        new Promise((resolve) => {
+          img.addEventListener("load", resolve, { once: true });
+          img.addEventListener("error", resolve, { once: true });
+        })
+    )
+  );
+};
+
+const setViewLoading = (view, loading) => {
+  if (view === "home") {
+    viewHome?.classList.toggle("is-loading", loading);
+    if (homeLoading) homeLoading.hidden = !loading;
+    return;
+  }
+  if (view === "country") {
+    viewCountry?.classList.toggle("is-loading", loading);
+    if (countryLoading) countryLoading.hidden = !loading;
+    return;
+  }
+  if (view === "system") {
+    viewSystem?.classList.toggle("is-loading", loading);
+    if (systemLoading) systemLoading.hidden = !loading;
+  }
+};
+
 const updateLineIcons = (container, lineIds) => {
   container.innerHTML = "";
   lineIds.forEach((id) => {
@@ -1039,7 +1062,7 @@ const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
   titleEl.textContent = title;
   button.append(imageWrap, titleEl);
   if (onClick) button.addEventListener("click", onClick);
-  return button;
+  return { button, img };
 };
 
 const hideMapPopup = () => {
@@ -1179,6 +1202,7 @@ const setView = (viewId) => {
   }
   updateBreadcrumb();
   if (viewId !== "system") {
+    setViewLoading("system", false);
     closePanel();
     viewSystem.classList.remove("map-mode", "list-mode");
   }
@@ -1225,6 +1249,8 @@ const {
 
 const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
+  setView("system");
+  setViewLoading("system", true);
   state.historyMode = "active";
   historyActiveButton?.classList.add("is-active");
   historyHistoricalButton?.classList.remove("is-active");
@@ -1283,6 +1309,9 @@ const loadSystem = async (system) => {
   if (systemModeToggle) {
     systemModeToggle.hidden = !state.mapAvailable || state.view !== "system";
   }
+  await waitForImages(Array.from(viewSystem?.querySelectorAll("img") || []));
+  if (loadToken !== state.systemLoadToken) return;
+  setViewLoading("system", false);
 };
 
 const findCountryById = (countryId) => state.countries.find((country) => country.id === countryId) || null;
@@ -1315,12 +1344,14 @@ const openCountryView = async (countryId) => {
     openHomeView();
     return;
   }
-  const regions = await ensureCountrySystems(countryId);
   state.selectedCountryId = countryId;
   crumbCountry.textContent = country.name;
   crumbSystem.textContent = "";
-  renderSystems(regions);
   setView("country");
+  setViewLoading("country", true);
+  systemGrid.innerHTML = "";
+  const regions = await ensureCountrySystems(countryId);
+  await renderSystems(regions);
 };
 
 const openSystemView = async (countryId, systemId) => {
@@ -1329,16 +1360,19 @@ const openSystemView = async (countryId, systemId) => {
     openHomeView();
     return;
   }
+  state.selectedCountryId = countryId;
+  crumbCountry.textContent = country.name;
+  crumbSystem.textContent = "";
+  setView("system");
+  setViewLoading("system", true);
   const regions = await ensureCountrySystems(countryId);
   const system = findSystemInRegions(regions, systemId);
   if (!system) {
     await openCountryView(countryId);
     return;
   }
-  state.selectedCountryId = countryId;
-  crumbCountry.textContent = country.name;
   crumbSystem.textContent = system.name;
-  renderSystems(regions);
+  await renderSystems(regions);
   await loadSystem(system);
 };
 
@@ -1353,22 +1387,29 @@ const navigateTo = async (route, push = true) => {
   if (push) pushRoute(route);
 };
 
-const renderCountries = (countries) => {
+const renderCountries = async (countries) => {
+  setViewLoading("home", true);
   countryGrid.innerHTML = "";
+  const images = [];
   countries.forEach((country) => {
-    const button = createMenuCard({
+    const { button, img } = createMenuCard({
       image: country.image,
       alt: `${country.name} flag`,
       title: country.name,
       countryId: country.id,
       onClick: () => navigateTo({ view: "country", countryId: country.id }, true),
     });
+    images.push(img);
     countryGrid.append(button);
   });
+  await waitForImages(images);
+  setViewLoading("home", false);
 };
 
-const renderSystems = (regions) => {
+const renderSystems = async (regions) => {
+  setViewLoading("country", true);
   systemGrid.innerHTML = "";
+  const images = [];
   regions.forEach((region) => {
     const group = document.createElement("section");
     group.className = "region-group";
@@ -1381,24 +1422,27 @@ const renderSystems = (regions) => {
     grid.className = "card-grid region-grid";
 
     region.systems.forEach((system) => {
-      const button = createMenuCard({
+      const { button, img } = createMenuCard({
         image: system.logo,
         alt: `${system.name} logo`,
         title: system.name,
         onClick: () => navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: system.id }, true),
       });
+      images.push(img);
       grid.append(button);
     });
 
     group.append(title, grid);
     systemGrid.append(group);
   });
+  await waitForImages(images);
+  setViewLoading("country", false);
 };
 
 const init = async () => {
   const countries = await fetchCountries();
   state.countries = countries;
-  renderCountries(countries);
+  await renderCountries(countries);
   crumbCountry.textContent = "";
   crumbSystem.textContent = "";
 
