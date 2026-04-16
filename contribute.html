@@ -144,10 +144,10 @@
                 <p id="title-warning" class="inline-warning hidden" role="alert"></p>
 
                 <div class="label-row">
-                    <label>Description</label>
+                    <label>Transcription/Sound Name</label>
                     <button type="button" class="label-info-btn"
                         aria-label="What should description contain?">i</button>
-                    <span class="label-info-tip">Must be the transcription of the sound. If the sound has no speech, then use the name of the sound (if applicable).<br><br>If there is no speech nor does the sound have a known name, leave this field blank.</span>
+                    <span class="label-info-tip">Must be the transcription of the sound. If the sound has no speech, then use the name of the sound (if applicable, do not make up names yourself).<br><br>If there is no speech nor does the sound have a commonly known name, leave this field blank.</span>
                 </div>
                 <textarea id="description"></textarea>
 
@@ -185,26 +185,24 @@
             <h2 id="guidelines-title">Audio Guidelines</h2>
 
             <ul>
-                <li>Audio must be clear and free of unrelated background noise/speech. Extremely noisy recordings may be
+                <li>Audio must be clear and mostly free of unrelated background noise/speech. Extremely noisy recordings may be
                     rejected.</li>
                 <li>
                     If the sound contains speech, the description must contain the full transcription in its original
                     language.
                     <ul>
-                        <li>For sound effects, unless there is a name for it, leave the description blank.</li>
+                        <li>For pure sound effects, unless there is a name for it, leave the transcription field blank.</li>
                         <li>If a name does exist, please wrap it in the native language's quotation marks. (e.g. Vancouver's "Doo doo doo", Japan's 「三点式ドアチャイム」)</li>
                     </ul>
                 </li>
                 <li>Trim guidelines:
                     <ul>
                         <li>Trim must start at the exact beginning of said sound. There must little to no background noise
-                            before the sound plays. Audios with long silences until the sound begins WILL be rejected.</li>
-                        <li>Trim must end at any reasonable time after the end of said sound, usually around 1-2
-                            seconds.
-                            Crossfade is optional but recommended.</li>
+                            before the sound plays. Audios with long silences before the sound begins WILL be rejected.</li>
+                        <li>Trim must end at any reasonable time after the end of said sound, preferably around 1
+                            second.</li>
                     </ul>
                 </li>
-                <li>Try to name the file something that relates to the sound it represents (Optional).</li>
             </ul>
 
         </section>
@@ -214,13 +212,38 @@
                 <label class="required-label">Audio File</label>
                 <label id="audio-dropzone" for="audio" class="audio-dropzone" tabindex="0" role="button"
                     aria-label="Upload audio file">
-                    <p>Drag and drop audio</p>
+                    <p>Drag and drop audio/video</p>
                     <p>or click to choose a file</p>
                 </label>
-                <input type="file" id="audio" accept=".mp3,.wav,.ogg,.flac,.m4a,.aac,audio/*" required
+                <input type="file" id="audio" accept=".mp3,.wav,.ogg,.flac,.m4a,.aac,.mp4,.mov,.m4v,.webm,audio/*,video/*" required
                     class="audio-input" />
-                <p class="file-caption">Max file size: 1 MB. Supported types: MP3, WAV, OGG, FLAC, M4A, AAC.</p>
                 <p id="audio-warning" class="file-warning hidden" role="alert"></p>
+
+                <div id="audio-trim-section" class="audio-trim hidden">
+                    <label>Trim Audio</label>
+                    <audio id="audio-trim-preview" preload="metadata"></audio>
+                    <div class="audio-trim-controls">
+                        <div id="trim-track" class="trim-track" aria-label="Audio trim range">
+                            <canvas id="trim-waveform" class="trim-waveform" aria-hidden="true"></canvas>
+                            <div id="trim-played" class="trim-played"></div>
+                            <div id="trim-selection" class="trim-selection"></div>
+                            <button id="trim-start-handle" type="button" class="trim-handle trim-handle-start"
+                                aria-label="Trim start"></button>
+                            <button id="trim-end-handle" type="button" class="trim-handle trim-handle-end"
+                                aria-label="Trim end"></button>
+                            <button id="trim-play-handle" type="button" class="trim-handle trim-handle-play"
+                                aria-label="Current playback position"></button>
+                        </div>
+                        <button id="trim-play-toggle" type="button" class="secondary-btn trim-play-btn" aria-label="Play trim preview">
+                            <span class="trim-play-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="inline-check">
+                    <input id="guidelines-confirm" type="checkbox" required disabled />
+                    <span class="required-label">I confirm this audio follows the Audio Guidelines.</span>
+                </label>
 
                 <div class="cf-turnstile" data-sitekey="0x4AAAAAACrBwHo_b4rrWkPi">
                 </div>

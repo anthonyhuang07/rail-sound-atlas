@@ -505,6 +505,184 @@ body {
   pointer-events: none;
 }
 
+.audio-trim {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  border: 0.0625rem solid #2f3749;
+  background: #0b101b;
+}
+.audio-trim audio {
+  position: absolute;
+  left: -9999rem;
+  width: 0.0625rem;
+  height: 0.0625rem;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.audio-trim-controls {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+}
+.audio-trim-controls #trim-play-toggle {
+  width: 2.6rem !important;
+  min-width: 2.6rem;
+  margin-top: 0 !important;
+  padding: 0;
+  height: 2.6rem;
+  -ms-flex-item-align: stretch;
+      align-self: stretch;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.trim-track {
+  position: relative;
+  height: 2.6rem;
+  border: 0.0625rem solid #3d4963;
+  background: #0b111d;
+  border-radius: 0.35rem;
+  overflow: hidden;
+  -webkit-box-shadow: inset 0 0 0 0.0625rem #1f2940;
+          box-shadow: inset 0 0 0 0.0625rem #1f2940;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  -ms-touch-action: none;
+      touch-action: none;
+}
+
+.trim-waveform {
+  position: absolute;
+  inset: 0.15rem 0;
+  width: 100%;
+  height: calc(100% - 0.3rem);
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-user-drag: none;
+}
+
+.trim-played,
+.trim-selection {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.trim-played {
+  width: 0;
+  background: transparent;
+}
+
+.trim-selection {
+  width: 100%;
+  background: transparent;
+  -webkit-box-shadow: inset 0 0 0 0.125rem rgba(255, 209, 102, 0.95);
+          box-shadow: inset 0 0 0 0.125rem rgba(255, 209, 102, 0.95);
+  border-radius: 0.35rem;
+}
+
+.audio-trim .trim-track .trim-handle {
+  position: absolute;
+  top: 0;
+  width: 0.45rem !important;
+  min-width: 0.45rem !important;
+  max-width: 0.45rem !important;
+  height: 100%;
+  margin-top: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0;
+  background: #f2f6ff !important;
+  cursor: ew-resize;
+  z-index: 3;
+  -moz-user-select: none;
+   -ms-user-select: none;
+       user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+
+.audio-trim .trim-track .trim-handle-start,
+.audio-trim .trim-track .trim-handle-end {
+  background: #ffd166 !important;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.audio-trim .trim-track .trim-handle-start {
+  -webkit-transform: translateX(0);
+          transform: translateX(0);
+  border-radius: 0.2rem 0 0 0.2rem !important;
+}
+
+.audio-trim .trim-track .trim-handle-end {
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+  border-radius: 0 0.2rem 0.2rem 0 !important;
+}
+
+.audio-trim .trim-track .trim-handle-play {
+  width: 0.24rem !important;
+  min-width: 0.24rem !important;
+  max-width: 0.24rem !important;
+  background: #ffd166 !important;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+  border-radius: 999rem;
+}
+
+.trim-play-icon {
+  width: 0;
+  height: 0;
+  border-top: 0.34rem solid transparent;
+  border-bottom: 0.34rem solid transparent;
+  border-left: 0.56rem solid #eef2f7;
+  margin-left: 0.08rem;
+}
+
+.trim-play-btn.is-pause .trim-play-icon {
+  width: 0.62rem;
+  height: 0.62rem;
+  border: 0;
+  margin-left: 0;
+  background: none;
+  position: relative;
+}
+.trim-play-btn.is-pause .trim-play-icon::before, .trim-play-btn.is-pause .trim-play-icon::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0.16rem;
+  height: 100%;
+  background: #eef2f7;
+  border-radius: 0.03rem;
+}
+.trim-play-btn.is-pause .trim-play-icon::before {
+  left: 0.1rem;
+}
+.trim-play-btn.is-pause .trim-play-icon::after {
+  right: 0.1rem;
+}
+
 .guidelines {
   border: 0.0625rem solid #2f3546;
   background: #121723;

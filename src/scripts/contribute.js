@@ -54,10 +54,21 @@ const sourceInput = el("source");
 const audioWarning = el("audio-warning");
 const audioDropzone = el("audio-dropzone");
 const yearCapturedInput = el("year_captured");
+const guidelinesConfirmInput = el("guidelines-confirm");
+const trimSection = el("audio-trim-section");
+const trimPreview = el("audio-trim-preview");
+const trimTrack = el("trim-track");
+const trimWaveform = el("trim-waveform");
+const trimPlayed = el("trim-played");
+const trimSelection = el("trim-selection");
+const trimStartHandle = el("trim-start-handle");
+const trimEndHandle = el("trim-end-handle");
+const trimPlayHandle = el("trim-play-handle");
+const trimPlayToggle = el("trim-play-toggle");
 
-const MAX_FILE_SIZE = 1024 * 1024;
-const FILE_SIZE_ERROR = "File must be 1MB or smaller.";
-const ALLOWED_EXTENSIONS = ["mp3", "wav", "ogg", "flac", "m4a", "aac"];
+const MAX_FILE_SIZE = 3 * 1024 * 1024;
+const FILE_SIZE_ERROR = "File must be 3MB or smaller.";
+const ALLOWED_EXTENSIONS = ["mp3", "wav", "ogg", "flac", "m4a", "aac", "mp4", "mov", "m4v", "webm"];
 const EMPTY_SELECT = `<option value="">Select</option>`;
 const SELECT_LINE = `<option>Select Line</option>`;
 const SUBMISSION_DRAFT_KEY = "rsa_contribute_submission_draft_v1";
@@ -70,6 +81,15 @@ const state = {
   cooldownUntil: 0,
   cooldownTimer: null,
   cooldownSubmitted: false,
+  trim: {
+    objectUrl: "",
+    duration: 0,
+    start: 0,
+    end: 0,
+    dragging: "",
+    rafId: 0,
+  },
+  processedUploadFile: null,
 };
 
 const RECENT_SUBMISSION_FINGERPRINTS_KEY = "rsa_recent_submission_fingerprints";
@@ -219,6 +239,255 @@ const setAudioFile = (file) => {
   audioInput.files = transfer.files;
 };
 
+const isVideoFile = (file) => file?.type?.startsWith("video/");
+
+const clearTrimPreview = () => {
+  state.processedUploadFile = null;
+  if (state.trim.rafId) {
+    cancelAnimationFrame(state.trim.rafId);
+    state.trim.rafId = 0;
+  }
+  if (state.trim.objectUrl) {
+    URL.revokeObjectURL(state.trim.objectUrl);
+    state.trim.objectUrl = "";
+  }
+  state.trim.duration = 0;
+  state.trim.start = 0;
+  state.trim.end = 0;
+  if (trimPreview) {
+    trimPreview.pause();
+    trimPreview.removeAttribute("src");
+    trimPreview.load();
+  }
+  if (trimSection) trimSection.classList.add("hidden");
+  setTrimPlayButtonState(false);
+  if (trimSelection) {
+    trimSelection.style.left = "0%";
+    trimSelection.style.width = "100%";
+  }
+  if (trimPlayed) trimPlayed.style.width = "0%";
+  if (trimStartHandle) trimStartHandle.style.left = "0%";
+  if (trimEndHandle) trimEndHandle.style.left = "100%";
+  if (trimPlayHandle) trimPlayHandle.style.left = "0%";
+  if (trimWaveform) {
+    const ctx = trimWaveform.getContext("2d");
+    ctx?.clearRect(0, 0, trimWaveform.width, trimWaveform.height);
+  }
+};
+
+const syncTrimInputs = () => {
+  const duration = state.trim.duration || 0;
+  const startPct = duration ? (state.trim.start / duration) * 100 : 0;
+  const endPct = duration ? (state.trim.end / duration) * 100 : 100;
+  const currentTime = trimPreview ? trimPreview.currentTime : 0;
+  const currentPct = duration ? (Math.max(state.trim.start, Math.min(currentTime, state.trim.end)) / duration) * 100 : 0;
+  if (trimSelection) {
+    trimSelection.style.left = `${startPct}%`;
+    trimSelection.style.width = `${Math.max(0, endPct - startPct)}%`;
+  }
+  if (trimPlayed) trimPlayed.style.width = `${currentPct}%`;
+  if (trimStartHandle) trimStartHandle.style.left = `${startPct}%`;
+  if (trimEndHandle) trimEndHandle.style.left = `${endPct}%`;
+  if (trimPlayHandle) trimPlayHandle.style.left = `${currentPct}%`;
+};
+
+const setTrimRange = (start, end) => {
+  const duration = state.trim.duration || 0;
+  const clampedStart = Math.max(0, Math.min(start, duration));
+  const clampedEnd = Math.max(clampedStart, Math.min(end, duration));
+  state.trim.start = clampedStart;
+  state.trim.end = clampedEnd;
+  syncTrimInputs();
+};
+
+const trimTimeFromClientX = (clientX) => {
+  if (!trimTrack || !state.trim.duration) return 0;
+  const rect = trimTrack.getBoundingClientRect();
+  if (!rect.width) return 0;
+  const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  return ratio * state.trim.duration;
+};
+
+const setTrimPlayhead = (time) => {
+  if (!trimPreview || !state.trim.duration) return;
+  const clamped = Math.max(state.trim.start, Math.min(time, state.trim.end));
+  trimPreview.currentTime = clamped;
+  syncTrimInputs();
+};
+
+const tickTrimPlayhead = () => {
+  if (!trimPreview || trimPreview.paused) {
+    state.trim.rafId = 0;
+    return;
+  }
+  syncTrimInputs();
+  state.trim.rafId = requestAnimationFrame(tickTrimPlayhead);
+};
+
+const startTrimPlayheadAnimation = () => {
+  if (state.trim.rafId) return;
+  state.trim.rafId = requestAnimationFrame(tickTrimPlayhead);
+};
+
+const stopTrimPlayheadAnimation = () => {
+  if (!state.trim.rafId) return;
+  cancelAnimationFrame(state.trim.rafId);
+  state.trim.rafId = 0;
+};
+
+const setTrimPlayButtonState = (isPause) => {
+  if (!trimPlayToggle) return;
+  trimPlayToggle.classList.toggle("is-pause", isPause);
+  trimPlayToggle.setAttribute("aria-label", isPause ? "Pause trim preview" : "Play trim preview");
+};
+
+const drawWaveform = (audioBuffer) => {
+  if (!trimWaveform || !trimTrack) return;
+  const rect = trimTrack.getBoundingClientRect();
+  const width = Math.max(1, Math.floor(rect.width));
+  const height = Math.max(1, Math.floor(rect.height - 6));
+  trimWaveform.width = width;
+  trimWaveform.height = height;
+  const ctx = trimWaveform.getContext("2d");
+  if (!ctx) return;
+  ctx.clearRect(0, 0, width, height);
+
+  const channelData = audioBuffer.getChannelData(0);
+  const samplesPerPixel = Math.max(1, Math.floor(channelData.length / width));
+  const mid = height / 2;
+  ctx.strokeStyle = "rgba(234, 241, 255, 0.65)";
+  ctx.lineWidth = 1;
+
+  for (let x = 0; x < width; x += 1) {
+    const start = x * samplesPerPixel;
+    const end = Math.min(channelData.length, start + samplesPerPixel);
+    let min = 1;
+    let max = -1;
+    for (let i = start; i < end; i += 1) {
+      const v = channelData[i];
+      if (v < min) min = v;
+      if (v > max) max = v;
+    }
+    const y1 = mid + min * mid * 0.92;
+    const y2 = mid + max * mid * 0.92;
+    ctx.beginPath();
+    ctx.moveTo(x + 0.5, y1);
+    ctx.lineTo(x + 0.5, y2);
+    ctx.stroke();
+  }
+};
+
+const setupTrimPreview = (file) => {
+  clearTrimPreview();
+  if (!file || !trimPreview || !trimSection) return;
+  const objectUrl = URL.createObjectURL(file);
+  state.trim.objectUrl = objectUrl;
+  trimPreview.src = objectUrl;
+  trimSection.classList.remove("hidden");
+  decodeAudioBuffer(file).then(drawWaveform).catch(() => {});
+  trimPreview.onloadedmetadata = () => {
+    const duration = Number.isFinite(trimPreview.duration) ? trimPreview.duration : 0;
+    state.trim.duration = duration;
+    setTrimRange(0, duration);
+  };
+  trimPreview.ontimeupdate = () => {
+    syncTrimInputs();
+    if (!state.trim.end || trimPreview.currentTime < state.trim.end) return;
+    trimPreview.pause();
+    trimPreview.currentTime = state.trim.start;
+    setTrimPlayButtonState(false);
+    syncTrimInputs();
+  };
+  trimPreview.onpause = () => {
+    stopTrimPlayheadAnimation();
+    setTrimPlayButtonState(false);
+  };
+  trimPreview.onplay = () => {
+    startTrimPlayheadAnimation();
+    setTrimPlayButtonState(true);
+  };
+  trimPreview.onended = () => {
+    stopTrimPlayheadAnimation();
+    setTrimPlayButtonState(false);
+  };
+};
+
+const hasActiveTrim = () => {
+  const duration = state.trim.duration || 0;
+  if (!duration) return false;
+  return state.trim.start > 0.02 || state.trim.end < duration - 0.02;
+};
+
+const decodeAudioBuffer = async (file) => {
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const decoded = await audioContext.decodeAudioData(arrayBuffer.slice(0));
+    return decoded;
+  } finally {
+    await audioContext.close();
+  }
+};
+
+const encodeWav = (audioBuffer) => {
+  const channels = audioBuffer.numberOfChannels;
+  const sampleRate = audioBuffer.sampleRate;
+  const samples = audioBuffer.length;
+  const bytesPerSample = 2;
+  const blockAlign = channels * bytesPerSample;
+  const byteRate = sampleRate * blockAlign;
+  const dataSize = samples * blockAlign;
+  const buffer = new ArrayBuffer(44 + dataSize);
+  const view = new DataView(buffer);
+  const writeString = (offset, text) => {
+    for (let i = 0; i < text.length; i += 1) view.setUint8(offset + i, text.charCodeAt(i));
+  };
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + dataSize, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, byteRate, true);
+  view.setUint16(32, blockAlign, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, dataSize, true);
+  let offset = 44;
+  for (let i = 0; i < samples; i += 1) {
+    for (let channel = 0; channel < channels; channel += 1) {
+      const sample = audioBuffer.getChannelData(channel)[i];
+      const clamped = Math.max(-1, Math.min(1, sample));
+      view.setInt16(offset, clamped < 0 ? clamped * 0x8000 : clamped * 0x7fff, true);
+      offset += 2;
+    }
+  }
+  return new Blob([buffer], { type: "audio/wav" });
+};
+
+const getProcessedUploadFile = async (file) => {
+  const needsProcessing = isVideoFile(file) || hasActiveTrim();
+  if (!needsProcessing) return file;
+  const decoded = await decodeAudioBuffer(file);
+  const startFrame = Math.floor((state.trim.start || 0) * decoded.sampleRate);
+  const endFrame = Math.floor(((state.trim.end || decoded.duration) * decoded.sampleRate));
+  const length = Math.max(1, endFrame - startFrame);
+  const clipped = new AudioBuffer({
+    numberOfChannels: decoded.numberOfChannels,
+    length,
+    sampleRate: decoded.sampleRate,
+  });
+  for (let channel = 0; channel < decoded.numberOfChannels; channel += 1) {
+    const source = decoded.getChannelData(channel).subarray(startFrame, startFrame + length);
+    clipped.copyToChannel(source, channel, 0);
+  }
+  const wavBlob = encodeWav(clipped);
+  const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9._-]/g, "_");
+  return new File([wavBlob], `${baseName}-trim.wav`, { type: "audio/wav" });
+};
+
 const forceCapitalizedFirstWord = (input) => {
   if (!input) return;
   input.value = capitalizeFirstWordStart(input.value);
@@ -229,7 +498,7 @@ const forceTitleCase = (input) => {
 };
 
 const validateAudioFile = (file) => {
-  if (!file) return "Please select an audio file.";
+  if (!file) return "Please select an audio or video file.";
 
   const extension = file.name.includes(".")
     ? file.name.split(".").pop().toLowerCase()
@@ -237,20 +506,23 @@ const validateAudioFile = (file) => {
 
   const isAllowedExtension = ALLOWED_EXTENSIONS.includes(extension);
   const isAudioMime = file.type.startsWith("audio/");
+  const isVideoMime = file.type.startsWith("video/");
 
-  if (!isAllowedExtension && !isAudioMime) return "Only audio files are allowed.";
-  if (file.size > MAX_FILE_SIZE) return FILE_SIZE_ERROR;
+  if (!isAllowedExtension && !isAudioMime && !isVideoMime) return "Only supported audio/video files are allowed.";
+  if (!isVideoMime && file.size > MAX_FILE_SIZE) return FILE_SIZE_ERROR;
   return "";
 };
 
-const validateCurrentAudioSelection = () => {
+const validateCurrentAudioSelection = async () => {
   const file = audioInput.files[0];
   const error = validateAudioFile(file);
 
   if (error) {
+    clearTrimPreview();
     if (error === FILE_SIZE_ERROR && state.lastValidAudioFile) {
       setAudioFile(state.lastValidAudioFile);
       setDropzoneFileName(state.lastValidAudioFile.name);
+      setupTrimPreview(state.lastValidAudioFile);
     } else {
       audioInput.value = "";
       resetDropzoneText();
@@ -259,6 +531,33 @@ const validateCurrentAudioSelection = () => {
     return false;
   }
 
+  if (isVideoFile(file)) {
+    try {
+      const processed = await getProcessedUploadFile(file);
+      if (processed.size > MAX_FILE_SIZE) {
+        clearTrimPreview();
+        if (state.lastValidAudioFile) {
+          setAudioFile(state.lastValidAudioFile);
+          setDropzoneFileName(state.lastValidAudioFile.name);
+          setupTrimPreview(state.lastValidAudioFile);
+        } else {
+          audioInput.value = "";
+          resetDropzoneText();
+        }
+        showAudioError(FILE_SIZE_ERROR);
+        return false;
+      }
+      state.processedUploadFile = processed;
+    } catch {
+      clearTrimPreview();
+      showAudioError("Could not read this video file.");
+      return false;
+    }
+  } else {
+    state.processedUploadFile = file;
+  }
+
+  setupTrimPreview(file);
   state.lastValidAudioFile = file;
   setDropzoneFileName(file.name);
   clearAudioError();
@@ -564,6 +863,10 @@ const syncSectionFlow = () => {
   const showFile = !metadataSection.classList.contains("hidden");
   fileSection.classList.toggle("hidden", !showFile);
   audioGuidelines.classList.toggle("hidden", !showFile);
+  if (guidelinesConfirmInput) {
+    guidelinesConfirmInput.disabled = !showFile;
+    guidelinesConfirmInput.required = showFile;
+  }
 };
 
 const renderSystemOptions = (systems) => {
@@ -908,6 +1211,7 @@ const saveDraft = () => {
     rollingStock: rollingStockInput.value,
     yearCaptured: yearCapturedInput.value,
     source: sourceInput.value,
+    guidelinesConfirmed: !!guidelinesConfirmInput?.checked,
   };
 
   localStorage.setItem(SUBMISSION_DRAFT_KEY, JSON.stringify(draft));
@@ -981,6 +1285,7 @@ const restoreDraft = async () => {
   rollingStockInput.value = draft.rollingStock || "";
   yearCapturedInput.value = draft.yearCaptured || "";
   sourceInput.value = draft.source || "";
+  if (guidelinesConfirmInput) guidelinesConfirmInput.checked = !!draft.guidelinesConfirmed;
 
   syncMetadataDescriptionVisibility();
   validateTitleAgainstCategory();
@@ -1206,7 +1511,78 @@ newSoundToggle.addEventListener("click", () => {
   syncSectionFlow();
 });
 
-audioInput.addEventListener("change", validateCurrentAudioSelection);
+audioInput.addEventListener("change", async () => {
+  await validateCurrentAudioSelection();
+});
+trimStartHandle?.addEventListener("pointerdown", (event) => {
+  state.trim.dragging = "start";
+  trimStartHandle.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
+trimEndHandle?.addEventListener("pointerdown", (event) => {
+  state.trim.dragging = "end";
+  trimEndHandle.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
+trimPlayHandle?.addEventListener("pointerdown", (event) => {
+  state.trim.dragging = "play";
+  trimPlayHandle.setPointerCapture(event.pointerId);
+  event.preventDefault();
+});
+trimTrack?.addEventListener("pointerdown", (event) => {
+  if (event.target === trimStartHandle || event.target === trimEndHandle || event.target === trimPlayHandle) return;
+  state.trim.dragging = "scrub";
+  trimTrack.setPointerCapture(event.pointerId);
+  setTrimPlayhead(trimTimeFromClientX(event.clientX));
+});
+trimTrack?.addEventListener("dragstart", (event) => {
+  event.preventDefault();
+});
+trimStartHandle?.addEventListener("dragstart", (event) => event.preventDefault());
+trimEndHandle?.addEventListener("dragstart", (event) => event.preventDefault());
+trimPlayHandle?.addEventListener("dragstart", (event) => event.preventDefault());
+trimPlayToggle?.addEventListener("click", async () => {
+  if (!trimPreview) return;
+  if (trimPreview.paused) {
+    if (trimPreview.currentTime < state.trim.start || trimPreview.currentTime > state.trim.end) {
+      trimPreview.currentTime = state.trim.start;
+    }
+    try {
+      await trimPreview.play();
+      setTrimPlayButtonState(true);
+    } catch {
+      setTrimPlayButtonState(false);
+    }
+    return;
+  }
+  trimPreview.pause();
+  setTrimPlayButtonState(false);
+});
+window.addEventListener("pointermove", (event) => {
+  if (!state.trim.dragging || !state.trim.duration) return;
+  const minGap = Math.min(0.1, state.trim.duration / 50);
+  const time = trimTimeFromClientX(event.clientX);
+  if (state.trim.dragging === "start") {
+    setTrimRange(Math.min(time, state.trim.end - minGap), state.trim.end);
+    if (trimPreview) trimPreview.currentTime = state.trim.start;
+    return;
+  }
+  if (state.trim.dragging === "end") {
+    setTrimRange(state.trim.start, Math.max(time, state.trim.start + minGap));
+    return;
+  }
+  if (state.trim.dragging === "scrub") {
+    setTrimPlayhead(time);
+    return;
+  }
+  setTrimPlayhead(time);
+});
+window.addEventListener("pointerup", () => {
+  state.trim.dragging = "";
+});
+window.addEventListener("pointercancel", () => {
+  state.trim.dragging = "";
+});
 newSoundInput.addEventListener("input", syncSectionFlow);
 newSoundInput.addEventListener("input", validateTitleAgainstCategory);
 titleInput.addEventListener("input", validateTitleAgainstCategory);
@@ -1255,14 +1631,16 @@ yearCapturedInput.addEventListener("input", validateYearCaptured);
   });
 });
 
-audioDropzone.addEventListener("drop", (event) => {
+audioDropzone.addEventListener("drop", async (event) => {
   const [file] = event.dataTransfer.files || [];
   const error = validateAudioFile(file);
 
   if (error) {
+    clearTrimPreview();
     if (error === FILE_SIZE_ERROR && state.lastValidAudioFile) {
       setAudioFile(state.lastValidAudioFile);
       setDropzoneFileName(state.lastValidAudioFile.name);
+      setupTrimPreview(state.lastValidAudioFile);
     } else {
       audioInput.value = "";
       resetDropzoneText();
@@ -1272,7 +1650,7 @@ audioDropzone.addEventListener("drop", (event) => {
   }
 
   setAudioFile(file);
-  validateCurrentAudioSelection();
+  await validateCurrentAudioSelection();
 });
 
 submitForm.addEventListener("submit", async (event) => {
@@ -1298,14 +1676,20 @@ submitForm.addEventListener("submit", async (event) => {
       return;
     }
 
-    const file = audioInput.files[0];
-    const fileError = validateAudioFile(file);
+    const selectedFile = audioInput.files[0];
+    const fileError = validateAudioFile(selectedFile);
     if (fileError) {
       showAudioError(fileError);
       audioInput.reportValidity();
       return;
     }
     clearAudioError();
+    const file = await getProcessedUploadFile(selectedFile);
+    if (file.size > MAX_FILE_SIZE) {
+      showAudioError("Trimmed/extracted audio is over 2MB. Trim more or use a shorter/lower-bitrate file.");
+      audioInput.reportValidity();
+      return;
+    }
 
     const submissionId = crypto.randomUUID();
     
