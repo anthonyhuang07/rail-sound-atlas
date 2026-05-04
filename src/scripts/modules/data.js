@@ -20,7 +20,10 @@ export const fetchSystemData = async (systemId) => {
     { data: soundFiles, error: soundFilesError },
   ] = await Promise.all([
     supabaseClient.from("systems").select("*").eq("id", systemId).single(),
-    supabaseClient.from("lines").select("*").eq("system_id", systemId),
+    supabaseClient
+      .from("lines")
+      .select("system_id,id,title,icon_url,other_icons,sort_order,active")
+      .eq("system_id", systemId),
     supabaseClient.from("stations").select("*").eq("system_id", systemId),
     supabaseClient.from("station_lines").select("*").eq("system_id", systemId),
     supabaseClient.from("sound_files").select("*").eq("system_id", systemId),
@@ -61,13 +64,12 @@ export const fetchSystemData = async (systemId) => {
   sortedLines.forEach((line, index) => {
     linesObject[line.id] = {
       title: line.title,
-      subtitle: line.subtitle || "",
       icon: line.icon_url,
       otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
       soundIds: [],
       sort_order: line.sort_order ?? null,
       sort_index: index,
-      active: line.is_active ?? line.active,
+      active: line.active,
     };
   });
 

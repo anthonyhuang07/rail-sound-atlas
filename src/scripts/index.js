@@ -654,8 +654,7 @@ const renderSystemListView = () => {
     </div>
     <section class="list-section" id="line-detail-section" ${selectedLine ? "" : "hidden"}>
       <div class="list-block">
-        <h3 class="list-section-title">Line-Specific Sounds</h3>
-        <p class="list-section-subtitle" id="list-line-subtitle">${selectedLine ? selectedLine.subtitle : ""}</p>
+        <h3 class="list-section-title">Line Sounds</h3>
         <div id="line-sounds-wrap"></div>
       </div>
       <div class="list-block" ${stationItems.length ? "" : "hidden"}>
@@ -1091,7 +1090,7 @@ const hideMapPopup = () => {
 const openMapPopup = (content, lineIds) => {
   if (!mapPopup) return;
   popupTitle.textContent = content.title;
-  popupSubtitle.textContent = content.subtitle;
+  popupSubtitle.textContent = content.subtitle || "";
   renderSoundCards(popupSoundList, content.items);
   updateLineIcons(popupLineIcons, lineIds);
   mapPopup.hidden = false;
