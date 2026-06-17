@@ -3,6 +3,14 @@ import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchCountries, fetch
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
 import { createMapLogic } from "./modules/map.js";
+import {
+  WORLD_CUP_MODE,
+  WORLD_CUP_HOSTS,
+  isWorldCupCountry,
+  isWorldCupSystem,
+  sortWorldCupCountries,
+  sortWorldCupRegions,
+} from "./modules/world-cup.js";
 
 const {
   soundList,
@@ -33,6 +41,11 @@ const {
   systemModeToggle,
   modeMapButton,
   modeListButton,
+  worldCupButton,
+  worldCupModal,
+  worldCupModalClose,
+  worldCupModalBackdrop,
+  worldCupHosts,
   surpriseButton,
   historyToggle,
   historyActiveButton,
@@ -105,6 +118,61 @@ const closeInfoModal = () => {
   infoModal.hidden = true;
   if (infoModalBody) infoModalBody.innerHTML = "";
   if (infoModalDownload) infoModalDownload.removeAttribute("href");
+};
+
+const openWorldCupModal = () => {
+  renderWorldCupHosts();
+  if (worldCupModal) worldCupModal.hidden = false;
+};
+
+const closeWorldCupModal = () => {
+  if (worldCupModal) worldCupModal.hidden = true;
+};
+
+const getCountryById = (countryId) => state.countries.find((country) => country.id === countryId) || null;
+
+const renderWorldCupHosts = () => {
+  if (!worldCupHosts) return;
+  worldCupHosts.innerHTML = "";
+
+  WORLD_CUP_HOSTS.forEach((host) => {
+    const country = getCountryById(host.countryId);
+    const section = document.createElement("section");
+
+    const countryButton = document.createElement("button");
+    countryButton.type = "button";
+    countryButton.className = "world-cup-country-button";
+    countryButton.textContent = country?.name || host.countryName;
+    countryButton.disabled = !country;
+    countryButton.addEventListener("click", () => {
+      closeWorldCupModal();
+      navigateTo({ view: "country", countryId: host.countryId }, true);
+    });
+
+    const cityList = document.createElement("div");
+    cityList.className = "world-cup-city-list";
+    host.cities.forEach((city) => {
+      const cityButton = document.createElement("button");
+      cityButton.type = "button";
+      cityButton.className = "world-cup-city-button";
+      cityButton.textContent = city.name;
+      cityButton.disabled = !country;
+      cityButton.addEventListener("click", async () => {
+        closeWorldCupModal();
+        const regions = await ensureCountrySystems(host.countryId);
+        const system = city.systemIds.map((systemId) => findSystemInRegions(regions, systemId)).find(Boolean);
+        if (system) {
+          await navigateTo({ view: "system", countryId: host.countryId, systemId: system.id }, true);
+          return;
+        }
+        await navigateTo({ view: "country", countryId: host.countryId }, true);
+      });
+      cityList.append(cityButton);
+    });
+
+    section.append(countryButton, cityList);
+    worldCupHosts.append(section);
+  });
 };
 
 const openInfoModal = (audioData) => {
@@ -1059,11 +1127,12 @@ const updateLineIcons = (container, lineIds) => {
   container.hidden = container.children.length === 0;
 };
 
-const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
+const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = false }) => {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "card";
   if (countryId) button.dataset.country = countryId;
+  if (worldCup) button.classList.add("is-world-cup");
 
   const imageWrap = document.createElement("span");
   imageWrap.className = "card-image";
@@ -1406,12 +1475,13 @@ const renderCountries = async (countries) => {
   setViewLoading("home", true);
   countryGrid.innerHTML = "";
   const images = [];
-  countries.forEach((country) => {
+  sortWorldCupCountries(countries).forEach((country) => {
     const { button, img } = createMenuCard({
       image: country.image,
       alt: `${country.name} flag`,
       title: country.name,
       countryId: country.id,
+      worldCup: isWorldCupCountry(country.id),
       onClick: () => navigateTo({ view: "country", countryId: country.id }, true),
     });
     images.push(img);
@@ -1425,7 +1495,7 @@ const renderSystems = async (regions) => {
   setViewLoading("country", true);
   systemGrid.innerHTML = "";
   const images = [];
-  regions.forEach((region) => {
+  sortWorldCupRegions(regions, state.selectedCountryId).forEach((region) => {
     const group = document.createElement("section");
     group.className = "region-group";
 
@@ -1441,6 +1511,7 @@ const renderSystems = async (regions) => {
         image: system.logo,
         alt: `${system.name} logo`,
         title: system.name,
+        worldCup: isWorldCupSystem(state.selectedCountryId, system.id),
         onClick: () => navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: system.id }, true),
       });
       images.push(img);
@@ -1498,6 +1569,10 @@ const init = async () => {
       setSystemMode("list");
     });
   }
+  if (worldCupButton) {
+    worldCupButton.hidden = !WORLD_CUP_MODE;
+    worldCupButton.addEventListener("click", openWorldCupModal);
+  }
   if (surpriseButton) {
     surpriseButton.addEventListener("click", () => {
       runSurprise();
@@ -1515,8 +1590,13 @@ const init = async () => {
   }
   if (infoModalClose) infoModalClose.addEventListener("click", closeInfoModal);
   if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
+  if (worldCupModalClose) worldCupModalClose.addEventListener("click", closeWorldCupModal);
+  if (worldCupModalBackdrop) worldCupModalBackdrop.addEventListener("click", closeWorldCupModal);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeInfoModal();
+    if (event.key === "Escape") {
+      closeInfoModal();
+      closeWorldCupModal();
+    }
   });
   document.addEventListener("pointerdown", (event) => {
     const target = event.target;

@@ -37,6 +37,9 @@ permalink: /
           <button type="button" class="history-button is-active" id="history-active">Active</button>
           <button type="button" class="history-button" id="history-historical">Historical</button>
         </div>
+        <button class="world-cup-link" id="world-cup-button" type="button" hidden>
+          World Cup 2026
+        </button>
         <button class="surprise-link" id="surprise-button" type="button" aria-label="Go to a random system and play a random sound">
           Surprise Me!
         </button>
@@ -120,6 +123,19 @@ permalink: /
           </div>
         </div>
         <div class="info-modal-body" id="info-modal-body"></div>
+      </div>
+    </div>
+    <div class="world-cup-modal" id="world-cup-modal" hidden>
+      <div class="world-cup-modal-backdrop" id="world-cup-modal-backdrop"></div>
+      <div class="world-cup-modal-card" role="dialog" aria-modal="true" aria-labelledby="world-cup-modal-title">
+        <div class="world-cup-modal-head">
+          <div>
+            <h3 id="world-cup-modal-title">World Cup 2026</h3>
+            <p>Host nations and host city rail systems are outlined in gold.</p>
+          </div>
+          <button type="button" class="close-button" id="world-cup-modal-close" aria-label="Close World Cup info">X</button>
+        </div>
+        <div class="world-cup-hosts" id="world-cup-hosts"></div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
