@@ -18,7 +18,7 @@ export const WORLD_CUP_HOSTS = [
       { name: "Atlanta", systemIds: ["marta"] },
       { name: "Boston", systemIds: ["mbta-commuter-rail"] },
       { name: "Dallas", systemIds: ["dart"] },
-      { name: "Houston", systemIds: ["houston-metrorail"] },
+      { name: "Houston", systemIds: ["metrorail"] },
       { name: "Kansas City", systemIds: ["ridekc"] },
       { name: "Los Angeles", systemIds: ["la-metro", "metrolink"] },
       { name: "Miami", systemIds: ["miami-metrorail"] },
@@ -33,7 +33,7 @@ export const WORLD_CUP_HOSTS = [
     countryName: "Mexico",
     cities: [
       { name: "Guadalajara", systemIds: ["guadalajara-metro", "siteur"] },
-      { name: "Mexico City", systemIds: ["mexico-city-metro", "cdmx-metro"] },
+      { name: "Mexico City", systemIds: ["mexico-city-metro", "xochimilco-lrt"] },
       { name: "Monterrey", systemIds: ["monterrey-metro", "metrorrey"] },
     ],
   },
