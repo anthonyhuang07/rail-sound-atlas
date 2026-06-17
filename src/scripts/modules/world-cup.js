@@ -16,7 +16,7 @@ export const WORLD_CUP_HOSTS = [
     countryName: "United States",
     cities: [
       { name: "Atlanta", systemIds: ["marta"] },
-      { name: "Boston", systemIds: ["mbta"] },
+      { name: "Boston", systemIds: ["mbta-commuter-rail"] },
       { name: "Dallas", systemIds: ["dart"] },
       { name: "Houston", systemIds: ["houston-metrorail"] },
       { name: "Kansas City", systemIds: ["ridekc"] },
