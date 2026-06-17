@@ -320,6 +320,7 @@ body.is-system .history-toggle {
 
 .world-cup-link {
   border-color: #d6af36;
+  gap: 0.35rem;
 }
 
 .world-cup-link[hidden] {
@@ -517,6 +518,13 @@ body.is-system .history-toggle {
   border-bottom: 0.0625rem solid #2b313d;
 }
 .world-cup-modal .world-cup-modal-head h3 {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.35rem;
   font-size: 1.1em;
 }
 .world-cup-modal .world-cup-modal-head p {
@@ -659,10 +667,6 @@ body.is-system .history-toggle {
           flex: 0 0 15.625rem;
   overflow: hidden;
 }
-.card-grid .card.is-world-cup {
-  outline: 0.125rem solid #d6af36;
-  outline-offset: 0.125rem;
-}
 .card-grid .card:disabled {
   cursor: default;
 }
@@ -683,9 +687,27 @@ body.is-system .history-toggle {
      object-fit: cover;
 }
 .card-grid .card .card-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0.35rem;
   font-size: 0.95em;
   font-weight: 600;
   padding: 0.625rem 0.75rem;
+}
+
+.world-cup-trophy-icon {
+  width: 1em;
+  height: 1em;
+  color: #f1cf4d;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+}
+.world-cup-trophy-icon path {
+  fill: #f1cf4d;
 }
 
 .sound-card {

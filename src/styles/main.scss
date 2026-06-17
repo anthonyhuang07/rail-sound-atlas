@@ -286,6 +286,7 @@ body.is-system .history-toggle {
 
 .world-cup-link {
   border-color: #d6af36;
+  gap: 0.35rem;
 }
 
 .world-cup-link[hidden] {
@@ -468,6 +469,9 @@ body.is-system .history-toggle {
     border-bottom: 0.0625rem solid #2b313d;
 
     h3 {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
       font-size: 1.1em;
     }
 
@@ -596,11 +600,6 @@ body.is-system .history-toggle {
     flex: 0 0 15.625rem;
     overflow: hidden;
 
-    &.is-world-cup {
-      outline: 0.125rem solid #d6af36;
-      outline-offset: 0.125rem;
-    }
-
     &:disabled {
       cursor: default;
     }
@@ -622,10 +621,24 @@ body.is-system .history-toggle {
     }
 
     .card-title {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
       font-size: 0.95em;
       font-weight: 600;
       padding: 0.625rem 0.75rem;
     }
+  }
+}
+
+.world-cup-trophy-icon {
+  width: 1em;
+  height: 1em;
+  color: #f1cf4d;
+  flex-shrink: 0;
+
+  path {
+    fill: #f1cf4d;
   }
 }
 

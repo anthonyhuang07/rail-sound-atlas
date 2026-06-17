@@ -1,5 +1,8 @@
 export const WORLD_CUP_MODE = true;
 
+export const WORLD_CUP_TROPHY_ICON =
+  "<svg class=\"world-cup-trophy-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"#f1cf4d\" d=\"M18 2H6v3H2v3c0 3.3 2.2 6 5.3 6.7A6.2 6.2 0 0 0 11 18v2H7v2h10v-2h-4v-2a6.2 6.2 0 0 0 3.7-3.3C19.8 14 22 11.3 22 8V5h-4V2ZM4 7h2v2.4c0 .9.2 1.7.5 2.5A4.5 4.5 0 0 1 4 8V7Zm14 2.4V7h2v1a4.5 4.5 0 0 1-2.5 3.9c.3-.8.5-1.6.5-2.5Z\" /></svg>";
+
 const HOST_COUNTRY_IDS = ["canada", "usa", "mexico"];
 
 export const WORLD_CUP_HOSTS = [

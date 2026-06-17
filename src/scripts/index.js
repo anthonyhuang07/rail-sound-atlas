@@ -6,6 +6,7 @@ import { createMapLogic } from "./modules/map.js";
 import {
   WORLD_CUP_MODE,
   WORLD_CUP_HOSTS,
+  WORLD_CUP_TROPHY_ICON,
   isWorldCupCountry,
   isWorldCupSystem,
   sortWorldCupCountries,
@@ -1143,7 +1144,11 @@ const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = fals
 
   const titleEl = document.createElement("span");
   titleEl.className = "card-title";
-  titleEl.textContent = title;
+  if (worldCup) {
+    titleEl.innerHTML = `${WORLD_CUP_TROPHY_ICON}<span>${title}</span>`;
+  } else {
+    titleEl.textContent = title;
+  }
   button.append(imageWrap, titleEl);
   if (onClick) button.addEventListener("click", onClick);
   return { button, img };
