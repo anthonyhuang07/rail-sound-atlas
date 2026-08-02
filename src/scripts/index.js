@@ -1,8 +1,7 @@
-import { dom, stationTooltip, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
+import { dom, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
 import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
-import { createMapLogic } from "./modules/map.js";
 import {
   WORLD_CUP_MODE,
   WORLD_CUP_HOSTS,
@@ -14,10 +13,6 @@ import {
 } from "./modules/world-cup.js";
 
 const {
-  soundList,
-  panelTitle,
-  panelSubtitle,
-  sidePanel,
   countryGrid,
   systemGrid,
   viewHome,
@@ -26,22 +21,9 @@ const {
   homeLoading,
   countryLoading,
   systemLoading,
-  mapContainer,
   crumbHome,
   crumbCountry,
   crumbSystem,
-  panelLineIcons,
-  panelBack,
-  panelSystemIcon,
-  mapPopup,
-  popupTitle,
-  popupSubtitle,
-  popupLineIcons,
-  popupSoundList,
-  popupClose,
-  systemModeToggle,
-  modeMapButton,
-  modeListButton,
   worldCupButton,
   worldCupModal,
   worldCupModalClose,
@@ -57,14 +39,9 @@ const {
   infoModalBackdrop,
   infoModalDownload,
   systemListView,
-  mapWrap,
-  sidePanelHead,
   sepCountry,
   sepSystem,
-  mapSelector,
 } = dom;
-
-let userSystemMode = null;
 
 const state = {
   audioControllers: new Set(),
@@ -74,27 +51,9 @@ const state = {
   selectedCountryId: null,
   systemData: null,
   systemInfo: null,
-  mapAvailable: false,
-  viewBox: null,
-  baseViewBox: null,
-  pointers: new Map(),
-  panLast: { x: 0, y: 0 },
-  pinchLastDist: 0,
-  moved: false,
-  panActive: false,
-  suppressClick: false,
-  systemMode: "map",
   historyMode: "active",
   selectedLineId: null,
   systemLoadToken: 0,
-  mobileMenuHeightPx: 0,
-  mobileMinMenuPx: 0,
-  splitDragActive: false,
-  splitDragPointerId: null,
-  splitDragType: null,
-  panStartedOnTarget: false,
-  panStart: { x: 0, y: 0 },
-  panDownTarget: null,
   surpriseInFlight: false,
 };
 
@@ -102,8 +61,6 @@ const {
   normalizeSystemData,
   stationLineIds,
   stationLineOrder,
-  getVisibleStationItems,
-  stationHasVisibleSounds,
   filterItemsByLine,
   filterSystemItems,
   stationItemsForLine,
@@ -600,48 +557,6 @@ const renderSoundCards = (container, items) => {
   });
 };
 
-const renderStationPopup = (stationData) => {
-  if (!popupSoundList) return;
-  popupTitle.textContent = stationData.name;
-  popupSubtitle.textContent = stationLineIds(stationData)
-    .filter((lineId) => lineVisibleInCurrentMode(lineId))
-    .map((lineId) => state.systemData.lines[lineId].title)
-    .join(", ");
-  const stationItems = getVisibleStationItems(stationData);
-  renderSoundCards(popupSoundList, stationItems);
-};
-
-const openPanel = () => {
-  sidePanel.hidden = false;
-};
-
-const closePanel = () => {
-  sidePanel.hidden = true;
-  stopActiveAudio();
-  clearActive();
-};
-
-const showSystemPanel = () => {
-  if (!state.systemData) return;
-  stopActiveAudio();
-  hideMapPopup();
-  clearActive();
-  panelTitle.textContent = state.systemData.system.name;
-  panelSubtitle.textContent = state.systemData.system.description;
-  updateLineIcons(
-    panelLineIcons,
-    Object.keys(state.systemData.lines).filter((lineId) => lineVisibleInCurrentMode(lineId))
-  );
-  if (panelSystemIcon && state.systemInfo) {
-    panelSystemIcon.src = state.systemInfo.logo;
-    panelSystemIcon.alt = `${state.systemInfo.name} logo`;
-    panelSystemIcon.hidden = false;
-  }
-  if (panelBack) panelBack.hidden = true;
-  renderSoundCards(soundList, filterSystemItems(state.systemData.system.items));
-  openPanel();
-};
-
 const renderListGrid = (container, items, emptyText) => {
   container.innerHTML = "";
   if (!items.length) {
@@ -845,8 +760,6 @@ const buildSurpriseCandidates = () => {
 };
 
 const playSurpriseCandidate = async (candidate) => {
-  userSystemMode = "list";
-  setSystemMode("list");
   state.selectedLineId = candidate.scope === "system" ? null : candidate.lineId;
   renderSystemListView();
   await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -917,172 +830,6 @@ const runSurprise = async () => {
   }
 };
 
-const setSystemMode = (mode) => {
-  if (mode === "map" && !state.mapAvailable) {
-    mode = "list";
-  }
-  if (state.systemMode !== mode) {
-    stopActiveAudio();
-  }
-  hideMapPopup();
-  state.systemMode = mode;
-  if (viewSystem) {
-    viewSystem.classList.toggle("map-mode", mode === "map");
-    viewSystem.classList.toggle("list-mode", mode === "list");
-  }
-  if (modeMapButton) modeMapButton.classList.toggle("is-active", mode === "map");
-  if (modeListButton) modeListButton.classList.toggle("is-active", mode === "list");
-  if (mode === "list") {
-    clearMobileSplitLayout();
-    renderSystemListView();
-  } else {
-    syncMobileSplitLayout();
-  }
-};
-
-const clearMobileSplitLayout = () => {
-  if (sidePanel) {
-    sidePanel.style.removeProperty("height");
-    sidePanel.style.removeProperty("flex-basis");
-  }
-  if (mapWrap) {
-    mapWrap.style.removeProperty("height");
-    mapWrap.style.removeProperty("flex");
-    mapWrap.style.removeProperty("flex-basis");
-  }
-};
-
-const isMobileMapMode = () =>
-  window.matchMedia("(max-width: 720px)").matches &&
-  state.view === "system" &&
-  state.systemMode === "map";
-
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
-const getDefaultMobileMenuHeight = () => (viewSystem ? viewSystem.clientHeight * 0.5 : 0);
-
-const refreshMobileMenuMinHeight = () => {
-  if (!viewSystem || !sidePanel || !sidePanelHead) return;
-  const totalHeight = viewSystem.clientHeight || 0;
-  const viewRect = viewSystem.getBoundingClientRect();
-  const sideRect = sidePanel.getBoundingClientRect();
-  const soundListEl = sidePanel.querySelector(".sound-list");
-  const separatorOffset = soundListEl
-    ? Math.max(0, soundListEl.getBoundingClientRect().top - sideRect.top)
-    : sidePanelHead.getBoundingClientRect().height || 0;
-  const vv = window.visualViewport;
-  const visibleBottomY = vv ? vv.offsetTop + vv.height : window.innerHeight;
-  const overlapUnderUi = Math.max(0, viewRect.bottom - visibleBottomY);
-  const minMenuPx = separatorOffset + overlapUnderUi;
-  state.mobileMinMenuPx = minMenuPx;
-  viewSystem.style.setProperty("--mobile-menu-min", `${minMenuPx}px`);
-  return totalHeight;
-};
-
-const applyMobileMenuHeight = (heightPx) => {
-  if (!viewSystem || !sidePanel || !mapWrap) return;
-  if (!isMobileMapMode()) return;
-  const totalHeight = refreshMobileMenuMinHeight() || viewSystem.clientHeight || 0;
-  if (!totalHeight) return;
-  const minMenuPx = state.mobileMinMenuPx || 0;
-  const maxMenuPx = totalHeight * 0.75;
-  const next = clamp(heightPx, minMenuPx, maxMenuPx);
-  const mapHeight = Math.max(0, totalHeight - next);
-  state.mobileMenuHeightPx = next;
-  sidePanel.style.flexBasis = `${next}px`;
-  sidePanel.style.height = `${next}px`;
-  mapWrap.style.flex = "0 0 auto";
-  mapWrap.style.flexBasis = `${mapHeight}px`;
-  mapWrap.style.height = `${mapHeight}px`;
-};
-
-const syncMobileSplitLayout = () => {
-  if (isMobileMapMode()) {
-    applyMobileMenuHeight(state.mobileMenuHeightPx || getDefaultMobileMenuHeight());
-  } else {
-    clearMobileSplitLayout();
-  }
-};
-
-const resetMobileMenuRatio = () => {
-  if (!viewSystem) return;
-  const totalHeight = refreshMobileMenuMinHeight() || viewSystem.clientHeight || 0;
-  if (!totalHeight) return;
-  applyMobileMenuHeight(totalHeight * 0.5);
-};
-
-const beginMobileSplitDrag = (dragType, pointerId) => {
-  state.splitDragActive = true;
-  state.splitDragPointerId = pointerId;
-  state.splitDragType = dragType;
-  if (viewSystem) viewSystem.classList.add("is-resizing-split");
-};
-
-const updateMobileSplitDrag = (clientY) => {
-  if (!viewSystem) return;
-  const rect = viewSystem.getBoundingClientRect();
-  applyMobileMenuHeight(rect.bottom - clientY);
-};
-
-const endMobileSplitDrag = () => {
-  state.splitDragActive = false;
-  state.splitDragPointerId = null;
-  state.splitDragType = null;
-  if (viewSystem) viewSystem.classList.remove("is-resizing-split");
-  applyMobileMenuHeight(state.mobileMenuHeightPx);
-};
-
-const onMobileSplitPointerDown = (event) => {
-  if (!isMobileMapMode() || !viewSystem || !sidePanelHead) return;
-  if (event.target.closest("button, a")) return;
-  event.preventDefault();
-  beginMobileSplitDrag("pointer", event.pointerId);
-};
-
-const onMobileSplitPointerMove = (event) => {
-  if (!state.splitDragActive || state.splitDragType !== "pointer") return;
-  if (event.pointerId !== state.splitDragPointerId) return;
-  event.preventDefault();
-  updateMobileSplitDrag(event.clientY);
-};
-
-const onMobileSplitPointerUp = (event) => {
-  if (!state.splitDragActive || state.splitDragType !== "pointer") return;
-  if (event.pointerId !== state.splitDragPointerId) return;
-  endMobileSplitDrag();
-};
-
-const onMobileSplitTouchStart = (event) => {
-  if (!isMobileMapMode() || !viewSystem || !sidePanelHead) return;
-  if (event.target.closest("button, a")) return;
-  const touch = event.changedTouches && event.changedTouches[0];
-  if (!touch) return;
-  event.preventDefault();
-  beginMobileSplitDrag("touch", touch.identifier);
-};
-
-const onMobileSplitTouchMove = (event) => {
-  if (!state.splitDragActive || state.splitDragType !== "touch") return;
-  const touch = Array.from(event.touches || []).find((t) => t.identifier === state.splitDragPointerId);
-  if (!touch) return;
-  event.preventDefault();
-  updateMobileSplitDrag(touch.clientY);
-};
-
-const onMobileSplitTouchEnd = (event) => {
-  if (!state.splitDragActive || state.splitDragType !== "touch") return;
-  const ended = Array.from(event.changedTouches || []).some(
-    (t) => t.identifier === state.splitDragPointerId
-  );
-  if (!ended) return;
-  endMobileSplitDrag();
-};
-
-const clearActive = () => {
-  document.querySelectorAll(".line.is-active, .station.is-active").forEach((el) => {
-    el.classList.remove("is-active");
-  });
-};
-
 const waitForImages = (images) => {
   const pending = images.filter((img) => img && !img.complete);
   if (!pending.length) return Promise.resolve();
@@ -1114,20 +861,6 @@ const setViewLoading = (view, loading) => {
   }
 };
 
-const updateLineIcons = (container, lineIds) => {
-  container.innerHTML = "";
-  lineIds.forEach((id) => {
-    const iconUrl = state.systemData.lines[id].icon;
-    if (!iconUrl) return;
-    const img = document.createElement("img");
-    img.className = "line-icon";
-    img.alt = `${id} icon`;
-    img.src = iconUrl;
-    container.append(img);
-  });
-  container.hidden = container.children.length === 0;
-};
-
 const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = false }) => {
   const button = document.createElement("button");
   button.type = "button";
@@ -1152,90 +885,6 @@ const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = fals
   button.append(imageWrap, titleEl);
   if (onClick) button.addEventListener("click", onClick);
   return { button, img };
-};
-
-const hideMapPopup = () => {
-  if (!mapPopup) return;
-  mapPopup.hidden = true;
-  clearActive();
-  stopActiveAudio();
-};
-
-const openMapPopup = (content, lineIds) => {
-  if (!mapPopup) return;
-  popupTitle.textContent = content.title;
-  popupSubtitle.textContent = content.subtitle || "";
-  renderSoundCards(popupSoundList, content.items);
-  updateLineIcons(popupLineIcons, lineIds);
-  mapPopup.hidden = false;
-};
-
-const setLine = (lineId, element) => {
-  stopActiveAudio();
-  if (!lineVisibleInCurrentMode(lineId)) return;
-  clearActive();
-  if (element) {
-    element.classList.add("is-active");
-  }
-  const lineData = state.systemData.lines[lineId];
-  const lineContent = {
-    ...lineData,
-    items: filterItemsByLine(lineData.items, lineId),
-  };
-  openMapPopup(lineContent, [lineId]);
-};
-
-const setStation = (stationId, element) => {
-  stopActiveAudio();
-  clearActive();
-  if (element) {
-    element.classList.add("is-active");
-  }
-  const stationData = state.systemData.stations[stationId];
-  const iconLineIds = stationLineIds(stationData).filter((lineId) => lineVisibleInCurrentMode(lineId));
-  renderStationPopup(stationData);
-  updateLineIcons(popupLineIcons, iconLineIds);
-  mapPopup.hidden = false;
-};
-
-const findMapTarget = (event) => {
-  const path = event.composedPath ? event.composedPath() : [];
-  for (const node of path) {
-    if (node && node.matches && node.matches(mapSelector)) return node;
-  }
-  if (event.target && event.target.closest) {
-    return event.target.closest(mapSelector);
-  }
-  return null;
-};
-
-const handleMapClick = (event) => {
-  if (state.suppressClick) {
-    state.suppressClick = false;
-    state.panDownTarget = null;
-    return;
-  }
-  if (state.panActive || state.moved) return;
-  const target = findMapTarget(event) || state.panDownTarget;
-  state.panDownTarget = null;
-  if (!target || !mapContainer.contains(target)) {
-    if (state.view === "system") {
-      clearActive();
-      hideMapPopup();
-      showSystemPanel();
-    }
-    return;
-  }
-
-  const scope = target.dataset.scope;
-  const lineId = target.dataset.line || target.dataset.lineId;
-  const stationId = target.dataset.station || target.dataset.stationId;
-
-  if (scope === "line" || lineId) {
-    setLine(lineId, target);
-  } else if (scope === "station" || stationId) {
-    setStation(stationId, target);
-  }
 };
 
 const updateBreadcrumb = () => {
@@ -1277,23 +926,17 @@ const setView = (viewId) => {
   if (viewId !== "system") {
     state.systemLoadToken += 1;
   }
-  hideMapPopup();
   state.view = viewId;
   document.querySelectorAll(".view").forEach((view) => {
     view.classList.toggle("is-active", view.id === `view-${viewId}`);
   });
   document.body.classList.toggle("is-system", viewId === "system");
-  if (systemModeToggle) {
-    systemModeToggle.hidden = viewId !== "system" || !state.systemData || !state.mapAvailable;
-  }
   if (historyToggle) {
     historyToggle.hidden = viewId !== "system";
   }
   updateBreadcrumb();
   if (viewId !== "system") {
     setViewLoading("system", false);
-    closePanel();
-    viewSystem.classList.remove("map-mode", "list-mode");
   }
 };
 
@@ -1303,38 +946,10 @@ const setHistoryMode = (mode) => {
   historyHistoricalButton?.classList.toggle("is-active", state.historyMode === "historical");
   if (state.view === "system" && state.systemData) {
     stopActiveAudio();
-    hideMapPopup();
     state.selectedLineId = null;
-    clearActive();
-    const svg = mapContainer.querySelector("svg");
-    if (svg) {
-      applyMapTheme(svg, state.systemData.theme);
-      bringStationsToFront(svg);
-    }
-    if (state.systemMode === "list") {
-      renderSystemListView();
-    } else {
-      showSystemPanel();
-    }
+    renderSystemListView();
   }
 };
-
-const {
-  resetInteractions,
-  bringStationsToFront,
-  applyMapTheme,
-  loadMap,
-  handleWheel,
-} = createMapLogic({
-  state,
-  mapContainer,
-  stationTooltip,
-  mapSelector,
-  lineVisibleInCurrentMode,
-  stationHasVisibleSounds,
-  findMapTarget,
-  handleMapClick,
-});
 
 const loadSystem = async (system) => {
   const loadToken = ++state.systemLoadToken;
@@ -1372,32 +987,9 @@ const loadSystem = async (system) => {
     .filter(sound => sound.audio.length);
   });
   state.selectedLineId = null;
-  let mapAvailable = false;
-  const mapPath = systemDataRaw.mapUrl
-
-  if (mapPath) {
-    mapAvailable = await loadMap(mapPath, state.systemData.theme);
-    if (loadToken !== state.systemLoadToken) return;
-  } else {
-    mapContainer.innerHTML = "";
-  }
-  state.mapAvailable = mapAvailable;
-  const isMobile = window.matchMedia("(max-width: 720px)").matches;
-  const defaultMode = isMobile ? "list" : "map";
-  const preferredMode = userSystemMode || defaultMode;
-  setSystemMode(state.mapAvailable ? preferredMode : "list");
-  showSystemPanel();
+  renderSystemListView();
   setView("system");
-  if (state.mapAvailable && !isMobile) {
-    resetMobileMenuRatio();
-  }
-  if (state.view !== "system") {
-    if (systemModeToggle) systemModeToggle.hidden = true;
-    return;
-  }
-  if (systemModeToggle) {
-    systemModeToggle.hidden = !state.mapAvailable || state.view !== "system";
-  }
+  if (state.view !== "system") return;
   await waitForImages(Array.from(viewSystem?.querySelectorAll("img") || []));
   if (loadToken !== state.systemLoadToken) return;
   setViewLoading("system", false);
@@ -1550,30 +1142,6 @@ const init = async () => {
       navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: state.systemInfo.id }, true);
     }
   });
-  if (panelBack) {
-    panelBack.addEventListener("click", () => {
-      showSystemPanel();
-    });
-  }
-  if (popupClose) {
-    popupClose.addEventListener("click", () => {
-      clearActive();
-      hideMapPopup();
-      showSystemPanel();
-    });
-  }
-  if (modeMapButton) {
-    modeMapButton.addEventListener("click", () => {
-      userSystemMode = "map";
-      setSystemMode("map");
-    });
-  }
-  if (modeListButton) {
-    modeListButton.addEventListener("click", () => {
-      userSystemMode = "list";
-      setSystemMode("list");
-    });
-  }
   if (worldCupButton) {
     worldCupButton.hidden = !WORLD_CUP_MODE;
     worldCupButton.addEventListener("click", openWorldCupModal);
@@ -1610,41 +1178,12 @@ const init = async () => {
       clearSurpriseHighlight();
     }
   });
-  if (sidePanelHead) {
-    sidePanelHead.addEventListener("pointerdown", onMobileSplitPointerDown);
-    sidePanelHead.addEventListener("touchstart", onMobileSplitTouchStart, { passive: false });
-  }
-  window.addEventListener("pointermove", onMobileSplitPointerMove);
-  window.addEventListener("pointerup", onMobileSplitPointerUp);
-  window.addEventListener("pointercancel", onMobileSplitPointerUp);
-  window.addEventListener("touchmove", onMobileSplitTouchMove, { passive: false });
-  window.addEventListener("touchend", onMobileSplitTouchEnd, { passive: false });
-  window.addEventListener("touchcancel", onMobileSplitTouchEnd, { passive: false });
-  window.addEventListener("resize", () => {
-    syncMobileSplitLayout();
-    updateBreadcrumb();
-  });
-  if (window.visualViewport) {
-    window.visualViewport.addEventListener("resize", syncMobileSplitLayout);
-    window.visualViewport.addEventListener("scroll", syncMobileSplitLayout);
-  }
+  window.addEventListener("resize", updateBreadcrumb);
   window.addEventListener("popstate", async (event) => {
     const route = event.state || parseRouteHash();
     await navigateTo(route, false);
   });
   // List mode line reset is handled by clicking the active line chip again.
-  window.addEventListener("blur", resetInteractions);
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) resetInteractions();
-  });
-
-  mapContainer.addEventListener(
-    "wheel",
-    handleWheel,
-    { passive: false }
-  );
-
-  resetMobileMenuRatio();
   setHistoryMode("active");
   const initialRoute = parseRouteHash();
   await navigateTo(initialRoute, false);

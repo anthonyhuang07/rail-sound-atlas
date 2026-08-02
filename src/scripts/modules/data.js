@@ -96,7 +96,6 @@ export const fetchSystemData = async (systemId) => {
     theme: systemRow.theme || {},
     lines: linesObject,
     stations: stationsObject,
-    mapUrl: systemRow.map_url || null,
   };
 };
 
@@ -164,7 +163,7 @@ export const fetchCountries = async () => {
 export const fetchCountrySystems = async (countryId) => {
   const { data, error } = await supabaseClient
     .from("systems")
-    .select("id, name, logo_url, map_url, region")
+    .select("id, name, logo_url, region")
     .eq("country_id", countryId)
     .order("region", { ascending: true })
     .order("name", { ascending: true });
@@ -186,7 +185,6 @@ export const fetchCountrySystems = async (countryId) => {
       id: system.id,
       name: system.name,
       logo: system.logo_url,
-      map: system.map_url,
     });
   });
 

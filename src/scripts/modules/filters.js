@@ -49,19 +49,6 @@ export const createSoundFilters = (state) => {
     return state.historyMode === "historical" ? activeFlag === false : activeFlag !== false;
   };
 
-  const getVisibleStationItems = (station) =>
-    (station?.items || [])
-      .map((item) => ({
-        ...item,
-        audio: (item.audio || []).filter((audio) => isVisibleByHistory(audio) && audioMatchesStation(audio, station)),
-      }))
-      .filter((item) => item.audio.length > 0);
-
-  const stationHasVisibleSounds = (stationId) => {
-    const station = state.systemData?.stations?.[stationId];
-    return !!(station && getVisibleStationItems(station).length);
-  };
-
   const filterItemsByLine = (items, lineId, station = null) =>
     (items || [])
       .map((item) => {
@@ -114,10 +101,6 @@ export const createSoundFilters = (state) => {
     normalizeSystemData,
     stationLineIds,
     stationLineOrder,
-    audioMatchesStation,
-    isVisibleByHistory,
-    getVisibleStationItems,
-    stationHasVisibleSounds,
     filterItemsByLine,
     filterSystemItems,
     stationItemsForLine,

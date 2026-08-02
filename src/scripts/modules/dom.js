@@ -1,10 +1,4 @@
-const sidePanel = document.getElementById("side-panel");
-
 export const dom = {
-  soundList: document.getElementById("sound-list"),
-  panelTitle: document.getElementById("panel-title"),
-  panelSubtitle: document.getElementById("panel-subtitle"),
-  sidePanel,
   countryGrid: document.getElementById("country-grid"),
   systemGrid: document.getElementById("system-grid"),
   viewHome: document.getElementById("view-home"),
@@ -13,22 +7,9 @@ export const dom = {
   homeLoading: document.getElementById("home-loading"),
   countryLoading: document.getElementById("country-loading"),
   systemLoading: document.getElementById("system-loading"),
-  mapContainer: document.getElementById("map-container"),
   crumbHome: document.getElementById("crumb-home"),
   crumbCountry: document.getElementById("crumb-country"),
   crumbSystem: document.getElementById("crumb-system"),
-  panelLineIcons: document.getElementById("panel-line-icons"),
-  panelBack: document.getElementById("panel-back"),
-  panelSystemIcon: document.getElementById("panel-system-icon"),
-  mapPopup: document.getElementById("map-popup"),
-  popupTitle: document.getElementById("popup-title"),
-  popupSubtitle: document.getElementById("popup-subtitle"),
-  popupLineIcons: document.getElementById("popup-line-icons"),
-  popupSoundList: document.getElementById("popup-sound-list"),
-  popupClose: document.getElementById("popup-close"),
-  systemModeToggle: document.getElementById("system-mode-toggle"),
-  modeMapButton: document.getElementById("mode-map"),
-  modeListButton: document.getElementById("mode-list"),
   worldCupButton: document.getElementById("world-cup-button"),
   worldCupModal: document.getElementById("world-cup-modal"),
   worldCupModalClose: document.getElementById("world-cup-modal-close"),
@@ -44,15 +25,9 @@ export const dom = {
   infoModalBackdrop: document.getElementById("info-modal-backdrop"),
   infoModalDownload: document.getElementById("info-modal-download"),
   systemListView: document.getElementById("system-list-view"),
-  mapWrap: document.querySelector("#view-system .map-wrap"),
-  sidePanelHead: sidePanel ? sidePanel.querySelector(".side-panel-head") : null,
   sepCountry: document.querySelector(".crumb-sep[data-sep=country]"),
   sepSystem: document.querySelector(".crumb-sep[data-sep=system]"),
-  mapSelector: "[data-scope], [data-line], [data-line-id], [data-station], [data-station-id]",
 };
-
-export const stationTooltip = document.createElement("div");
-stationTooltip.className = "station-tooltip";
 
 export const DOWNLOAD_ICON =
   "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3a1 1 0 0 1 1 1v9.59l2.3-2.3a1 1 0 1 1 1.4 1.42l-4.01 4a1 1 0 0 1-1.38 0l-4.01-4a1 1 0 1 1 1.4-1.42l2.3 2.3V4a1 1 0 0 1 1-1zm-7 14a1 1 0 0 1 1 1v2h12v-2a1 1 0 1 1 2 0v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1z\"/></svg>";

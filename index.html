@@ -29,10 +29,6 @@ permalink: /
           <span class="crumb-sep is-hidden" data-sep="system">/</span>
           <button class="crumb is-hidden" type="button" data-view="system" id="crumb-system"></button>
         </nav>
-        <div class="system-mode-toggle" id="system-mode-toggle" hidden>
-          <button type="button" class="mode-button is-active" id="mode-map">Map</button>
-          <button type="button" class="mode-button" id="mode-list">List</button>
-        </div>
         <div class="history-toggle" id="history-toggle" hidden>
           <button type="button" class="history-button is-active" id="history-active">Active</button>
           <button type="button" class="history-button" id="history-historical">Historical</button>
@@ -77,39 +73,6 @@ permalink: /
 
       <section class="view" id="view-system">
         <p class="view-loading" id="system-loading" hidden>Loading...</p>
-        <div class="map-wrap">
-          <div id="map-container" aria-label="System map"></div>
-          <aside class="map-popup" id="map-popup" aria-live="polite" hidden>
-            <div class="map-popup-head">
-              <div class="panel-meta">
-                <h2 id="popup-title">Details</h2>
-                <p id="popup-subtitle"></p>
-                <div id="popup-line-icons" class="line-icons" hidden></div>
-              </div>
-              <button class="close-button" id="popup-close" type="button" aria-label="Close details">
-                X
-              </button>
-            </div>
-            <div class="sound-list" id="popup-sound-list" role="list"></div>
-          </aside>
-        </div>
-
-        <aside class="side-panel" id="side-panel" aria-live="polite" hidden>
-          <div class="side-panel-head">
-            <div class="panel-main">
-              <div class="panel-meta">
-                <h2 id="panel-title">System</h2>
-                <p id="panel-subtitle">Select a line or station to view sounds.</p>
-                <div id="panel-line-icons" class="line-icons" hidden></div>
-              </div>
-              <img id="panel-system-icon" class="panel-system-icon" alt="" hidden />
-            </div>
-            <button class="close-button" id="panel-back" type="button" aria-label="Back to system view">
-              X
-            </button>
-          </div>
-          <div class="sound-list" id="sound-list" role="list"></div>
-        </aside>
         <section class="system-list-view" id="system-list-view"></section>
       </section>
     </main>
