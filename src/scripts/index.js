@@ -2,15 +2,6 @@ import { dom, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN
 import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
-import {
-  WORLD_CUP_MODE,
-  WORLD_CUP_HOSTS,
-  WORLD_CUP_TROPHY_ICON,
-  isWorldCupCountry,
-  isWorldCupSystem,
-  sortWorldCupCountries,
-  sortWorldCupRegions,
-} from "./modules/world-cup.js";
 
 const {
   countryGrid,
@@ -24,11 +15,6 @@ const {
   crumbHome,
   crumbCountry,
   crumbSystem,
-  worldCupButton,
-  worldCupModal,
-  worldCupModalClose,
-  worldCupModalBackdrop,
-  worldCupHosts,
   surpriseButton,
   historyToggle,
   historyActiveButton,
@@ -38,7 +24,7 @@ const {
   infoModalClose,
   infoModalBackdrop,
   infoModalDownload,
-  systemListView,
+  systemContent,
   sepCountry,
   sepSystem,
 } = dom;
@@ -76,61 +62,6 @@ const closeInfoModal = () => {
   infoModal.hidden = true;
   if (infoModalBody) infoModalBody.innerHTML = "";
   if (infoModalDownload) infoModalDownload.removeAttribute("href");
-};
-
-const openWorldCupModal = () => {
-  renderWorldCupHosts();
-  if (worldCupModal) worldCupModal.hidden = false;
-};
-
-const closeWorldCupModal = () => {
-  if (worldCupModal) worldCupModal.hidden = true;
-};
-
-const getCountryById = (countryId) => state.countries.find((country) => country.id === countryId) || null;
-
-const renderWorldCupHosts = () => {
-  if (!worldCupHosts) return;
-  worldCupHosts.innerHTML = "";
-
-  WORLD_CUP_HOSTS.forEach((host) => {
-    const country = getCountryById(host.countryId);
-    const section = document.createElement("section");
-
-    const countryButton = document.createElement("button");
-    countryButton.type = "button";
-    countryButton.className = "world-cup-country-button";
-    countryButton.textContent = country?.name || host.countryName;
-    countryButton.disabled = !country;
-    countryButton.addEventListener("click", () => {
-      closeWorldCupModal();
-      navigateTo({ view: "country", countryId: host.countryId }, true);
-    });
-
-    const cityList = document.createElement("div");
-    cityList.className = "world-cup-city-list";
-    host.cities.forEach((city) => {
-      const cityButton = document.createElement("button");
-      cityButton.type = "button";
-      cityButton.className = "world-cup-city-button";
-      cityButton.textContent = city.name;
-      cityButton.disabled = !country;
-      cityButton.addEventListener("click", async () => {
-        closeWorldCupModal();
-        const regions = await ensureCountrySystems(host.countryId);
-        const system = city.systemIds.map((systemId) => findSystemInRegions(regions, systemId)).find(Boolean);
-        if (system) {
-          await navigateTo({ view: "system", countryId: host.countryId, systemId: system.id }, true);
-          return;
-        }
-        await navigateTo({ view: "country", countryId: host.countryId }, true);
-      });
-      cityList.append(cityButton);
-    });
-
-    section.append(countryButton, cityList);
-    worldCupHosts.append(section);
-  });
 };
 
 const openInfoModal = (audioData) => {
@@ -573,8 +504,8 @@ const renderListGrid = (container, items, emptyText) => {
   container.append(grid);
 };
 
-const renderSystemListView = () => {
-  if (!state.systemData || !systemListView) return;
+const renderSystemView = () => {
+  if (!state.systemData || !systemContent) return;
   const lineEntries = Object.entries(state.systemData.lines).filter(([lineId]) =>
     lineVisibleInCurrentMode(lineId)
   );
@@ -625,12 +556,12 @@ const renderSystemListView = () => {
     }))
     .filter((item) => item.audio.length > 0);
 
-  systemListView.innerHTML = `
+  systemContent.innerHTML = `
     <div class="list-top${hasLines ? "" : " no-lines"}">
       <div class="list-head">
         <div class="list-head-main">
           <h2 class="list-title">${state.systemData.system.name}</h2>
-          <p class="list-subtitle">${state.systemData.system.description}</p>
+          <p class="list-subtitle">${state.systemData.system.region}</p>
         </div>
         <img class="list-head-logo" src="${state.systemInfo.logo}" alt="${state.systemInfo.name} logo" />
       </div>
@@ -687,12 +618,12 @@ const renderSystemListView = () => {
           if (state.selectedLineId === lineId) return;
           stopActiveAudio();
           state.selectedLineId = lineId;
-          renderSystemListView();
+          renderSystemView();
           return;
         }
         stopActiveAudio();
         state.selectedLineId = state.selectedLineId === lineId ? null : lineId;
-        renderSystemListView();
+        renderSystemView();
       });
       row.append(button);
     });
@@ -761,7 +692,7 @@ const buildSurpriseCandidates = () => {
 
 const playSurpriseCandidate = async (candidate) => {
   state.selectedLineId = candidate.scope === "system" ? null : candidate.lineId;
-  renderSystemListView();
+  renderSystemView();
   await new Promise((resolve) => requestAnimationFrame(resolve));
 
   const wrapId =
@@ -861,12 +792,11 @@ const setViewLoading = (view, loading) => {
   }
 };
 
-const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = false }) => {
+const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "card";
   if (countryId) button.dataset.country = countryId;
-  if (worldCup) button.classList.add("is-world-cup");
 
   const imageWrap = document.createElement("span");
   imageWrap.className = "card-image";
@@ -877,11 +807,7 @@ const createMenuCard = ({ image, alt, title, onClick, countryId, worldCup = fals
 
   const titleEl = document.createElement("span");
   titleEl.className = "card-title";
-  if (worldCup) {
-    titleEl.innerHTML = `${WORLD_CUP_TROPHY_ICON}<span>${title}</span>`;
-  } else {
-    titleEl.textContent = title;
-  }
+  titleEl.textContent = title;
   button.append(imageWrap, titleEl);
   if (onClick) button.addEventListener("click", onClick);
   return { button, img };
@@ -947,7 +873,7 @@ const setHistoryMode = (mode) => {
   if (state.view === "system" && state.systemData) {
     stopActiveAudio();
     state.selectedLineId = null;
-    renderSystemListView();
+    renderSystemView();
   }
 };
 
@@ -987,7 +913,7 @@ const loadSystem = async (system) => {
     .filter(sound => sound.audio.length);
   });
   state.selectedLineId = null;
-  renderSystemListView();
+  renderSystemView();
   setView("system");
   if (state.view !== "system") return;
   await waitForImages(Array.from(viewSystem?.querySelectorAll("img") || []));
@@ -1072,13 +998,12 @@ const renderCountries = async (countries) => {
   setViewLoading("home", true);
   countryGrid.innerHTML = "";
   const images = [];
-  sortWorldCupCountries(countries).forEach((country) => {
+  countries.forEach((country) => {
     const { button, img } = createMenuCard({
       image: country.image,
       alt: `${country.name} flag`,
       title: country.name,
       countryId: country.id,
-      worldCup: isWorldCupCountry(country.id),
       onClick: () => navigateTo({ view: "country", countryId: country.id }, true),
     });
     images.push(img);
@@ -1092,7 +1017,7 @@ const renderSystems = async (regions) => {
   setViewLoading("country", true);
   systemGrid.innerHTML = "";
   const images = [];
-  sortWorldCupRegions(regions, state.selectedCountryId).forEach((region) => {
+  regions.forEach((region) => {
     const group = document.createElement("section");
     group.className = "region-group";
 
@@ -1108,7 +1033,6 @@ const renderSystems = async (regions) => {
         image: system.logo,
         alt: `${system.name} logo`,
         title: system.name,
-        worldCup: isWorldCupSystem(state.selectedCountryId, system.id),
         onClick: () => navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: system.id }, true),
       });
       images.push(img);
@@ -1142,10 +1066,6 @@ const init = async () => {
       navigateTo({ view: "system", countryId: state.selectedCountryId, systemId: state.systemInfo.id }, true);
     }
   });
-  if (worldCupButton) {
-    worldCupButton.hidden = !WORLD_CUP_MODE;
-    worldCupButton.addEventListener("click", openWorldCupModal);
-  }
   if (surpriseButton) {
     surpriseButton.addEventListener("click", () => {
       runSurprise();
@@ -1163,12 +1083,9 @@ const init = async () => {
   }
   if (infoModalClose) infoModalClose.addEventListener("click", closeInfoModal);
   if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
-  if (worldCupModalClose) worldCupModalClose.addEventListener("click", closeWorldCupModal);
-  if (worldCupModalBackdrop) worldCupModalBackdrop.addEventListener("click", closeWorldCupModal);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeInfoModal();
-      closeWorldCupModal();
     }
   });
   document.addEventListener("pointerdown", (event) => {

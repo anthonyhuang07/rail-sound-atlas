@@ -33,12 +33,6 @@ permalink: /
           <button type="button" class="history-button is-active" id="history-active">Active</button>
           <button type="button" class="history-button" id="history-historical">Historical</button>
         </div>
-        <button class="world-cup-link" id="world-cup-button" type="button" hidden>
-          <svg class="world-cup-trophy-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="#f1cf4d" d="M18 2H6v3H2v3c0 3.3 2.2 6 5.3 6.7A6.2 6.2 0 0 0 11 18v2H7v2h10v-2h-4v-2a6.2 6.2 0 0 0 3.7-3.3C19.8 14 22 11.3 22 8V5h-4V2ZM4 7h2v2.4c0 .9.2 1.7.5 2.5A4.5 4.5 0 0 1 4 8V7Zm14 2.4V7h2v1a4.5 4.5 0 0 1-2.5 3.9c.3-.8.5-1.6.5-2.5Z" />
-          </svg>
-          World Cup 2026
-        </button>
         <button class="surprise-link" id="surprise-button" type="button" aria-label="Go to a random system and play a random sound">
           Surprise Me!
         </button>
@@ -73,7 +67,7 @@ permalink: /
 
       <section class="view" id="view-system">
         <p class="view-loading" id="system-loading" hidden>Loading...</p>
-        <section class="system-list-view" id="system-list-view"></section>
+        <section class="system-content" id="system-content"></section>
       </section>
     </main>
     <div class="info-modal" id="info-modal" hidden>
@@ -89,24 +83,6 @@ permalink: /
           </div>
         </div>
         <div class="info-modal-body" id="info-modal-body"></div>
-      </div>
-    </div>
-    <div class="world-cup-modal" id="world-cup-modal" hidden>
-      <div class="world-cup-modal-backdrop" id="world-cup-modal-backdrop"></div>
-      <div class="world-cup-modal-card" role="dialog" aria-modal="true" aria-labelledby="world-cup-modal-title">
-        <div class="world-cup-modal-head">
-          <div>
-            <h3 id="world-cup-modal-title">
-              <svg class="world-cup-trophy-icon" viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="#f1cf4d" d="M18 2H6v3H2v3c0 3.3 2.2 6 5.3 6.7A6.2 6.2 0 0 0 11 18v2H7v2h10v-2h-4v-2a6.2 6.2 0 0 0 3.7-3.3C19.8 14 22 11.3 22 8V5h-4V2ZM4 7h2v2.4c0 .9.2 1.7.5 2.5A4.5 4.5 0 0 1 4 8V7Zm14 2.4V7h2v1a4.5 4.5 0 0 1-2.5 3.9c.3-.8.5-1.6.5-2.5Z" />
-              </svg>
-              <span>World Cup 2026</span>
-            </h3>
-            <p>Host nations and host city rail systems are marked with the trophy icon.</p>
-          </div>
-          <button type="button" class="close-button" id="world-cup-modal-close" aria-label="Close World Cup info">X</button>
-        </div>
-        <div class="world-cup-hosts" id="world-cup-hosts"></div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

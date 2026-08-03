@@ -183,7 +183,6 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
-.world-cup-link,
 .surprise-link,
 .contribute-link,
 .github-link {
@@ -196,7 +195,6 @@ body.is-system .history-toggle {
   flex-shrink: 0;
 }
 
-.world-cup-link,
 .surprise-link,
 .contribute-link {
   width: auto;
@@ -210,19 +208,9 @@ body.is-system .history-toggle {
   background: transparent;
   cursor: pointer;
 }
-.world-cup-link::before,
 .surprise-link::before,
 .contribute-link::before {
   content: none;
-}
-
-.world-cup-link {
-  border-color: #d6af36;
-  gap: 0.35rem;
-}
-
-.world-cup-link[hidden] {
-  display: none !important;
 }
 
 .github-link {
@@ -347,102 +335,6 @@ body.is-system .history-toggle {
   word-break: break-all;
 }
 
-.world-cup-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-}
-.world-cup-modal[hidden] {
-  display: none;
-}
-.world-cup-modal .world-cup-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-}
-.world-cup-modal .world-cup-modal-card {
-  position: relative;
-  z-index: 1;
-  width: min(34rem, 100%);
-  background: #151922;
-  border: 0.0625rem solid #d6af36;
-  border-radius: 0.5rem;
-  padding: 1rem;
-}
-.world-cup-modal .world-cup-modal-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 0.0625rem solid #2b313d;
-}
-.world-cup-modal .world-cup-modal-head h3 {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 1.1em;
-}
-.world-cup-modal .world-cup-modal-head p {
-  margin-top: 0.25rem;
-  color: #9aa0a6;
-  font-size: 0.9em;
-  line-height: 1.35;
-}
-.world-cup-modal .close-button {
-  background: transparent;
-  color: #f2f2f2;
-  border: 0.0625rem solid #2b313d;
-  border-radius: 0.375rem;
-  width: 2rem;
-  height: 2rem;
-  font-size: 1.1em;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.world-cup-modal .world-cup-hosts {
-  display: grid;
-  gap: 0.75rem;
-  padding-top: 0.75rem;
-}
-.world-cup-modal .world-cup-hosts section {
-  border: 0.0625rem solid #2b313d;
-  border-radius: 0.375rem;
-  padding: 0.75rem;
-}
-.world-cup-modal .world-cup-hosts button {
-  border: 0.0625rem solid #2b313d;
-  background: transparent;
-  color: #f2f2f2;
-  cursor: pointer;
-}
-.world-cup-modal .world-cup-hosts button:disabled {
-  cursor: default;
-  opacity: 0.45;
-}
-.world-cup-modal .world-cup-hosts .world-cup-country-button {
-  border: none;
-  color: #f1cf4d;
-  font-size: 0.95em;
-  font-weight: 700;
-  padding: 0;
-}
-.world-cup-modal .world-cup-hosts .world-cup-city-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-}
-.world-cup-modal .world-cup-hosts .world-cup-city-button {
-  border-radius: 999rem;
-  padding: 0.35rem 0.55rem;
-  color: #9aa0a6;
-  font-size: 0.82em;
-}
-
 #country-grid {
   margin-top: 0;
 }
@@ -523,16 +415,6 @@ body.is-system .history-toggle {
   font-size: 0.95em;
   font-weight: 600;
   padding: 0.625rem 0.75rem;
-}
-
-.world-cup-trophy-icon {
-  width: 1em;
-  height: 1em;
-  color: #f1cf4d;
-  flex-shrink: 0;
-}
-.world-cup-trophy-icon path {
-  fill: #f1cf4d;
 }
 
 .sound-card {
@@ -693,7 +575,7 @@ body.is-system .history-toggle {
   border-color: #f1cf4d;
 }
 
-.system-list-view {
+.system-content {
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -702,14 +584,14 @@ body.is-system .history-toggle {
   margin: 0 auto;
   width: 100%;
 }
-.system-list-view .list-top {
+.system-content .list-top {
   width: fit-content;
   max-width: 100%;
   margin: 0 auto 0.5rem;
   padding-bottom: 0.5rem;
   border-bottom: 0.0625rem solid #2b313d;
 }
-.system-list-view .list-head {
+.system-content .list-head {
   margin-bottom: 1rem;
   display: flex;
   justify-content: space-between;
@@ -717,28 +599,28 @@ body.is-system .history-toggle {
   gap: 0.75rem;
   width: 100%;
 }
-.system-list-view .list-top.no-lines .list-head {
+.system-content .list-top.no-lines .list-head {
   margin-bottom: 0;
 }
-.system-list-view .list-head-main {
+.system-content .list-head-main {
   min-width: 0;
 }
-.system-list-view .list-head-logo {
+.system-content .list-head-logo {
   width: 3rem;
   height: 3rem;
   object-fit: contain;
   border-radius: 0.25rem;
   flex-shrink: 0;
 }
-.system-list-view .list-title {
+.system-content .list-title {
   font-size: 1.2em;
   margin-bottom: 0.25rem;
 }
-.system-list-view .list-subtitle {
+.system-content .list-subtitle {
   color: #9aa0a6;
   font-size: 0.9em;
 }
-.system-list-view .line-selector {
+.system-content .line-selector {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -746,12 +628,12 @@ body.is-system .history-toggle {
   width: fit-content;
   max-width: 100%;
 }
-.system-list-view .line-selector-row {
+.system-content .line-selector-row {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
 }
-.system-list-view .line-chip {
+.system-content .line-chip {
   border: 0.0625rem solid #2b313d;
   border-radius: 0.5rem;
   background: transparent;
@@ -763,10 +645,10 @@ body.is-system .history-toggle {
   cursor: pointer;
   font-size: 0.85em;
 }
-.system-list-view .line-chip.is-active {
+.system-content .line-chip.is-active {
   border-color: #f2f2f2;
 }
-.system-list-view .line-chip .line-chip-icons {
+.system-content .line-chip .line-chip-icons {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -774,7 +656,7 @@ body.is-system .history-toggle {
   flex-shrink: 0;
   min-height: 1rem;
 }
-.system-list-view .line-chip img {
+.system-content .line-chip img {
   height: 1rem;
   width: auto;
   display: block;
@@ -782,24 +664,24 @@ body.is-system .history-toggle {
   flex-shrink: 0;
   max-width: none;
 }
-.system-list-view .list-section {
+.system-content .list-section {
   width: 100%;
   margin-bottom: 1.25rem;
 }
-.system-list-view .list-block + .list-block {
+.system-content .list-block + .list-block {
   margin-top: 1.5rem;
 }
-.system-list-view .list-section-title {
+.system-content .list-section-title {
   font-size: 1em;
   margin-bottom: 0.5rem;
 }
-.system-list-view .list-sounds-grid {
+.system-content .list-sounds-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
   gap: 0.75rem;
   align-items: start;
 }
-.system-list-view .sound-card {
+.system-content .sound-card {
   border: 0.0625rem solid #222732;
   border-radius: 0.5rem;
   padding: 0.75rem;
@@ -808,10 +690,10 @@ body.is-system .history-toggle {
   gap: 0.5rem;
   height: auto;
 }
-.system-list-view .sound-card h3 {
+.system-content .sound-card h3 {
   font-size: 0.95em;
 }
-.system-list-view .sound-card p {
+.system-content .sound-card p {
   color: #9aa0a6;
   font-size: 0.8em;
   display: -webkit-box;
@@ -820,14 +702,14 @@ body.is-system .history-toggle {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.system-list-view .sound-card .sound-actions {
+.system-content .sound-card .sound-actions {
   display: grid;
   grid-template-columns: 1fr 2.25rem;
   gap: 0.5rem;
   margin-top: auto;
 }
-.system-list-view .sound-card button,
-.system-list-view .sound-card .download-button {
+.system-content .sound-card button,
+.system-content .sound-card .download-button {
   background: transparent;
   color: #f2f2f2;
   border: 0.0625rem solid #2b313d;
@@ -840,25 +722,25 @@ body.is-system .history-toggle {
   align-items: center;
   justify-content: center;
 }
-.system-list-view .sound-card .download-button {
+.system-content .sound-card .download-button {
   width: 2.25rem;
   padding: 0;
   color: #f2f2f2;
   text-decoration: none;
   font-size: 0.95em;
 }
-.system-list-view .sound-card .download-button svg {
+.system-content .sound-card .download-button svg {
   width: 1.1rem;
   height: 1.1rem;
   fill: currentColor;
   display: block;
 }
-.system-list-view .sound-card.sound-card--collapsible {
+.system-content .sound-card.sound-card--collapsible {
   padding: 0;
   gap: 0;
   display: block;
 }
-.system-list-view .empty-note {
+.system-content .empty-note {
   color: #9aa0a6;
   font-size: 0.85em;
 }
@@ -925,14 +807,12 @@ body.is-system .history-toggle {
     flex: 0 0 auto;
     justify-content: flex-start;
   }
-  .site-header .world-cup-link,
   .site-header .surprise-link,
   .site-header .contribute-link,
   .site-header .github-link {
     order: 2;
     height: 1.75rem;
   }
-  .site-header .world-cup-link,
   .site-header .surprise-link,
   .site-header .contribute-link {
     padding: 0 0.6em;
@@ -948,7 +828,7 @@ body.is-system .history-toggle {
     width: 0.9rem;
     height: 0.9rem;
   }
-  .system-list-view {
+  .system-content {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
     scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }

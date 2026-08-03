@@ -204,7 +204,6 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
-.world-cup-link,
 .surprise-link,
 .contribute-link,
 .github-link {
@@ -217,7 +216,6 @@ body.is-system .history-toggle {
   flex-shrink: 0;
 }
 
-.world-cup-link,
 .surprise-link,
 .contribute-link {
   width: auto;
@@ -234,15 +232,6 @@ body.is-system .history-toggle {
   &::before {
     content: none;
   }
-}
-
-.world-cup-link {
-  border-color: #d6af36;
-  gap: 0.35rem;
-}
-
-.world-cup-link[hidden] {
-  display: none !important;
 }
 
 .github-link {
@@ -384,116 +373,6 @@ body.is-system .history-toggle {
 
 }
 
-.world-cup-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-
-  &[hidden] {
-    display: none;
-  }
-
-  .world-cup-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  .world-cup-modal-card {
-    position: relative;
-    z-index: 1;
-    width: min(34rem, 100%);
-    background: $panel;
-    border: 0.0625rem solid #d6af36;
-    border-radius: 0.5rem;
-    padding: 1rem;
-  }
-
-  .world-cup-modal-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 0.0625rem solid #2b313d;
-
-    h3 {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      font-size: 1.1em;
-    }
-
-    p {
-      margin-top: 0.25rem;
-      color: $muted;
-      font-size: 0.9em;
-      line-height: 1.35;
-    }
-  }
-
-  .close-button {
-    background: transparent;
-    color: $text;
-    border: 0.0625rem solid #2b313d;
-    border-radius: 0.375rem;
-    width: 2rem;
-    height: 2rem;
-    font-size: 1.1em;
-    cursor: pointer;
-    flex-shrink: 0;
-  }
-
-  .world-cup-hosts {
-    display: grid;
-    gap: 0.75rem;
-    padding-top: 0.75rem;
-
-    section {
-      border: 0.0625rem solid #2b313d;
-      border-radius: 0.375rem;
-      padding: 0.75rem;
-    }
-
-    button {
-      border: 0.0625rem solid #2b313d;
-      background: transparent;
-      color: $text;
-      cursor: pointer;
-
-      &:disabled {
-        cursor: default;
-        opacity: 0.45;
-      }
-    }
-
-    .world-cup-country-button {
-      border: none;
-      color: #f1cf4d;
-      font-size: 0.95em;
-      font-weight: 700;
-      padding: 0;
-    }
-
-    .world-cup-city-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.5rem;
-    }
-
-    .world-cup-city-button {
-      border-radius: 999rem;
-      padding: 0.35rem 0.55rem;
-      color: $muted;
-      font-size: 0.82em;
-    }
-  }
-}
-
 
 #country-grid {
   margin-top: 0;
@@ -580,17 +459,6 @@ body.is-system .history-toggle {
       font-weight: 600;
       padding: 0.625rem 0.75rem;
     }
-  }
-}
-
-.world-cup-trophy-icon {
-  width: 1em;
-  height: 1em;
-  color: #f1cf4d;
-  flex-shrink: 0;
-
-  path {
-    fill: #f1cf4d;
   }
 }
 
@@ -780,7 +648,7 @@ body.is-system .history-toggle {
   border-color: #f1cf4d;
 }
 
-.system-list-view {
+.system-content {
   flex: 1;
   min-height: 0;
   overflow: auto;
@@ -1048,7 +916,6 @@ body.is-system .history-toggle {
       justify-content: flex-start;
     }
 
-    .world-cup-link,
     .surprise-link,
     .contribute-link,
     .github-link {
@@ -1056,7 +923,6 @@ body.is-system .history-toggle {
       height: 1.75rem;
     }
 
-    .world-cup-link,
     .surprise-link,
     .contribute-link {
       padding: 0 0.6em;
@@ -1079,7 +945,7 @@ body.is-system .history-toggle {
     }
   }
 
-  .system-list-view {
+  .system-content {
     padding-bottom: calc(5rem + env(safe-area-inset-bottom));
     scroll-padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   }

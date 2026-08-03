@@ -19,7 +19,7 @@ export const fetchSystemData = async (systemId) => {
     { data: stationLines, error: stationLinesError },
     { data: soundFiles, error: soundFilesError },
   ] = await Promise.all([
-    supabaseClient.from("systems").select("*").eq("id", systemId).single(),
+    supabaseClient.from("systems").select("id,name,region").eq("id", systemId).single(),
     supabaseClient
       .from("lines")
       .select("system_id,id,title,icon_url,other_icons,sort_order,active")
@@ -91,9 +91,8 @@ export const fetchSystemData = async (systemId) => {
     system: {
       id: systemRow.id,
       name: systemRow.name,
-      description: systemRow.description || "",
+      region: systemRow.region || "",
     },
-    theme: systemRow.theme || {},
     lines: linesObject,
     stations: stationsObject,
   };
