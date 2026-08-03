@@ -488,7 +488,7 @@ const renderSoundCards = (container, items) => {
   });
 };
 
-const renderListGrid = (container, items, emptyText) => {
+const renderSoundGrid = (container, items, emptyText) => {
   container.innerHTML = "";
   if (!items.length) {
     const empty = document.createElement("p");
@@ -499,7 +499,7 @@ const renderListGrid = (container, items, emptyText) => {
   }
 
   const grid = document.createElement("div");
-  grid.className = "list-sounds-grid";
+  grid.className = "system-sounds-grid";
   renderSoundCards(grid, items);
   container.append(grid);
 };
@@ -520,6 +520,7 @@ const renderSystemView = () => {
     state.selectedLineId = lineEntries[0] ? lineEntries[0][0] : null;
   }
   const selectedLine = state.selectedLineId ? state.systemData.lines[state.selectedLineId] : null;
+  const country = state.countries.find(({ id }) => id === state.selectedCountryId);
   const stationItems = Object.values(state.systemData.stations)
     .filter((station) => state.selectedLineId && stationLineIds(station).includes(state.selectedLineId))
     .sort((a, b) => {
@@ -557,28 +558,28 @@ const renderSystemView = () => {
     .filter((item) => item.audio.length > 0);
 
   systemContent.innerHTML = `
-    <div class="list-top${hasLines ? "" : " no-lines"}">
-      <div class="list-head">
-        <div class="list-head-main">
-          <h2 class="list-title">${state.systemData.system.name}</h2>
-          <p class="list-subtitle">${state.systemData.system.region}</p>
+    <div class="system-top${hasLines ? "" : " no-lines"}">
+      <div class="system-head">
+        <div class="system-head-main">
+          <h2 class="system-title">${state.systemData.system.name}</h2>
+          <p class="system-subtitle">${state.systemData.system.region}, ${country.name}</p>
         </div>
-        <img class="list-head-logo" src="${state.systemInfo.logo}" alt="${state.systemInfo.name} logo" />
+        <img class="system-head-logo" src="${state.systemInfo.logo}" alt="${state.systemInfo.name} logo" />
       </div>
       <div class="line-selector" id="line-selector"></div>
     </div>
-    <section class="list-section" id="line-detail-section" ${selectedLine ? "" : "hidden"}>
-      <div class="list-block">
-        <h3 class="list-section-title">Line Sounds</h3>
+    <section class="system-section" id="line-detail-section" ${selectedLine ? "" : "hidden"}>
+      <div class="system-block">
+        <h3 class="system-section-title">Line Sounds</h3>
         <div id="line-sounds-wrap"></div>
       </div>
-      <div class="list-block" ${stationItems.length ? "" : "hidden"}>
-        <h3 class="list-section-title">Stations</h3>
+      <div class="system-block" ${stationItems.length ? "" : "hidden"}>
+        <h3 class="system-section-title">Stations</h3>
         <div id="station-sounds-wrap"></div>
       </div>
     </section>
-    <section class="list-section" id="system-sounds-section" ${selectedLine ? "hidden" : ""}>
-      <h3 class="list-section-title">System Sounds</h3>
+    <section class="system-section" id="system-sounds-section" ${selectedLine ? "hidden" : ""}>
+      <h3 class="system-section-title">System Sounds</h3>
       <div id="system-sounds-wrap"></div>
     </section>
   `;
@@ -631,16 +632,16 @@ const renderSystemView = () => {
   });
   if (selectedLine) {
     const selectedLineItems = filterItemsByLine(selectedLine.items, state.selectedLineId);
-    renderListGrid(
+    renderSoundGrid(
       document.getElementById("line-sounds-wrap"),
       selectedLineItems,
       "No line sounds."
     );
     if (stationItems.length) {
-      renderListGrid(document.getElementById("station-sounds-wrap"), stationItems, "No station sounds.");
+      renderSoundGrid(document.getElementById("station-sounds-wrap"), stationItems, "No station sounds.");
     }
   } else {
-    renderListGrid(
+    renderSoundGrid(
       document.getElementById("system-sounds-wrap"),
       systemItems,
       "No system sounds."

@@ -644,7 +644,7 @@ body.is-system .history-toggle {
 }
 
 .sound-list .sound-card.is-surprise-highlight,
-.list-sounds-grid .sound-card.is-surprise-highlight {
+.system-sounds-grid .sound-card.is-surprise-highlight {
   border-color: #f1cf4d;
 }
 
@@ -657,7 +657,7 @@ body.is-system .history-toggle {
   margin: 0 auto;
   width: 100%;
 
-  .list-top {
+  .system-top {
     width: fit-content;
     max-width: 100%;
     margin: 0 auto 0.5rem;
@@ -665,7 +665,7 @@ body.is-system .history-toggle {
     border-bottom: 0.0625rem solid #2b313d;
   }
 
-  .list-head {
+  .system-head {
     margin-bottom: 1rem;
     display: flex;
     justify-content: space-between;
@@ -674,15 +674,15 @@ body.is-system .history-toggle {
     width: 100%;
   }
 
-  .list-top.no-lines .list-head {
+  .system-top.no-lines .system-head {
     margin-bottom: 0;
   }
 
-  .list-head-main {
+  .system-head-main {
     min-width: 0;
   }
 
-  .list-head-logo {
+  .system-head-logo {
     width: 3rem;
     height: 3rem;
     object-fit: contain;
@@ -690,12 +690,12 @@ body.is-system .history-toggle {
     flex-shrink: 0;
   }
 
-  .list-title {
+  .system-title {
     font-size: 1.2em;
     margin-bottom: 0.25rem;
   }
 
-  .list-subtitle {
+  .system-subtitle {
     color: $muted;
     font-size: 0.9em;
   }
@@ -750,21 +750,21 @@ body.is-system .history-toggle {
     }
   }
 
-  .list-section {
+  .system-section {
     width: 100%;
     margin-bottom: 1.25rem;
   }
 
-  .list-block + .list-block {
+  .system-block + .system-block {
     margin-top: 1.5rem;
   }
 
-  .list-section-title {
+  .system-section-title {
     font-size: 1em;
     margin-bottom: 0.5rem;
   }
 
-  .list-sounds-grid {
+  .system-sounds-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
     gap: 0.75rem;
