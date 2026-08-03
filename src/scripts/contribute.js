@@ -1,6 +1,8 @@
 const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 const VERIFY_SUBMISSION_URL = `${SUPABASE_URL}/functions/v1/verify-submission`;
+const SUGGEST_SYSTEM_URL = `${SUPABASE_URL}/functions/v1/suggest-system`;
+const TURNSTILE_SITE_KEY = "0x4AAAAAACrBwHo_b4rrWkPi";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const el = id => document.getElementById(id);
@@ -16,6 +18,13 @@ const soundSelect = el("sound");
 const audioInput = el("audio");
 const submitForm = el("submit-form");
 const submitButton = submitForm?.querySelector('button[type="submit"]');
+const soundContributionButton = el("choose-sound-contribution");
+const systemSuggestionButton = el("choose-system-suggestion");
+const systemSuggestionForm = el("system-suggestion-form");
+const systemSuggestionInput = el("system-suggestion");
+const systemSuggestionStatus = el("system-suggestion-status");
+const systemSuggestionSubmit = systemSuggestionForm.querySelector('button[type="submit"]');
+const systemSuggestionTurnstile = el("system-suggestion-turnstile");
 
 const targetSection = el("target-section");
 const metadataSection = el("metadata-section");
@@ -72,6 +81,9 @@ const ALLOWED_EXTENSIONS = ["mp3", "wav", "ogg", "flac", "m4a", "aac", "mp4", "m
 const EMPTY_SELECT = `<option value="">Select</option>`;
 const SELECT_LINE = `<option>Select Line</option>`;
 const SUBMISSION_DRAFT_KEY = "rsa_contribute_submission_draft_v1";
+
+let suggestionCaptchaToken = "";
+let suggestionTurnstileId = null;
 
 const state = {
   isCreatingNewStation: false,
@@ -1307,7 +1319,7 @@ const applyScopePlaceholders = () => {
     },
     line: {
       title: "e.g. Towards Vaughan",
-      description: "e.g. Line 1 towards Vaughan.",
+      description: "e.g. \"Line 1 towards Vaughan.\"",
       rollingStock: "e.g. Toronto Rocket",
       source: "e.g. https://youtube.com/watch?v=...",
       newStation: "",
@@ -1846,5 +1858,87 @@ const initForm = async () => {
   validateTitleAgainstCategory();
   updateCooldownButtonState();
 };
+
+const setSuggestionStatus = (message, isError = false) => {
+  systemSuggestionStatus.textContent = message;
+  systemSuggestionStatus.classList.toggle("is-error", isError);
+  systemSuggestionStatus.hidden = false;
+};
+
+const renderSuggestionTurnstile = () => {
+  if (suggestionTurnstileId !== null) return;
+  if (!window.turnstile) {
+    window.setTimeout(renderSuggestionTurnstile, 100);
+    return;
+  }
+  suggestionTurnstileId = window.turnstile.render(systemSuggestionTurnstile, {
+    sitekey: TURNSTILE_SITE_KEY,
+    callback: token => {
+      suggestionCaptchaToken = token;
+    },
+    "expired-callback": () => {
+      suggestionCaptchaToken = "";
+    },
+    "error-callback": () => {
+      suggestionCaptchaToken = "";
+      setSuggestionStatus("Captcha failed to load. Please try again.", true);
+    },
+  });
+};
+
+soundContributionButton.addEventListener("click", () => {
+  systemSuggestionForm.classList.add("hidden");
+  systemSuggestionButton.classList.remove("active");
+  submitForm.classList.remove("hidden");
+  soundContributionButton.classList.add("active");
+});
+
+systemSuggestionButton.addEventListener("click", () => {
+  submitForm.classList.add("hidden");
+  soundContributionButton.classList.remove("active");
+  systemSuggestionForm.classList.remove("hidden");
+  systemSuggestionButton.classList.add("active");
+  renderSuggestionTurnstile();
+});
+
+systemSuggestionForm.addEventListener("submit", async event => {
+  event.preventDefault();
+  const suggestion = systemSuggestionInput.value.trim();
+  if (!suggestion) {
+    systemSuggestionInput.reportValidity();
+    return;
+  }
+  if (!suggestionCaptchaToken) {
+    setSuggestionStatus("Please complete the captcha.", true);
+    return;
+  }
+
+  systemSuggestionSubmit.disabled = true;
+  systemSuggestionSubmit.textContent = "Sending...";
+  systemSuggestionStatus.hidden = true;
+
+  try {
+    const response = await fetch(SUGGEST_SYSTEM_URL, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ suggestion, captcha: suggestionCaptchaToken }),
+    });
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.error || "Suggestion failed to send.");
+
+    systemSuggestionForm.reset();
+    suggestionCaptchaToken = "";
+    window.turnstile.reset(suggestionTurnstileId);
+    setSuggestionStatus("Suggestion sent.");
+  } catch (error) {
+    setSuggestionStatus(error.message || "Suggestion failed to send. Please try again.", true);
+  } finally {
+    systemSuggestionSubmit.disabled = false;
+    systemSuggestionSubmit.textContent = "Send Suggestion";
+  }
+});
 
 initForm();

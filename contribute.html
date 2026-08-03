@@ -24,10 +24,41 @@
     <main class="contribute-main">
 
         <header class="contribute-header">
-            <h1>Rail Sound Atlas — Sound Contribution Form</h1>
+            <h1>Rail Sound Atlas — Contribute</h1>
         </header>
 
-        <form id="submit-form" class="contribute-form" autocomplete="off">
+        <section id="contribution-type-section" class="contribution-type-section">
+            <h2>What are you adding?</h2>
+            <div class="contribution-type-actions">
+                <button type="button" id="choose-sound-contribution" class="contribution-type-card">
+                    <strong>Add Sound</strong>
+                    <span>Submit a system, line, or station sound.</span>
+                </button>
+                <button type="button" id="choose-system-suggestion" class="contribution-type-card">
+                    <strong>New Suggestion</strong>
+                    <span>Suggest any country, system, line, station or sound to be added.</span>
+                </button>
+            </div>
+        </section>
+
+        <form id="system-suggestion-form" class="system-suggestion-form hidden">
+            <section class="form-section">
+                <h2>New Suggestion</h2>
+                <label class="required-label" for="system-suggestion">Suggestion</label>
+                <textarea
+                    id="system-suggestion"
+                    maxlength="1750"
+                    placeholder="Examples: Please add South Korea / add the Paris Metro in France / add the Picadilly Line in the London Underground in the UK / add Shinagawa Station in the JR East system in Japan / add the door chime of the Hong Kong MTR in China"
+                    required
+                ></textarea>
+
+                <div id="system-suggestion-turnstile"></div>
+                <p id="system-suggestion-status" class="system-suggestion-status" role="status" hidden></p>
+                <button type="submit">Send Suggestion</button>
+            </section>
+        </form>
+
+        <form id="submit-form" class="contribute-form hidden" autocomplete="off">
 
             <section id="context-section" class="form-section">
 
@@ -259,7 +290,7 @@
             <h2 id="notes-title">Notes</h2>
             <ul>
                 <li>Submissions are reviewed before they are added to the atlas. Please read all info labels carefully.</li>
-                <li>If you would like to see a country or system added, please open a <a href="https://github.com/anthonyhuang07/rail-sound-atlas/issues/new" target="_blank" rel="noopener noreferrer">GitHub issue</a>.</li>
+                <li>If you would like to see a country, system, line, station or sound added, choose New Suggestion above.</li>
             </ul>
         </section>
 
