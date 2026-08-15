@@ -183,7 +183,6 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
-.surprise-link,
 .contribute-link,
 .github-link {
   display: inline-flex;
@@ -195,7 +194,6 @@ body.is-system .history-toggle {
   flex-shrink: 0;
 }
 
-.surprise-link,
 .contribute-link {
   width: auto;
   min-width: 0;
@@ -208,9 +206,29 @@ body.is-system .history-toggle {
   background: transparent;
   cursor: pointer;
 }
-.surprise-link::before,
 .contribute-link::before {
   content: none;
+}
+
+.surprise-button {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 0.75rem;
+  background: #151922;
+  color: #f2f2f2;
+  cursor: pointer;
+}
+.surprise-button svg {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .github-link {
@@ -388,7 +406,6 @@ body.is-system .history-toggle {
   width: 15.625rem;
   min-width: 0;
   max-width: 15.625rem;
-  height: 15.625rem;
   flex: 0 0 15.625rem;
   overflow: hidden;
 }
@@ -397,10 +414,10 @@ body.is-system .history-toggle {
 }
 .card-grid .card .card-image {
   width: 100%;
-  flex: 1;
+  aspect-ratio: 1/1;
+  flex: 0 0 auto;
   overflow: hidden;
   background: #0f1218;
-  height: 10.625rem;
   position: relative;
 }
 .card-grid .card .card-image img {
@@ -766,9 +783,7 @@ body.is-system .history-toggle {
     width: 100%;
     min-width: 0;
     max-width: none;
-    height: auto;
     flex: none;
-    aspect-ratio: 1/1;
   }
   .site-header {
     flex-direction: column;
@@ -807,19 +822,14 @@ body.is-system .history-toggle {
     flex: 0 0 auto;
     justify-content: flex-start;
   }
-  .site-header .surprise-link,
   .site-header .contribute-link,
   .site-header .github-link {
     order: 2;
     height: 1.75rem;
   }
-  .site-header .surprise-link,
   .site-header .contribute-link {
     padding: 0 0.6em;
     font-size: 0.75em;
-  }
-  .site-header .surprise-link {
-    margin-left: auto;
   }
   .site-header .github-link {
     width: 1.75rem;

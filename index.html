@@ -6,7 +6,7 @@ permalink: /
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Rail Sound Atlas — Train Sounds from Around the World</title>
+    <title>Rail Sound Atlas | Train Sounds from Around the World</title>
     <meta name="description" content="An interactive atlas of metro and train sounds from transit systems worldwide, including door chimes, station announcements, and departure melodies.">
     <!-- Embed -->
     <meta content="Rail Sound Atlas" property="og:title" />
@@ -33,9 +33,6 @@ permalink: /
           <button type="button" class="history-button is-active" id="history-active">Active</button>
           <button type="button" class="history-button" id="history-historical">Historical</button>
         </div>
-        <button class="surprise-link" id="surprise-button" type="button" aria-label="Go to a random system and play a random sound">
-          Surprise Me!
-        </button>
         <a class="contribute-link" href="/contribute" aria-label="Contribute">Contribute</a>
         <a
           class="github-link"
@@ -70,6 +67,11 @@ permalink: /
         <section class="system-content" id="system-content"></section>
       </section>
     </main>
+    <button class="surprise-button" id="surprise-button" type="button" aria-label="Go to a random system and play a random sound" title="Surprise Me!">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2.5 3A1.5 1.5 0 1 0 7.5 9a1.5 1.5 0 0 0 0-3Zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM12 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3ZM7.5 15a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" />
+      </svg>
+    </button>
     <div class="info-modal" id="info-modal" hidden>
       <div class="info-modal-backdrop" id="info-modal-backdrop"></div>
       <div class="info-modal-card" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">

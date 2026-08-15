@@ -204,7 +204,6 @@ body.is-system .history-toggle {
   display: none !important;
 }
 
-.surprise-link,
 .contribute-link,
 .github-link {
   display: inline-flex;
@@ -216,7 +215,6 @@ body.is-system .history-toggle {
   flex-shrink: 0;
 }
 
-.surprise-link,
 .contribute-link {
   width: auto;
   min-width: 0;
@@ -231,6 +229,28 @@ body.is-system .history-toggle {
 
   &::before {
     content: none;
+  }
+}
+
+.surprise-button {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  border: 0.0625rem solid #2b313d;
+  border-radius: 0.75rem;
+  background: $panel;
+  color: $text;
+  cursor: pointer;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 }
 
@@ -427,7 +447,6 @@ body.is-system .history-toggle {
     width: 15.625rem;
     min-width: 0;
     max-width: 15.625rem;
-    height: 15.625rem;
     flex: 0 0 15.625rem;
     overflow: hidden;
 
@@ -437,10 +456,10 @@ body.is-system .history-toggle {
 
     .card-image {
       width: 100%;
-      flex: 1;
+      aspect-ratio: 1 / 1;
+      flex: 0 0 auto;
       overflow: hidden;
       background: #0f1218;
-      height: 10.625rem;
       position: relative;
 
       img {
@@ -868,9 +887,7 @@ body.is-system .history-toggle {
       width: 100%;
       min-width: 0;
       max-width: none;
-      height: auto;
       flex: none;
-      aspect-ratio: 1 / 1;
     }
   }
 
@@ -916,21 +933,15 @@ body.is-system .history-toggle {
       justify-content: flex-start;
     }
 
-    .surprise-link,
     .contribute-link,
     .github-link {
       order: 2;
       height: 1.75rem;
     }
 
-    .surprise-link,
     .contribute-link {
       padding: 0 0.6em;
       font-size: 0.75em;
-    }
-
-    .surprise-link {
-      margin-left: auto;
     }
 
     .github-link {

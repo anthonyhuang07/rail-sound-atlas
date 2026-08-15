@@ -1,5 +1,5 @@
 import { dom, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
-import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
+import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchAllSoundFiles, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
 
@@ -649,8 +649,6 @@ const renderSystemView = () => {
   }
 };
 
-const randomOf = (items) => items[Math.floor(Math.random() * items.length)];
-
 const clearSurpriseHighlight = () => {
   document.querySelectorAll(".sound-card.is-surprise-highlight").forEach((card) => {
     card.classList.remove("is-surprise-highlight");
@@ -734,26 +732,31 @@ const runSurprise = async () => {
   stopActiveAudio();
 
   try {
-    const systems = [];
+    const systems = new Map();
     for (const country of state.countries) {
       const regions = await ensureCountrySystems(country.id);
       regions.forEach((region) => {
         (region.systems || []).forEach((system) => {
-          systems.push({ countryId: country.id, systemId: system.id });
+          systems.set(system.id, { countryId: country.id, systemId: system.id });
         });
       });
     }
-    for (let i = systems.length - 1; i > 0; i -= 1) {
+
+    const files = (await fetchAllSoundFiles()).filter(
+      (file) => file.active !== false && file.src && systems.has(file.system_id)
+    );
+    for (let i = files.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
-      [systems[i], systems[j]] = [systems[j], systems[i]];
+      [files[i], files[j]] = [files[j], files[i]];
     }
 
-    while (systems.length) {
-      const target = systems.pop();
+    while (files.length) {
+      const file = files.pop();
+      const target = systems.get(file.system_id);
       await navigateTo({ view: "system", countryId: target.countryId, systemId: target.systemId }, true);
-      const candidates = buildSurpriseCandidates();
-      if (!candidates.length) continue;
-      const played = await playSurpriseCandidate(randomOf(candidates));
+      const candidate = buildSurpriseCandidates().find(({ src }) => src === file.src);
+      if (!candidate) continue;
+      const played = await playSurpriseCandidate(candidate);
       if (played) break;
     }
   } finally {

@@ -145,6 +145,23 @@ export const fetchSoundData = async (systemId) => {
   return soundData;
 };
 
+export const fetchAllSoundFiles = async () => {
+  const pageSize = 1000;
+  const rows = [];
+
+  for (let from = 0; ; from += pageSize) {
+    const { data, error } = await supabaseClient
+      .from("sound_files")
+      .select("id,system_id,src,active")
+      .order("id", { ascending: true })
+      .range(from, from + pageSize - 1);
+
+    if (error) throw error;
+    rows.push(...data);
+    if (data.length < pageSize) return rows;
+  }
+};
+
 export const fetchCountries = async () => {
   const { data, error } = await supabaseClient.from("countries").select("id, name, image_url").order("name", {
     ascending: true,
