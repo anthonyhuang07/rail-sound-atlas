@@ -1,5 +1,5 @@
 import { dom, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
-import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchAllSoundFiles, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
+import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchRandomSoundFile, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
 
@@ -732,33 +732,10 @@ const runSurprise = async () => {
   stopActiveAudio();
 
   try {
-    const systems = new Map();
-    for (const country of state.countries) {
-      const regions = await ensureCountrySystems(country.id);
-      regions.forEach((region) => {
-        (region.systems || []).forEach((system) => {
-          systems.set(system.id, { countryId: country.id, systemId: system.id });
-        });
-      });
-    }
-
-    const files = (await fetchAllSoundFiles()).filter(
-      (file) => file.active !== false && file.src && systems.has(file.system_id)
-    );
-    for (let i = files.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [files[i], files[j]] = [files[j], files[i]];
-    }
-
-    while (files.length) {
-      const file = files.pop();
-      const target = systems.get(file.system_id);
-      await navigateTo({ view: "system", countryId: target.countryId, systemId: target.systemId }, true);
-      const candidate = buildSurpriseCandidates().find(({ src }) => src === file.src);
-      if (!candidate) continue;
-      const played = await playSurpriseCandidate(candidate);
-      if (played) break;
-    }
+    const file = await fetchRandomSoundFile();
+    await navigateTo({ view: "system", countryId: file.country_id, systemId: file.system_id }, true);
+    const candidate = buildSurpriseCandidates().find(({ src }) => src === file.src);
+    if (candidate) await playSurpriseCandidate(candidate);
   } finally {
     state.surpriseInFlight = false;
     if (surpriseButton) surpriseButton.disabled = false;
@@ -983,7 +960,6 @@ const openSystemView = async (countryId, systemId) => {
     return;
   }
   crumbSystem.textContent = system.name;
-  await renderSystems(regions);
   await loadSystem(system);
 };
 

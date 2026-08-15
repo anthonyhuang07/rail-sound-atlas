@@ -17,7 +17,6 @@ export const fetchSystemData = async (systemId) => {
     { data: lines, error: linesError },
     { data: stations, error: stationsError },
     { data: stationLines, error: stationLinesError },
-    { data: soundFiles, error: soundFilesError },
   ] = await Promise.all([
     supabaseClient.from("systems").select("id,name,region").eq("id", systemId).single(),
     supabaseClient
@@ -26,14 +25,12 @@ export const fetchSystemData = async (systemId) => {
       .eq("system_id", systemId),
     supabaseClient.from("stations").select("*").eq("system_id", systemId),
     supabaseClient.from("station_lines").select("*").eq("system_id", systemId),
-    supabaseClient.from("sound_files").select("*").eq("system_id", systemId),
   ]);
 
   if (systemError) throw systemError;
   if (linesError) throw linesError;
   if (stationsError) throw stationsError;
   if (stationLinesError) throw stationLinesError;
-  if (soundFilesError) throw soundFilesError;
 
   const stationLineRowsByStationId = new Map();
   stationLines.forEach((row) => {
@@ -145,21 +142,10 @@ export const fetchSoundData = async (systemId) => {
   return soundData;
 };
 
-export const fetchAllSoundFiles = async () => {
-  const pageSize = 1000;
-  const rows = [];
-
-  for (let from = 0; ; from += pageSize) {
-    const { data, error } = await supabaseClient
-      .from("sound_files")
-      .select("id,system_id,src,active")
-      .order("id", { ascending: true })
-      .range(from, from + pageSize - 1);
-
-    if (error) throw error;
-    rows.push(...data);
-    if (data.length < pageSize) return rows;
-  }
+export const fetchRandomSoundFile = async () => {
+  const { data, error } = await supabaseClient.rpc("get_random_active_sound").single();
+  if (error) throw error;
+  return data;
 };
 
 export const fetchCountries = async () => {
