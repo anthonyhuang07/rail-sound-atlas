@@ -190,7 +190,11 @@ export const fetchCountrySystems = async (countryId) => {
     });
   });
 
-  return Object.values(grouped);
+  return Object.values(grouped).sort((a, b) => {
+    if (a.name === "Nationwide") return -1;
+    if (b.name === "Nationwide") return 1;
+    return a.name.localeCompare(b.name);
+  });
 };
 
 export const getStorageAudioUrl = (src) =>
