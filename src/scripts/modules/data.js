@@ -4,6 +4,8 @@ export const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
 export const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const getStorageImageUrl = (path) =>
+  path ? `${SUPABASE_URL}/storage/v1/object/public/images/${path}` : "";
 
 export function getLineSoundIds(lineId, soundData) {
   return Object.entries(soundData)
@@ -61,8 +63,8 @@ export const fetchSystemData = async (systemId) => {
   sortedLines.forEach((line, index) => {
     linesObject[line.id] = {
       title: line.title,
-      icon: line.icon_url,
-      otherIcons: Array.isArray(line.other_icons) ? line.other_icons : [],
+      icon: getStorageImageUrl(line.icon_url),
+      otherIcons: (line.other_icons || []).map(getStorageImageUrl),
       soundIds: [],
       sort_order: line.sort_order ?? null,
       sort_index: index,
@@ -158,7 +160,7 @@ export const fetchCountries = async () => {
   return (data || []).map((country) => ({
     id: country.id,
     name: country.name,
-    image: country.image_url,
+    image: getStorageImageUrl(country.image_url),
   }));
 };
 
@@ -186,7 +188,7 @@ export const fetchCountrySystems = async (countryId) => {
     grouped[regionKey].systems.push({
       id: system.id,
       name: system.name,
-      logo: system.logo_url,
+      logo: getStorageImageUrl(system.logo_url),
     });
   });
 

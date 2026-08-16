@@ -5,6 +5,7 @@ const SUGGEST_SYSTEM_URL = `${SUPABASE_URL}/functions/v1/suggest-system`;
 const TURNSTILE_SITE_KEY = "0x4AAAAAACrBwHo_b4rrWkPi";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const getStorageImageUrl = path => path ? `${SUPABASE_URL}/storage/v1/object/public/images/${path}` : "";
 const el = id => document.getElementById(id);
 
 const countrySelect = el("country");
@@ -891,7 +892,7 @@ const renderSystemOptions = (systems) => {
 
     if (system.logo_url) {
       const logo = document.createElement("img");
-      logo.src = system.logo_url;
+      logo.src = getStorageImageUrl(system.logo_url);
       logo.alt = `${system.name} logo`;
       button.append(logo);
     }
@@ -981,7 +982,7 @@ const loadLines = async (systemId) => {
       .filter(Boolean)
       .forEach((iconUrl, index) => {
         const img = document.createElement("img");
-        img.src = iconUrl;
+        img.src = getStorageImageUrl(iconUrl);
         img.alt = `${line.title} icon ${index + 1}`;
         icons.append(img);
       });
