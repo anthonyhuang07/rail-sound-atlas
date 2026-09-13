@@ -150,6 +150,28 @@ export const fetchRandomSoundFile = async () => {
   return data;
 };
 
+export const fetchAtlasStats = async () => {
+  const { data: files, count, error: filesError } = await supabaseClient
+    .from("sound_files")
+    .select("system_id", { count: "exact" });
+  if (filesError) throw filesError;
+
+  const systemIds = [...new Set(files.map(({ system_id }) => system_id))];
+  if (!systemIds.length) return { sounds: 0, systems: 0, countries: 0 };
+
+  const { data: systems, error: systemsError } = await supabaseClient
+    .from("systems")
+    .select("country_id")
+    .in("id", systemIds);
+  if (systemsError) throw systemsError;
+
+  return {
+    sounds: count,
+    systems: systemIds.length,
+    countries: new Set(systems.map(({ country_id }) => country_id)).size,
+  };
+};
+
 export const fetchCountries = async () => {
   const { data, error } = await supabaseClient.from("countries").select("id, name, image_url").order("name", {
     ascending: true,

@@ -232,7 +232,7 @@ body.is-system .history-toggle {
 }
 
 .contribute-link,
-.github-link {
+.header-button {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -286,15 +286,20 @@ body.is-system .history-toggle {
   height: 1.5rem;
 }
 
-.github-link {
+.header-button {
   width: 2rem;
   height: 2rem;
   border-radius: 999rem;
 }
-
-.github-link svg {
+.header-button svg {
   width: 1rem;
   height: 1rem;
+}
+
+.about-button {
+  background: transparent;
+  color: #f2f2f2;
+  cursor: pointer;
 }
 
 .view {
@@ -435,6 +440,43 @@ body.is-system .history-toggle {
   color: #8cc8ff;
   text-decoration: underline;
   word-break: break-all;
+}
+.info-modal .info-modal-body .about-content {
+  display: grid;
+  gap: 0.75rem;
+}
+.info-modal .info-modal-body .about-content .about-intro {
+  color: #f2f2f2;
+  font-size: 0.95em;
+}
+.info-modal .info-modal-body .about-content .about-stats {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem 0;
+  border-top: 0.0625rem solid #343b49;
+  border-bottom: 0.0625rem solid #343b49;
+}
+.info-modal .info-modal-body .about-content .about-stats span {
+  color: #9aa0a6;
+  font-size: 0.7em;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.info-modal .info-modal-body .about-content .about-stats strong {
+  color: #f2f2f2;
+  font-size: 0.95em;
+}
+.info-modal .info-modal-body .about-content .about-notice,
+.info-modal .info-modal-body .about-content .about-credit {
+  font-size: 0.8em;
+}
+.info-modal .info-modal-body .about-content .about-notice a {
+  white-space: nowrap;
+  word-break: normal;
+}
+.info-modal .info-modal-body .about-content .about-credit {
+  padding-top: 0.625rem;
+  text-align: right;
 }
 
 #country-grid {
@@ -1033,7 +1075,7 @@ body.is-system .history-toggle {
             justify-content: flex-start;
   }
   .site-header .contribute-link,
-  .site-header .github-link {
+  .site-header .header-button {
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
@@ -1043,10 +1085,10 @@ body.is-system .history-toggle {
     padding: 0 0.6em;
     font-size: 0.75em;
   }
-  .site-header .github-link {
+  .site-header .header-button {
     width: 1.75rem;
   }
-  .site-header .github-link svg {
+  .site-header .header-button svg {
     width: 0.9rem;
     height: 0.9rem;
   }

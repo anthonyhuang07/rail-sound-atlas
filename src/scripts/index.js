@@ -1,5 +1,5 @@
-import { dom, DOWNLOAD_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
-import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchRandomSoundFile, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
+import { dom, DOWNLOAD_ICON, GITHUB_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
+import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchRandomSoundFile, fetchAtlasStats, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
 
@@ -19,11 +19,13 @@ const {
   historyToggle,
   historyActiveButton,
   historyHistoricalButton,
-  infoModal,
-  infoModalBody,
-  infoModalClose,
-  infoModalBackdrop,
-  infoModalDownload,
+  modal,
+  modalTitle,
+  modalBody,
+  modalClose,
+  modalBackdrop,
+  modalAction,
+  aboutButton,
   systemContent,
   sepCountry,
   sepSystem,
@@ -41,6 +43,7 @@ const state = {
   selectedLineId: null,
   systemLoadToken: 0,
   surpriseInFlight: false,
+  atlasStats: null,
 };
 
 const {
@@ -57,16 +60,38 @@ const stopActiveAudio = () => {
   Array.from(state.audioControllers).forEach((controller) => controller.stop());
 };
 
-const closeInfoModal = () => {
-  if (!infoModal) return;
-  infoModal.hidden = true;
-  if (infoModalBody) infoModalBody.innerHTML = "";
-  if (infoModalDownload) infoModalDownload.removeAttribute("href");
+const closeModal = () => {
+  modal.hidden = true;
+  modalBody.innerHTML = "";
+  modalAction.hidden = true;
+  ["href", "download", "target", "rel", "aria-label"].forEach((attribute) => modalAction.removeAttribute(attribute));
+};
+
+const openModal = (title, action) => {
+  modalTitle.textContent = title;
+  modalBody.innerHTML = "";
+  modalAction.hidden = !action;
+  if (action) {
+    modalAction.href = action.href;
+    modalAction.innerHTML = action.icon;
+    modalAction.setAttribute("aria-label", action.label);
+    if (action.download) modalAction.setAttribute("download", "");
+    if (action.external) {
+      modalAction.target = "_blank";
+      modalAction.rel = "noopener noreferrer";
+    }
+  }
+  modal.hidden = false;
+  return modalBody;
 };
 
 const openInfoModal = (audioData) => {
-  if (!infoModal || !infoModalBody) return;
-  infoModalBody.innerHTML = "";
+  const body = openModal("Sound Info", {
+    href: getStorageAudioUrl(audioData.src),
+    icon: DOWNLOAD_ICON,
+    label: "Download audio",
+    download: true,
+  });
   const metadata = [];
   if (audioData.metadata?.rollingStock) {
     metadata.push({ label: "Rolling Stock:", value: audioData.metadata.rollingStock });
@@ -78,7 +103,7 @@ const openInfoModal = (audioData) => {
   if (!metadata.length) {
     const row = document.createElement("p");
     row.textContent = "No additional info.";
-    infoModalBody.append(row);
+    body.append(row);
   }
   metadata.forEach(({ label, value }) => {
     const row = document.createElement("p");
@@ -93,13 +118,37 @@ const openInfoModal = (audioData) => {
     } else {
       row.append(document.createTextNode(value));
     }
-    infoModalBody.append(row);
+    body.append(row);
   });
-  if (infoModalDownload) {
-    infoModalDownload.href = getStorageAudioUrl(audioData.src);
-    infoModalDownload.innerHTML = DOWNLOAD_ICON;
+};
+
+const openAboutModal = async () => {
+  const body = openModal("About Rail Sound Atlas", {
+    href: "https://github.com/anthonyhuang07/rail-sound-atlas",
+    icon: GITHUB_ICON,
+    label: "Rail Sound Atlas GitHub Repository",
+    external: true,
+  });
+  body.innerHTML = `
+    <div class="about-content">
+      <p class="about-intro">Rail Sound Atlas documents sounds from rail systems around the world.</p>
+      <p class="about-notice">Credits are listed with each sound. For takedown requests, email <a href="mailto:info@anthonyhuang.net">info@anthonyhuang.net</a>.</p>
+      <div class="about-stats">
+        <span>Website Stats</span>
+        <strong class="about-stats-value">Loading...</strong>
+      </div>
+      <p class="about-credit">Made by <a href="https://anthonyhuang.net" target="_blank" rel="noopener noreferrer">Anthony Huang</a></p>
+    </div>
+  `;
+
+  const statsElement = body.querySelector(".about-stats-value");
+  try {
+    state.atlasStats ||= await fetchAtlasStats();
+    const { sounds, systems, countries } = state.atlasStats;
+    statsElement.textContent = `${sounds.toLocaleString()} sounds in ${systems.toLocaleString()} systems in ${countries.toLocaleString()} countries.`;
+  } catch {
+    statsElement.textContent = "Stats currently unavailable.";
   }
-  infoModal.hidden = false;
 };
 
 const createSoundActions = (audioData) => {
@@ -1061,12 +1110,11 @@ const init = async () => {
       setHistoryMode("historical");
     });
   }
-  if (infoModalClose) infoModalClose.addEventListener("click", closeInfoModal);
-  if (infoModalBackdrop) infoModalBackdrop.addEventListener("click", closeInfoModal);
+  modalClose.addEventListener("click", closeModal);
+  modalBackdrop.addEventListener("click", closeModal);
+  if (aboutButton) aboutButton.addEventListener("click", openAboutModal);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeInfoModal();
-    }
+    if (event.key === "Escape") closeModal();
   });
   document.addEventListener("pointerdown", (event) => {
     const target = event.target;

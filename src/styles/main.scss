@@ -205,7 +205,7 @@ body.is-system .history-toggle {
 }
 
 .contribute-link,
-.github-link {
+.header-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -254,17 +254,21 @@ body.is-system .history-toggle {
   }
 }
 
-.github-link {
+.header-button {
   width: 2rem;
   height: 2rem;
   border-radius: 999rem;
-}
 
-.github-link {
   svg {
     width: 1rem;
     height: 1rem;
   }
+}
+
+.about-button {
+  background: transparent;
+  color: $text;
+  cursor: pointer;
 }
 
 .view {
@@ -388,6 +392,51 @@ body.is-system .history-toggle {
       color: #8cc8ff;
       text-decoration: underline;
       word-break: break-all;
+    }
+
+    .about-content {
+      display: grid;
+      gap: 0.75rem;
+
+      .about-intro {
+        color: $text;
+        font-size: 0.95em;
+      }
+
+      .about-stats {
+        display: grid;
+        gap: 0.25rem;
+        padding: 0.75rem 0;
+        border-top: 0.0625rem solid #343b49;
+        border-bottom: 0.0625rem solid #343b49;
+
+        span {
+          color: $muted;
+          font-size: 0.7em;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+        }
+
+        strong {
+          color: $text;
+          font-size: 0.95em;
+        }
+      }
+
+      .about-notice,
+      .about-credit {
+        font-size: 0.8em;
+      }
+
+      .about-notice a {
+        white-space: nowrap;
+        word-break: normal;
+      }
+
+      .about-credit {
+        padding-top: 0.625rem;
+        text-align: right;
+      }
     }
   }
 
@@ -934,7 +983,7 @@ body.is-system .history-toggle {
     }
 
     .contribute-link,
-    .github-link {
+    .header-button {
       order: 2;
       height: 1.75rem;
     }
@@ -944,11 +993,9 @@ body.is-system .history-toggle {
       font-size: 0.75em;
     }
 
-    .github-link {
+    .header-button {
       width: 1.75rem;
-    }
 
-    .github-link {
       svg {
         width: 0.9rem;
         height: 0.9rem;
