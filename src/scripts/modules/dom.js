@@ -20,6 +20,7 @@ export const dom = {
   modalClose: document.getElementById("modal-close"),
   modalBackdrop: document.getElementById("modal-backdrop"),
   modalAction: document.getElementById("modal-action"),
+  modalShare: document.getElementById("modal-share"),
   aboutButton: document.getElementById("about-button"),
   systemContent: document.getElementById("system-content"),
   sepCountry: document.querySelector(".crumb-sep[data-sep=country]"),

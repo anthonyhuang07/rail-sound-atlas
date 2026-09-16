@@ -354,6 +354,8 @@ body.is-system .history-toggle {
   }
 
   .download-button {
+    cursor: pointer;
+    padding: 0;
     background: transparent;
     color: $text;
     border: 0.0625rem solid #2b313d;
@@ -547,6 +549,7 @@ body.is-system .history-toggle {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: $sound-desc-lines;
+    line-clamp: $sound-desc-lines;
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -858,6 +861,7 @@ body.is-system .history-toggle {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: $sound-desc-lines;
+      line-clamp: $sound-desc-lines;
       overflow: hidden;
       text-overflow: ellipsis;
     }
