@@ -61,7 +61,12 @@ const stopActiveAudio = () => {
   Array.from(state.audioControllers).forEach((controller) => controller.stop());
 };
 
+const shareIcon = modalShare.innerHTML;
+let shareResetTimer;
+
 const closeModal = () => {
+  clearTimeout(shareResetTimer);
+  modalShare.innerHTML = shareIcon;
   modal.hidden = true;
   modalBody.innerHTML = "";
   modalAction.hidden = true;
@@ -102,7 +107,14 @@ const openInfoModal = (audioData) => {
   modalShare.onclick = async () => {
     try {
       await navigator.clipboard.writeText(`${location.origin}/sound/${encodeURIComponent(audioData.id)}`);
+      clearTimeout(shareResetTimer);
+      modalShare.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 16.2-4.2-4.2-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>';
       modalShare.title = "Link copied!";
+      shareResetTimer = setTimeout(() => {
+        modalShare.innerHTML = shareIcon;
+        modalShare.title = "Copy sound link";
+        modalShare.setAttribute("aria-label", modalShare.title);
+      }, 1500);
     } catch {
       modalShare.title = "Could not copy link. Please try again.";
     }
