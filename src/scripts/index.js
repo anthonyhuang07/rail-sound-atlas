@@ -25,6 +25,7 @@ const {
   modalClose,
   modalBackdrop,
   modalAction,
+  modalShare,
   aboutButton,
   systemContent,
   sepCountry,
@@ -60,7 +61,12 @@ const stopActiveAudio = () => {
   Array.from(state.audioControllers).forEach((controller) => controller.stop());
 };
 
+const shareIcon = modalShare.innerHTML;
+let shareResetTimer;
+
 const closeModal = () => {
+  clearTimeout(shareResetTimer);
+  modalShare.innerHTML = shareIcon;
   modal.hidden = true;
   modalBody.innerHTML = "";
   modalAction.hidden = true;
@@ -68,6 +74,9 @@ const closeModal = () => {
 };
 
 const openModal = (title, action) => {
+  closeModal();
+  modalShare.hidden = true;
+  modalShare.onclick = null;
   modalTitle.textContent = title;
   modalBody.innerHTML = "";
   modalAction.hidden = !action;
@@ -92,6 +101,25 @@ const openInfoModal = (audioData) => {
     label: "Download audio",
     download: true,
   });
+  modalShare.hidden = false;
+  modalShare.title = "Copy sound link";
+  modalShare.setAttribute("aria-label", modalShare.title);
+  modalShare.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(`${location.origin}/sound/${encodeURIComponent(audioData.id)}`);
+      clearTimeout(shareResetTimer);
+      modalShare.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 16.2-4.2-4.2-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>';
+      modalShare.title = "Link copied!";
+      shareResetTimer = setTimeout(() => {
+        modalShare.innerHTML = shareIcon;
+        modalShare.title = "Copy sound link";
+        modalShare.setAttribute("aria-label", modalShare.title);
+      }, 1500);
+    } catch {
+      modalShare.title = "Could not copy link. Please try again.";
+    }
+    modalShare.setAttribute("aria-label", modalShare.title);
+  };
   const metadata = [];
   if (audioData.metadata?.rollingStock) {
     metadata.push({ label: "Rolling Stock:", value: audioData.metadata.rollingStock });
@@ -159,6 +187,7 @@ const createSoundActions = (audioData) => {
   playButton.type = "button";
   playButton.className = "play-button";
   playButton.dataset.audioSrc = audioData.src || "";
+  playButton.dataset.soundId = audioData.id;
   playButton.style.position = "relative";
   playButton.style.overflow = "hidden";
   playButton.style.isolation = "isolate";
@@ -345,30 +374,15 @@ const createSoundActions = (audioData) => {
   setButtonVisual("idle");
   setProgress(0);
   actions.style.gridTemplateColumns = "1fr 2.25rem";
-  const hasMetadata = Boolean(
-    audioData.metadata &&
-    (audioData.metadata.rollingStock || audioData.metadata.origin || audioData.metadata.yearCaptured)
-  );
-  if (hasMetadata) {
-    const infoButton = document.createElement("button");
-    infoButton.type = "button";
-    infoButton.className = "info-button";
-    infoButton.textContent = "i";
-    infoButton.setAttribute("aria-label", "Sound info");
-    infoButton.style.width = "2.25rem";
-    infoButton.style.padding = "0";
-    infoButton.addEventListener("click", () => openInfoModal(audioData));
-    actions.append(playButton, infoButton);
-  } else {
-    const downloadButton = document.createElement("a");
-    downloadButton.className = "download-button";
-    downloadButton.href = audioSrc;
-    downloadButton.setAttribute("download", "");
-    downloadButton.setAttribute("aria-label", "Download audio");
-    downloadButton.innerHTML = DOWNLOAD_ICON;
-    actions.append(playButton, downloadButton);
-  }
-
+  const infoButton = document.createElement("button");
+  infoButton.type = "button";
+  infoButton.className = "info-button";
+  infoButton.textContent = "i";
+  infoButton.setAttribute("aria-label", "Sound info");
+  infoButton.style.width = "2.25rem";
+  infoButton.style.padding = "0";
+  infoButton.addEventListener("click", () => openInfoModal(audioData));
+  actions.append(playButton, infoButton);
   return actions;
 };
 
@@ -714,7 +728,7 @@ const buildSurpriseCandidates = () => {
     (items || []).forEach((item) => {
       (item.audio || []).forEach((audio) => {
         if (!audio?.src) return;
-        candidates.push({ scope, lineId, src: audio.src });
+        candidates.push({ scope, lineId, src: audio.src, id: audio.id });
       });
     });
   };
@@ -738,7 +752,7 @@ const buildSurpriseCandidates = () => {
   return candidates;
 };
 
-const playSurpriseCandidate = async (candidate) => {
+const playSurpriseCandidate = async (candidate, autoplay = true) => {
   state.selectedLineId = candidate.scope === "system" ? null : candidate.lineId;
   renderSystemView();
   await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -748,7 +762,7 @@ const playSurpriseCandidate = async (candidate) => {
   const wrap = document.getElementById(wrapId);
   if (!wrap) return false;
 
-  const selector = `.play-button[data-audio-src="${CSS.escape(candidate.src)}"]`;
+  const selector = `.play-button[data-sound-id="${CSS.escape(String(candidate.id))}"]`;
   let playButton = wrap.querySelector(selector);
   if (!playButton) return false;
 
@@ -769,7 +783,8 @@ const playSurpriseCandidate = async (candidate) => {
     soundCard.classList.add("is-surprise-highlight");
     soundCard.scrollIntoView({ behavior: "smooth", block: "center" });
   }
-  playButton.click();
+  if (autoplay) playButton.click();
+  else playButton.focus({ preventScroll: true });
   return true;
 };
 
@@ -1019,6 +1034,15 @@ const navigateTo = async (route, push = true) => {
     await openCountryView(route.countryId);
   } else if (route.view === "system") {
     await openSystemView(route.countryId, route.systemId);
+    if (route.soundId && state.systemInfo?.id === route.systemId) {
+      const file = Object.values(state.systemData.sounds).flatMap((sound) => sound.audio)
+        .find((audio) => String(audio.id) === String(route.soundId));
+      if (file) {
+        setHistoryMode(file.active === false ? "historical" : "active");
+        const candidate = buildSurpriseCandidates().find((audio) => String(audio.id) === String(route.soundId));
+        if (candidate) await playSurpriseCandidate(candidate, false);
+      }
+    }
   }
   if (push) pushRoute(route);
 };

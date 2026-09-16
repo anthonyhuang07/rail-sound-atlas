@@ -111,6 +111,7 @@ export const fetchSoundData = async (systemId) => {
 
   soundFiles.forEach((file) => {
     const audioEntry = {
+      id: file.id,
       title: file.title || undefined,
       description: file.description || undefined,
       src: file.src,
