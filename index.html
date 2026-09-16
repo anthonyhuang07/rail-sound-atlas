@@ -46,17 +46,17 @@ permalink: /
 
     <main>
       <section class="view is-active" id="view-home">
-        <p class="view-loading" id="home-loading" hidden>Loading...</p>
+        <div class="menu-skeleton" id="home-loading" role="status" aria-label="Loading countries" hidden></div>
         <div class="card-grid" id="country-grid"></div>
       </section>
 
       <section class="view" id="view-country">
-        <p class="view-loading" id="country-loading" hidden>Loading...</p>
+        <div class="menu-skeleton" id="country-loading" role="status" aria-label="Loading systems" hidden></div>
         <div id="system-grid"></div>
       </section>
 
       <section class="view" id="view-system">
-        <p class="view-loading" id="system-loading" hidden>Loading...</p>
+        <section class="system-content system-skeleton" id="system-loading" role="status" aria-label="Loading system" hidden></section>
         <section class="system-content" id="system-content"></section>
       </section>
     </main>

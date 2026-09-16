@@ -1,5 +1,5 @@
 import { dom, DOWNLOAD_ICON, GITHUB_ICON, PLAY_ICON, STOP_ICON, LOADING_SPINNER, CHEVRON_DOWN_ICON, CHEVRON_UP_ICON } from "./modules/dom.js";
-import { getLineSoundIds, fetchSystemData, fetchSoundData, fetchRandomSoundFile, fetchAtlasStats, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
+import { fetchSystemData, fetchSoundData, fetchRandomSoundFile, fetchAtlasStats, fetchCountries, fetchCountrySystems, getStorageAudioUrl } from "./modules/data.js";
 import { parseRouteHash, pushRoute } from "./modules/routing.js";
 import { createSoundFilters } from "./modules/filters.js";
 
@@ -63,14 +63,18 @@ const stopActiveAudio = () => {
 
 const shareIcon = modalShare.innerHTML;
 let shareResetTimer;
+let modalActionController;
 
 const closeModal = () => {
   clearTimeout(shareResetTimer);
+  modalActionController?.abort();
+  modalActionController = null;
   modalShare.innerHTML = shareIcon;
   modal.hidden = true;
   modalBody.innerHTML = "";
   modalAction.hidden = true;
-  ["href", "download", "target", "rel", "aria-label"].forEach((attribute) => modalAction.removeAttribute(attribute));
+  modalAction.onclick = null;
+  ["href", "download", "target", "rel", "aria-label", "aria-busy"].forEach((attribute) => modalAction.removeAttribute(attribute));
 };
 
 const openModal = (title, action) => {
@@ -84,7 +88,39 @@ const openModal = (title, action) => {
     modalAction.href = action.href;
     modalAction.innerHTML = action.icon;
     modalAction.setAttribute("aria-label", action.label);
-    if (action.download) modalAction.setAttribute("download", "");
+    if (action.download) {
+      modalAction.setAttribute("download", "");
+      modalAction.onclick = async (event) => {
+        event.preventDefault();
+        if (modalActionController) return;
+
+        const controller = new AbortController();
+        modalActionController = controller;
+        modalAction.innerHTML = LOADING_SPINNER;
+        modalAction.setAttribute("aria-busy", "true");
+
+        try {
+          const response = await fetch(action.href, { signal: controller.signal });
+          if (!response.ok) throw new Error(`Download failed: ${response.status}`);
+          const objectUrl = URL.createObjectURL(await response.blob());
+          const download = document.createElement("a");
+          download.href = objectUrl;
+          download.download = decodeURIComponent(new URL(action.href).pathname.split("/").pop()) || "rail-sound";
+          document.body.append(download);
+          download.click();
+          download.remove();
+          setTimeout(() => URL.revokeObjectURL(objectUrl), 0);
+        } catch (error) {
+          if (error.name !== "AbortError") console.error(error);
+        } finally {
+          if (modalActionController === controller) {
+            modalActionController = null;
+            modalAction.innerHTML = action.icon;
+            modalAction.removeAttribute("aria-busy");
+          }
+        }
+      };
+    }
     if (action.external) {
       modalAction.target = "_blank";
       modalAction.rel = "noopener noreferrer";
@@ -186,7 +222,6 @@ const createSoundActions = (audioData) => {
   const playButton = document.createElement("button");
   playButton.type = "button";
   playButton.className = "play-button";
-  playButton.dataset.audioSrc = audioData.src || "";
   playButton.dataset.soundId = audioData.id;
   playButton.style.position = "relative";
   playButton.style.overflow = "hidden";
@@ -820,21 +855,85 @@ const waitForImages = (images) => {
   );
 };
 
+const fillSkeleton = (view) => {
+  const container = view === "home" ? homeLoading : view === "country" ? countryLoading : systemLoading;
+  if (!container || container.childElementCount) return;
+
+  const createGrid = (count) => {
+    const grid = document.createElement("div");
+    grid.className = "card-grid skeleton-card-grid";
+    for (let index = 0; index < count; index += 1) {
+      const card = document.createElement("div");
+      card.className = "card skeleton-card";
+      card.setAttribute("aria-hidden", "true");
+      card.innerHTML = '<span class="card-image"></span><span class="card-title"><span class="skeleton-line"></span></span>';
+      grid.append(card);
+    }
+    return grid;
+  };
+
+  switch (view) {
+    case "home":
+      container.append(createGrid(14));
+      break;
+    case "country":
+      for (let regionIndex = 0; regionIndex < 2; regionIndex += 1) {
+        const region = document.createElement("section");
+        region.className = "region-group";
+        const heading = document.createElement("span");
+        heading.className = "skeleton-region-title skeleton-fill";
+        heading.setAttribute("aria-hidden", "true");
+        region.append(heading, createGrid(4));
+        container.append(region);
+      }
+      break;
+    case "system": {
+      const soundCards = Array.from({ length: 8 }, () => `
+        <div class="sound-card skeleton-sound-card">
+          <span class="skeleton-sound-title skeleton-fill"></span>
+          <span class="skeleton-sound-description skeleton-fill"></span>
+          <span class="skeleton-sound-actions">
+            <span class="skeleton-fill"></span>
+            <span class="skeleton-fill"></span>
+          </span>
+        </div>
+      `).join("");
+      container.innerHTML = `
+        <div class="system-top">
+          <div class="system-head">
+            <div class="system-head-main">
+              <span class="skeleton-system-title skeleton-fill"></span>
+              <span class="skeleton-system-subtitle skeleton-fill"></span>
+            </div>
+            <span class="system-head-logo skeleton-fill"></span>
+          </div>
+          <div class="line-selector">
+            <div class="line-selector-row">
+              <span class="skeleton-line-chip skeleton-fill"></span>
+              <span class="skeleton-line-chip skeleton-fill"></span>
+            </div>
+          </div>
+        </div>
+        <section class="system-section">
+          <span class="skeleton-section-title skeleton-fill"></span>
+          <div class="system-sounds-grid">${soundCards}</div>
+        </section>
+      `;
+      break;
+    }
+  }
+};
+
 const setViewLoading = (view, loading) => {
-  if (view === "home") {
-    viewHome?.classList.toggle("is-loading", loading);
-    if (homeLoading) homeLoading.hidden = !loading;
-    return;
-  }
-  if (view === "country") {
-    viewCountry?.classList.toggle("is-loading", loading);
-    if (countryLoading) countryLoading.hidden = !loading;
-    return;
-  }
-  if (view === "system") {
-    viewSystem?.classList.toggle("is-loading", loading);
-    if (systemLoading) systemLoading.hidden = !loading;
-  }
+  const target = {
+    home: [viewHome, homeLoading],
+    country: [viewCountry, countryLoading],
+    system: [viewSystem, systemLoading],
+  }[view];
+  if (!target) return;
+  target[0]?.classList.toggle("is-loading", loading);
+  if (loading) fillSkeleton(view);
+  if (target[1]) target[1].hidden = !loading;
 };
 
 const createMenuCard = ({ image, alt, title, onClick, countryId }) => {
@@ -1100,9 +1199,12 @@ const renderSystems = async (regions) => {
 };
 
 const init = async () => {
+  const initialRoute = parseRouteHash();
+  setView(initialRoute.view);
+  setViewLoading(initialRoute.view, true);
   const countries = await fetchCountries();
   state.countries = countries;
-  await renderCountries(countries);
+  const homeRender = renderCountries(countries);
   crumbCountry.textContent = "";
   crumbSystem.textContent = "";
 
@@ -1152,11 +1254,10 @@ const init = async () => {
     const route = event.state || parseRouteHash();
     await navigateTo(route, false);
   });
-  // List mode line reset is handled by clicking the active line chip again.
   setHistoryMode("active");
-  const initialRoute = parseRouteHash();
   await navigateTo(initialRoute, false);
   pushRoute(initialRoute, true);
+  await homeRender;
 };
 
 init();
