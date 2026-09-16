@@ -3,11 +3,11 @@ const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (char) => ({
 })[char]);
 
 export async function onRequestGet({ request, env, params }) {
+  if (!/^\d+$/.test(params.id)) {
+    return new Response("Sound not found.", { status: 404 });
+  }
   if (!env.SUPABASE_URL || !env.SUPABASE_ANON_KEY) {
     return new Response("Sound sharing is not configured.", { status: 503 });
-  }
-  if (!/^[a-zA-Z0-9_-]+$/.test(params.id)) {
-    return new Response("Sound not found.", { status: 404 });
   }
 
   const getRow = async (table, select, filters) => {
@@ -21,17 +21,21 @@ export async function onRequestGet({ request, env, params }) {
   };
 
   try {
-    const file = await getRow("sound_files", "id,system_id,sound_id,station_id,title,description", { id: `eq.${params.id}` });
+    const file = await getRow("sound_files", "id,system_id,sound_id,station_id,line_ids,title,description", { id: `eq.${params.id}` });
     if (!file) return new Response("Sound not found.", { status: 404 });
-    const [system, sound, station] = await Promise.all([
+    const [system, sound, station, lines] = await Promise.all([
       getRow("systems", "name,country_id,logo_url", { id: `eq.${file.system_id}` }),
       getRow("sounds", "title,description", { system_id: `eq.${file.system_id}`, id: `eq.${file.sound_id}` }),
       file.station_id ? getRow("stations", "name", { system_id: `eq.${file.system_id}`, id: `eq.${file.station_id}` }) : null,
+      Promise.all((file.line_ids || []).map((lineId) =>
+        getRow("lines", "title", { system_id: `eq.${file.system_id}`, id: `eq.${lineId}` })
+      )),
     ]);
     if (!system || !sound) return new Response("Sound not found.", { status: 404 });
 
     const origin = new URL(request.url).origin;
-    const title = [station?.name, sound.title, file.title].filter(Boolean).join(" · ");
+    const lineTitle = lines.filter(Boolean).map((line) => line.title).filter(Boolean).join(" / ");
+    const title = [station?.name, lineTitle, sound.title, file.title].filter(Boolean).join(" · ");
     const description = [system.name, file.description || sound.description].filter(Boolean).join(" — ");
     const destination = `${origin}/#/${encodeURIComponent(system.country_id)}/${encodeURIComponent(file.system_id)}?sound=${encodeURIComponent(file.id)}`;
     const image = system.logo_url
