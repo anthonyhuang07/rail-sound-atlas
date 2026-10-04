@@ -455,20 +455,12 @@ const renderSoundCards = (container, items) => {
         title.textContent = item.title;
         card.append(title);
 
-        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
-        if (groups[0]?.title && singleTitle) {
-          const groupTitle = document.createElement("div");
-          groupTitle.className = "sound-group-title";
-          groupTitle.textContent = groups[0].title;
-          card.append(groupTitle);
-        }
-
         const variations = document.createElement("div");
         variations.className = "sound-variations";
         const row = document.createElement("div");
         row.className = "sound-variation";
         const singleDescription = singleAudio.description || item.description || "";
-        const rowTitle = singleTitle || groups[0]?.title;
+        const rowTitle = groups[0]?.title || singleAudio.title?.trim();
         if (rowTitle && showSingleVariantTitle) {
           const label = document.createElement("span");
           label.className = "sound-variation-label";
@@ -548,8 +540,8 @@ const renderSoundCards = (container, items) => {
     groups.forEach((group) => {
       const soundGroup = document.createElement("div");
       soundGroup.className = "sound-group";
-      const hasVariantTitles = group.audio.some((audio) => audio.title?.trim());
-      if (group.title && (!showSingleVariantTitle || hasVariantTitles)) {
+      const singleStationVariant = showSingleVariantTitle && group.audio.length === 1;
+      if (group.title && !singleStationVariant) {
         const groupTitle = document.createElement("div");
         groupTitle.className = "sound-group-title";
         groupTitle.textContent = group.title;
@@ -561,7 +553,7 @@ const renderSoundCards = (container, items) => {
       group.audio.forEach((audio) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
-        const rowTitle = audio.title?.trim() || (showSingleVariantTitle ? group.title : "");
+        const rowTitle = singleStationVariant ? group.title || audio.title?.trim() : audio.title?.trim();
         if (rowTitle && (showSingleVariantTitle || !item.hideSingleAudioTitle)) {
           const label = document.createElement("span");
           label.className = "sound-variation-label";
