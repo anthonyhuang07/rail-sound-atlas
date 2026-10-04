@@ -455,7 +455,8 @@ const renderSoundCards = (container, items) => {
         title.textContent = item.title;
         card.append(title);
 
-        if (groups[0]?.title) {
+        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
+        if (groups[0]?.title && singleTitle) {
           const groupTitle = document.createElement("div");
           groupTitle.className = "sound-group-title";
           groupTitle.textContent = groups[0].title;
@@ -467,11 +468,11 @@ const renderSoundCards = (container, items) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
         const singleDescription = singleAudio.description || item.description || "";
-        const singleTitle = singleAudio.title ? singleAudio.title.trim() : "";
-        if (singleTitle && showSingleVariantTitle) {
+        const rowTitle = singleTitle || groups[0]?.title;
+        if (rowTitle && showSingleVariantTitle) {
           const label = document.createElement("span");
-          label.className = singleDescription ? "sound-variation-label" : "sound-group-title";
-          label.textContent = singleTitle;
+          label.className = "sound-variation-label";
+          label.textContent = rowTitle;
           row.append(label);
         }
         if (singleDescription && singleDescription.trim() !== "") {
@@ -547,7 +548,8 @@ const renderSoundCards = (container, items) => {
     groups.forEach((group) => {
       const soundGroup = document.createElement("div");
       soundGroup.className = "sound-group";
-      if (group.title) {
+      const hasVariantTitles = group.audio.some((audio) => audio.title?.trim());
+      if (group.title && (!showSingleVariantTitle || hasVariantTitles)) {
         const groupTitle = document.createElement("div");
         groupTitle.className = "sound-group-title";
         groupTitle.textContent = group.title;
@@ -559,10 +561,11 @@ const renderSoundCards = (container, items) => {
       group.audio.forEach((audio) => {
         const row = document.createElement("div");
         row.className = "sound-variation";
-        if (audio.title && (showSingleVariantTitle || !item.hideSingleAudioTitle)) {
+        const rowTitle = audio.title?.trim() || (showSingleVariantTitle ? group.title : "");
+        if (rowTitle && (showSingleVariantTitle || !item.hideSingleAudioTitle)) {
           const label = document.createElement("span");
           label.className = "sound-variation-label";
-          label.textContent = audio.title;
+          label.textContent = rowTitle;
           row.append(label);
         }
         if (audio.description) {
