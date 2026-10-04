@@ -664,6 +664,10 @@ body.is-system .history-toggle {
     margin: 0;
   }
 
+  .sound-group + .sound-group {
+    margin-top: 0.75rem;
+  }
+
   .sound-variations {
     display: grid;
     grid-template-columns: 1fr;

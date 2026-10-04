@@ -447,12 +447,20 @@ const renderSoundCards = (container, items) => {
     card.setAttribute("role", "listitem");
     const singleAudio = item.audio.length === 1 ? item.audio[0] : null;
     const groupTitleText = `${item.groupTitle || item.group_title || ""}`.trim();
+    const groups = item.groups || [{ title: groupTitleText, audio: item.audio }];
     const showSingleVariantTitle = item.scope === "station" || item.isStationScope === true;
     if (singleAudio) {
       if (item.forceBoxedSingle) {
         const title = document.createElement("h3");
         title.textContent = item.title;
         card.append(title);
+
+        if (groups[0]?.title) {
+          const groupTitle = document.createElement("div");
+          groupTitle.className = "sound-group-title";
+          groupTitle.textContent = groups[0].title;
+          card.append(groupTitle);
+        }
 
         const variations = document.createElement("div");
         variations.className = "sound-variations";
@@ -503,7 +511,7 @@ const renderSoundCards = (container, items) => {
     }
 
     card.classList.add("sound-card--collapsible");
-    if (groupTitleText) {
+    if (groups.some((group) => group.title)) {
       card.classList.add("sound-card--grouped-multi");
     }
 
@@ -536,34 +544,39 @@ const renderSoundCards = (container, items) => {
     content.className = "sound-card-content";
     content.hidden = true;
 
-    if (groupTitleText) {
-      const groupTitle = document.createElement("div");
-      groupTitle.className = "sound-group-title";
-      groupTitle.textContent = groupTitleText;
-      content.append(groupTitle);
-    }
+    groups.forEach((group) => {
+      const soundGroup = document.createElement("div");
+      soundGroup.className = "sound-group";
+      if (group.title) {
+        const groupTitle = document.createElement("div");
+        groupTitle.className = "sound-group-title";
+        groupTitle.textContent = group.title;
+        soundGroup.append(groupTitle);
+      }
 
-    const variations = document.createElement("div");
-    variations.className = "sound-variations";
-    item.audio.forEach((audio) => {
-      const row = document.createElement("div");
-      row.className = "sound-variation";
-      if (audio.title && !item.hideSingleAudioTitle) {
-        const label = document.createElement("span");
-        label.className = "sound-variation-label";
-        label.textContent = audio.title;
-        row.append(label);
-      }
-      if (audio.description) {
-        const description = document.createElement("p");
-        description.className = "sound-variation-description";
-        description.textContent = audio.description;
-        row.append(description);
-      }
-      row.append(createSoundActions(audio));
-      variations.append(row);
+      const variations = document.createElement("div");
+      variations.className = "sound-variations";
+      group.audio.forEach((audio) => {
+        const row = document.createElement("div");
+        row.className = "sound-variation";
+        if (audio.title && (showSingleVariantTitle || !item.hideSingleAudioTitle)) {
+          const label = document.createElement("span");
+          label.className = "sound-variation-label";
+          label.textContent = audio.title;
+          row.append(label);
+        }
+        if (audio.description) {
+          const description = document.createElement("p");
+          description.className = "sound-variation-description";
+          description.textContent = audio.description;
+          row.append(description);
+        }
+        row.append(createSoundActions(audio));
+        variations.append(row);
+      });
+      soundGroup.append(variations);
+      content.append(soundGroup);
     });
-    content.append(variations);
 
     const toggleCard = () => {
       const willExpand = content.hidden;
@@ -631,28 +644,23 @@ const renderSystemView = () => {
       if (bHas) return 1;
       return 0;
     })
-    .map((station) => ({
-      ...(() => {
-        const scopedItems = stationItemsForLine(station, state.selectedLineId);
-        const uniqueTitles = [...new Set(scopedItems.map((item) => item.title))];
-        const commonTitle = uniqueTitles.length === 1 ? uniqueTitles[0] : "";
-        return {
-          title: station.name,
-          description: "",
-          isStationScope: true,
-          groupTitle: commonTitle,
-          forceBoxedSingle: true,
-          audio: scopedItems.flatMap((item) => {
-            const keepSubTitle = item.audio.length > 1;
-            return item.audio.map((audio) => ({
-              ...audio,
-              title: keepSubTitle ? audio.title || item.title : item.title,
-              description: audio.description || item.description || "",
-            }));
-          }),
-        };
-      })(),
-    }))
+    .map((station) => {
+      const groups = stationItemsForLine(station, state.selectedLineId).map((item) => ({
+        ...item,
+        audio: item.audio.map((audio) => ({
+          ...audio,
+          description: audio.description || item.description || "",
+        })),
+      }));
+      return {
+        title: station.name,
+        description: "",
+        isStationScope: true,
+        forceBoxedSingle: true,
+        groups,
+        audio: groups.flatMap((group) => group.audio),
+      };
+    })
     .filter((item) => item.audio.length > 0);
 
   systemContent.innerHTML = `
