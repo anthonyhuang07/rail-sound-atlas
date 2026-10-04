@@ -132,8 +132,7 @@ const toTitleCase = (value) => {
       const isLast = index === words.length - 1;
       const lower = word.toLowerCase();
       if (index !== 0 && !isLast && TITLE_CASE_MINOR_WORDS.has(lower)) return lower;
-      if (word === word.toUpperCase() && /[A-Z]{2,}/.test(word)) return word;
-      return lower.replace(/^([^\p{L}]*)\p{L}/u, (m, p) => p + m.slice(p.length).toUpperCase());
+      return word.replace(/^([^\p{L}]*)\p{L}/u, (m, p) => p + m.slice(p.length).toUpperCase());
     })
     .join(" ");
 };
