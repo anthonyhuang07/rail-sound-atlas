@@ -1,8 +1,7 @@
 *,
 *::before,
 *::after {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -33,18 +32,11 @@ body {
 .contribute-header {
   border-bottom: 0.0625rem solid #2b3040;
   padding-bottom: 0.75rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: end;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: end;
+  justify-content: space-between;
   gap: 1rem;
-  -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .contribute-header h1 {
   font-size: 1.6em;
@@ -116,21 +108,12 @@ body {
   border-radius: 50%;
   display: inline-block;
   vertical-align: middle;
-  -webkit-animation: submit-spin 0.8s linear infinite;
-          animation: submit-spin 0.8s linear infinite;
-}
-
-@-webkit-keyframes submit-spin {
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
-  }
+  animation: submit-spin 0.8s linear infinite;
 }
 
 @keyframes submit-spin {
   to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 .line-checkboxes {
@@ -162,21 +145,14 @@ body {
 
 .label-row {
   position: relative;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   gap: 0.4rem;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
   width: fit-content;
 }
 
 .label-info-btn {
-  -moz-appearance: none;
-       appearance: none;
+  appearance: none;
   -webkit-appearance: none;
   width: 1rem !important;
   min-width: 1rem !important;
@@ -195,18 +171,10 @@ body {
   line-height: 1 !important;
   cursor: pointer;
   opacity: 0.82;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
 }
 .label-info-btn:hover {
   border-color: #6a7590;
@@ -218,8 +186,7 @@ body {
   position: absolute;
   left: calc(100% + 0.35rem);
   top: 50%;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
+  transform: translateY(-50%);
   min-width: 14rem;
   max-width: 22rem;
   padding: 0.45rem 0.5rem;
@@ -248,20 +215,13 @@ body {
   background: #0d1320;
   color: #e1e7f3;
   padding: 0.55rem 0.65rem;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   gap: 0.55rem;
   cursor: pointer;
   min-width: 0;
   position: relative;
-  -webkit-transition: background 120ms ease, border-color 120ms ease;
   transition: background 120ms ease, border-color 120ms ease;
 }
 .system-option:hover {
@@ -271,11 +231,8 @@ body {
 .system-option img {
   width: 1.15rem;
   height: 1.15rem;
-  -o-object-fit: contain;
-     object-fit: contain;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  object-fit: contain;
+  flex: 0 0 auto;
 }
 .system-option span {
   min-width: 0;
@@ -286,20 +243,13 @@ body {
   border-color: #9ab3e8;
   background: #21345c;
   color: #f2f6ff;
-  -webkit-box-shadow: inset 0 0 0 0.0625rem #9ab3e8;
-          box-shadow: inset 0 0 0 0.0625rem #9ab3e8;
+  box-shadow: inset 0 0 0 0.0625rem #9ab3e8;
 }
 
 .line-option {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  align-items: center;
+  justify-content: space-between;
   gap: 0.6rem;
   color: #e1e7f3;
   font-size: 0.92em;
@@ -315,32 +265,21 @@ body {
   pointer-events: none;
 }
 .line-option-main {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   gap: 0.55rem;
   min-width: 0;
 }
 .line-option-icons {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   gap: 0.2rem;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 .line-option-icons img {
   width: 1.1rem;
   height: 1.1rem;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
   display: block;
 }
 .line-option-text {
@@ -351,9 +290,7 @@ body {
   width: 0.9rem;
   height: 0.9rem;
   border: 0.0625rem solid #5a657c;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 .line-option.active {
   border-color: #6e84b4;
@@ -361,9 +298,7 @@ body {
   color: #f2f6ff;
 }
 .line-checkboxes.station-mode .line-option {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  justify-content: center;
   text-align: center;
 }
 .line-checkboxes.station-mode .line-option-mark {
@@ -380,21 +315,15 @@ body {
 }
 
 .inline-check {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   gap: 0.5rem;
   text-transform: none;
 }
 .inline-check input {
   width: auto;
   margin: 0;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 auto;
-          flex: 0 0 auto;
+  flex: 0 0 auto;
 }
 
 .other-lines-list {
@@ -410,8 +339,7 @@ body {
 .other-line-row .secondary-btn {
   margin-top: 0;
   height: 100%;
-  -ms-flex-item-align: stretch;
-      align-self: stretch;
+  align-self: stretch;
 }
 
 .secondary-btn {
@@ -431,9 +359,7 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.45rem;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  align-items: stretch;
 }
 .station-picker select,
 .station-picker input,
@@ -446,8 +372,7 @@ body {
   width: 8.5rem;
   height: 100%;
   margin: 0;
-  -ms-flex-item-align: stretch;
-      align-self: stretch;
+  align-self: stretch;
   white-space: nowrap;
 }
 
@@ -537,9 +462,7 @@ body {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.5rem;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  align-items: stretch;
 }
 .audio-trim-controls #trim-play-toggle {
   width: 2.6rem !important;
@@ -547,17 +470,10 @@ body {
   margin-top: 0 !important;
   padding: 0;
   height: 2.6rem;
-  -ms-flex-item-align: stretch;
-      align-self: stretch;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
+  align-self: stretch;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .trim-track {
@@ -567,14 +483,10 @@ body {
   background: #0b111d;
   border-radius: 0.35rem;
   overflow: hidden;
-  -webkit-box-shadow: inset 0 0 0 0.0625rem #1f2940;
-          box-shadow: inset 0 0 0 0.0625rem #1f2940;
-  -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  box-shadow: inset 0 0 0 0.0625rem #1f2940;
+  user-select: none;
   -webkit-user-select: none;
-  -ms-touch-action: none;
-      touch-action: none;
+  touch-action: none;
 }
 
 .trim-waveform {
@@ -605,8 +517,7 @@ body {
 .trim-selection {
   width: 100%;
   background: transparent;
-  -webkit-box-shadow: inset 0 0 0 0.125rem rgba(255, 209, 102, 0.95);
-          box-shadow: inset 0 0 0 0.125rem rgba(255, 209, 102, 0.95);
+  box-shadow: inset 0 0 0 0.125rem rgba(255, 209, 102, 0.95);
   border-radius: 0.35rem;
 }
 
@@ -624,9 +535,7 @@ body {
   background: #f2f6ff !important;
   cursor: ew-resize;
   z-index: 3;
-  -moz-user-select: none;
-   -ms-user-select: none;
-       user-select: none;
+  user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
 }
@@ -634,19 +543,16 @@ body {
 .audio-trim .trim-track .trim-handle-start,
 .audio-trim .trim-track .trim-handle-end {
   background: #ffd166 !important;
-  -webkit-box-shadow: none;
-          box-shadow: none;
+  box-shadow: none;
 }
 
 .audio-trim .trim-track .trim-handle-start {
-  -webkit-transform: translateX(0);
-          transform: translateX(0);
+  transform: translateX(0);
   border-radius: 0.2rem 0 0 0.2rem !important;
 }
 
 .audio-trim .trim-track .trim-handle-end {
-  -webkit-transform: translateX(-100%);
-          transform: translateX(-100%);
+  transform: translateX(-100%);
   border-radius: 0 0.2rem 0.2rem 0 !important;
 }
 
@@ -655,10 +561,8 @@ body {
   min-width: 0.24rem !important;
   max-width: 0.24rem !important;
   background: #ffd166 !important;
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+  box-shadow: none;
+  transform: translateX(-50%);
   border-radius: 999rem;
 }
 
@@ -803,30 +707,30 @@ body {
   cursor: pointer;
 }
 
-.system-suggestion-form .form-section {
+.suggestion-form .form-section {
   gap: 0.75rem;
 }
-.system-suggestion-form textarea {
+.suggestion-form textarea {
   min-height: 10rem;
   resize: vertical;
 }
-.system-suggestion-form button[type=submit] {
+.suggestion-form button[type=submit] {
   width: 100%;
 }
 
 .system-suggestion-intro,
-.system-suggestion-status {
+.form-status {
   color: #aeb8cc;
   font-size: 0.9em;
 }
 
-.system-suggestion-status {
+.form-status {
   padding: 0.65rem;
   border: 0.0625rem solid #45634c;
   background: #102018;
   color: #bfe3c8;
 }
-.system-suggestion-status.is-error {
+.form-status.is-error {
   border-color: #783b47;
   background: #261218;
   color: #ff9aa8;
@@ -845,4 +749,6 @@ body {
   .contribution-type-actions {
     grid-template-columns: 1fr;
   }
-}/*# sourceMappingURL=contribute.css.map */
+}
+
+/*# sourceMappingURL=contribute.css.map */

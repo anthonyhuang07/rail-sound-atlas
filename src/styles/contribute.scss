@@ -755,7 +755,7 @@ body {
   cursor: pointer;
 }
 
-.system-suggestion-form {
+.suggestion-form {
   .form-section {
     gap: 0.75rem;
   }
@@ -771,12 +771,12 @@ body {
 }
 
 .system-suggestion-intro,
-.system-suggestion-status {
+.form-status {
   color: #aeb8cc;
   font-size: 0.9em;
 }
 
-.system-suggestion-status {
+.form-status {
   padding: 0.65rem;
   border: 0.0625rem solid #45634c;
   background: #102018;

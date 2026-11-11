@@ -3,5 +3,3 @@
 
 .github
 /app
-supabase/.temp/
-supabase/functions/.env

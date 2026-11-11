@@ -1,7 +1,7 @@
 const SUPABASE_URL = "https://mvsfcsodvtojqrmvsjbi.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_dnRHPIzJ2rVP8sgygNBkHg_dmr0OxBh";
 const VERIFY_SUBMISSION_URL = `${SUPABASE_URL}/functions/v1/verify-submission`;
-const SUGGEST_SYSTEM_URL = `${SUPABASE_URL}/functions/v1/suggest-system`;
+const SUGGEST_URL = `${SUPABASE_URL}/functions/v1/suggest`;
 const TURNSTILE_SITE_KEY = "0x4AAAAAACrBwHo_b4rrWkPi";
 
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -19,12 +19,13 @@ const soundSelect = el("sound");
 const audioInput = el("audio");
 const submitForm = el("submit-form");
 const submitButton = submitForm?.querySelector('button[type="submit"]');
+const submissionStatus = el("submission-status");
 const soundContributionButton = el("choose-sound-contribution");
 const systemSuggestionButton = el("choose-system-suggestion");
-const systemSuggestionForm = el("system-suggestion-form");
-const systemSuggestionInput = el("system-suggestion");
-const systemSuggestionStatus = el("system-suggestion-status");
-const systemSuggestionSubmit = systemSuggestionForm.querySelector('button[type="submit"]');
+const suggestionForm = el("suggestion-form");
+const suggestionInput = el("system-suggestion");
+const suggestionStatus = el("system-suggestion-status");
+const suggestionSubmit = suggestionForm.querySelector('button[type="submit"]');
 const systemSuggestionTurnstile = el("system-suggestion-turnstile");
 
 const targetSection = el("target-section");
@@ -76,8 +77,8 @@ const trimEndHandle = el("trim-end-handle");
 const trimPlayHandle = el("trim-play-handle");
 const trimPlayToggle = el("trim-play-toggle");
 
-const MAX_FILE_SIZE = 3 * 1024 * 1024;
-const FILE_SIZE_ERROR = "File must be 3MB or smaller.";
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const PROCESSED_FILE_SIZE_ERROR = "Processed audio is over 5MB. Use a shorter recording or trim it further.";
 const ALLOWED_EXTENSIONS = ["mp3", "wav", "ogg", "flac", "m4a", "aac", "mp4", "mov", "m4v", "webm"];
 const EMPTY_SELECT = `<option value="">Select</option>`;
 const SELECT_LINE = `<option>Select Line</option>`;
@@ -103,6 +104,8 @@ const state = {
     rafId: 0,
   },
   processedUploadFile: null,
+  audioSelectionId: 0,
+  audioProcessing: false,
 };
 
 const RECENT_SUBMISSION_FINGERPRINTS_KEY = "rsa_recent_submission_fingerprints";
@@ -233,6 +236,12 @@ const setDropzoneFileName = (name) => {
   audioDropzone.innerHTML = `<p>${name}</p><p>click to change file</p>`;
 };
 
+const setFormStatus = (element, message, isError = false) => {
+  element.textContent = message;
+  element.classList.toggle("is-error", isError);
+  element.hidden = false;
+};
+
 const showAudioError = (message) => {
   audioWarning.textContent = message;
   audioWarning.classList.remove("hidden");
@@ -251,7 +260,7 @@ const setAudioFile = (file) => {
   audioInput.files = transfer.files;
 };
 
-const isVideoFile = (file) => file?.type?.startsWith("video/");
+const isVideoFile = (file) => file?.type?.startsWith("video/") || /\.(mp4|mov|m4v|webm)$/i.test(file?.name || "");
 
 const clearTrimPreview = () => {
   state.processedUploadFile = null;
@@ -266,6 +275,7 @@ const clearTrimPreview = () => {
   state.trim.duration = 0;
   state.trim.start = 0;
   state.trim.end = 0;
+  state.trim.dragging = "";
   if (trimPreview) {
     trimPreview.pause();
     trimPreview.removeAttribute("src");
@@ -309,6 +319,7 @@ const setTrimRange = (start, end) => {
   const clampedEnd = Math.max(clampedStart, Math.min(end, duration));
   state.trim.start = clampedStart;
   state.trim.end = clampedEnd;
+  if (audioInput.validationMessage === PROCESSED_FILE_SIZE_ERROR) clearAudioError();
   syncTrimInputs();
 };
 
@@ -396,7 +407,9 @@ const setupTrimPreview = (file) => {
   state.trim.objectUrl = objectUrl;
   trimPreview.src = objectUrl;
   trimSection.classList.remove("hidden");
-  decodeAudioBuffer(file).then(drawWaveform).catch(() => {});
+  decodeAudioBuffer(file).then((buffer) => {
+    if (state.trim.objectUrl === objectUrl) drawWaveform(buffer);
+  }).catch(() => { });
   trimPreview.onloadedmetadata = () => {
     const duration = Number.isFinite(trimPreview.duration) ? trimPreview.duration : 0;
     state.trim.duration = duration;
@@ -480,11 +493,14 @@ const encodeWav = (audioBuffer) => {
 };
 
 const getProcessedUploadFile = async (file) => {
-  const needsProcessing = isVideoFile(file) || hasActiveTrim();
-  if (!needsProcessing) return file;
+  const trimmed = hasActiveTrim();
+  if (!trimmed && file === state.lastValidAudioFile && state.processedUploadFile) return state.processedUploadFile;
+  const video = isVideoFile(file);
+  if (!video && !trimmed) return file;
+  const { start, end } = state.trim;
   const decoded = await decodeAudioBuffer(file);
-  const startFrame = Math.floor((state.trim.start || 0) * decoded.sampleRate);
-  const endFrame = Math.floor(((state.trim.end || decoded.duration) * decoded.sampleRate));
+  const startFrame = trimmed ? Math.max(0, Math.floor(start * decoded.sampleRate)) : 0;
+  const endFrame = trimmed ? Math.min(decoded.length, Math.floor(end * decoded.sampleRate)) : decoded.length;
   const length = Math.max(1, endFrame - startFrame);
   const clipped = new AudioBuffer({
     numberOfChannels: decoded.numberOfChannels,
@@ -495,9 +511,9 @@ const getProcessedUploadFile = async (file) => {
     const source = decoded.getChannelData(channel).subarray(startFrame, startFrame + length);
     clipped.copyToChannel(source, channel, 0);
   }
-  const wavBlob = encodeWav(clipped);
+  const blob = encodeWav(clipped);
   const baseName = file.name.replace(/\.[^.]+$/, "").replace(/[^a-zA-Z0-9._-]/g, "_");
-  return new File([wavBlob], `${baseName}-trim.wav`, { type: "audio/wav" });
+  return new File([blob], `${baseName}-${trimmed ? "trim" : "audio"}.wav`, { type: blob.type });
 };
 
 const forceCapitalizedFirstWord = (input) => {
@@ -518,58 +534,44 @@ const validateAudioFile = (file) => {
 
   const isAllowedExtension = ALLOWED_EXTENSIONS.includes(extension);
   const isAudioMime = file.type.startsWith("audio/");
-  const isVideoMime = file.type.startsWith("video/");
+  const isVideo = isVideoFile(file);
 
-  if (!isAllowedExtension && !isAudioMime && !isVideoMime) return "Only supported audio/video files are allowed.";
-  if (!isVideoMime && file.size > MAX_FILE_SIZE) return FILE_SIZE_ERROR;
+  if (!isAllowedExtension && !isAudioMime && !isVideo) return "Only supported audio/video files are allowed.";
   return "";
 };
 
 const validateCurrentAudioSelection = async () => {
+  const selectionId = ++state.audioSelectionId;
   const file = audioInput.files[0];
+  state.audioProcessing = false;
+  clearTrimPreview();
   const error = validateAudioFile(file);
 
   if (error) {
-    clearTrimPreview();
-    if (error === FILE_SIZE_ERROR && state.lastValidAudioFile) {
-      setAudioFile(state.lastValidAudioFile);
-      setDropzoneFileName(state.lastValidAudioFile.name);
-      setupTrimPreview(state.lastValidAudioFile);
-    } else {
-      audioInput.value = "";
-      resetDropzoneText();
-    }
+    audioInput.value = "";
+    resetDropzoneText();
     showAudioError(error);
     return false;
   }
 
+  let processed = file;
   if (isVideoFile(file)) {
+    state.audioProcessing = true;
+    showAudioError("Converting video to audio...");
     try {
-      const processed = await getProcessedUploadFile(file);
-      if (processed.size > MAX_FILE_SIZE) {
-        clearTrimPreview();
-        if (state.lastValidAudioFile) {
-          setAudioFile(state.lastValidAudioFile);
-          setDropzoneFileName(state.lastValidAudioFile.name);
-          setupTrimPreview(state.lastValidAudioFile);
-        } else {
-          audioInput.value = "";
-          resetDropzoneText();
-        }
-        showAudioError(FILE_SIZE_ERROR);
-        return false;
-      }
-      state.processedUploadFile = processed;
+      processed = await getProcessedUploadFile(file);
+      if (selectionId !== state.audioSelectionId) return false;
     } catch {
-      clearTrimPreview();
+      if (selectionId !== state.audioSelectionId) return false;
       showAudioError("Could not read this video file.");
       return false;
+    } finally {
+      if (selectionId === state.audioSelectionId) state.audioProcessing = false;
     }
-  } else {
-    state.processedUploadFile = file;
   }
 
   setupTrimPreview(file);
+  state.processedUploadFile = processed;
   state.lastValidAudioFile = file;
   setDropzoneFileName(file.name);
   clearAudioError();
@@ -1645,22 +1647,7 @@ yearCapturedInput.addEventListener("input", validateYearCaptured);
 
 audioDropzone.addEventListener("drop", async (event) => {
   const [file] = event.dataTransfer.files || [];
-  const error = validateAudioFile(file);
-
-  if (error) {
-    clearTrimPreview();
-    if (error === FILE_SIZE_ERROR && state.lastValidAudioFile) {
-      setAudioFile(state.lastValidAudioFile);
-      setDropzoneFileName(state.lastValidAudioFile.name);
-      setupTrimPreview(state.lastValidAudioFile);
-    } else {
-      audioInput.value = "";
-      resetDropzoneText();
-    }
-    showAudioError(error);
-    return;
-  }
-
+  if (!file) return;
   setAudioFile(file);
   await validateCurrentAudioSelection();
 });
@@ -1673,13 +1660,18 @@ submitForm.addEventListener("submit", async (event) => {
   saveDraft();
   if (submitButton?.classList.contains("is-loading")) return;
   if (getCooldownSecondsRemaining() > 0) return;
+  submissionStatus.hidden = true;
+  if (state.audioProcessing) {
+    showAudioError("Please wait for audio conversion to finish.");
+    return;
+  }
 
   try {
     setSubmitting(true);
 
     const captchaToken = turnstile.getResponse();
     if (!captchaToken) {
-      alert("Please complete the captcha.");
+      setFormStatus(submissionStatus, "Please complete the captcha.", true);
       return;
     }
 
@@ -1698,17 +1690,17 @@ submitForm.addEventListener("submit", async (event) => {
     clearAudioError();
     const file = await getProcessedUploadFile(selectedFile);
     if (file.size > MAX_FILE_SIZE) {
-      showAudioError("Trimmed/extracted audio is over 2MB. Trim more or use a shorter/lower-bitrate file.");
+      showAudioError(PROCESSED_FILE_SIZE_ERROR);
       audioInput.reportValidity();
       return;
     }
 
     const submissionId = crypto.randomUUID();
-    
+
     const safeName = file.name
-        .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-zA-Z0-9._-]/g, "_");
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9._-]/g, "_");
 
     const filePath = `${submissionId}/${safeName}`;
 
@@ -1718,16 +1710,16 @@ submitForm.addEventListener("submit", async (event) => {
 
     if (useNewSoundCategory) {
       if (!soundCategoryTitle) {
-        alert("Please enter a new sound category.");
+        setFormStatus(submissionStatus, "Please enter a new sound category.", true);
         return;
       }
       soundId = slugify(soundCategoryTitle);
       if (!soundId) {
-        alert("New sound category must contain at least one letter or number.");
+        setFormStatus(submissionStatus, "New sound category must contain at least one letter or number.", true);
         return;
       }
     } else if (!soundId) {
-      alert("Please select a sound category.");
+      setFormStatus(submissionStatus, "Please select a sound category.", true);
       return;
     }
 
@@ -1748,19 +1740,19 @@ submitForm.addEventListener("submit", async (event) => {
         const lineId = primaryLineId();
         const order = Number(newStationOrderInput.value);
         if (!name || !lineId || !Number.isFinite(order) || order < 1) {
-          alert("For a new station, provide name, primary line, and primary line order.");
+          setFormStatus(submissionStatus, "For a new station, provide name, primary line, and primary line order.", true);
           return;
         }
 
         const otherLines = getNewStationOtherLines();
         if (otherLines.some((line) => line.lineId === lineId)) {
-          alert("Other lines cannot include the primary line.");
+          setFormStatus(submissionStatus, "Other lines cannot include the primary line.", true);
           return;
         }
 
         stationId = slugify(name);
         if (!stationId) {
-          alert("New station name must contain at least one letter or number.");
+          setFormStatus(submissionStatus, "New station name must contain at least one letter or number.", true);
           return;
         }
 
@@ -1801,11 +1793,12 @@ submitForm.addEventListener("submit", async (event) => {
       line_ids: lineIds,
       active: soundActiveSelect.value !== "false",
       audio_storage_path: filePath,
+      contact_email: el("contact_email").value.trim() || null,
     };
 
     const fingerprint = getSubmissionFingerprint(payload, file);
     if (recentSubmissionFingerprints.has(fingerprint)) {
-      alert("Duplicate submission blocked: exact same fields and audio were already submitted.");
+      setFormStatus(submissionStatus, "Duplicate submission blocked: exact same fields and audio were already submitted.", true);
       turnstile.reset();
       return;
     }
@@ -1821,11 +1814,10 @@ submitForm.addEventListener("submit", async (event) => {
       body: formData,
     });
 
-    const text = await response.text();
-    console.log("SERVER RESPONSE:", text);
+    const result = await response.json().catch(() => ({}));
 
     if (!response.ok) {
-      alert("Submission failed.");
+      setFormStatus(submissionStatus, result.error || "Submission failed. Please try again.", true);
       turnstile.reset();
       return;
     }
@@ -1835,7 +1827,9 @@ submitForm.addEventListener("submit", async (event) => {
     state.cooldownSubmitted = true;
     startSubmitCooldown();
 
-    alert("Submission Complete!");
+    setFormStatus(submissionStatus, "Submission sent.");
+  } catch {
+    setFormStatus(submissionStatus, "Submission failed. Please try again.", true);
   } finally {
     setSubmitting(false);
     updateCooldownButtonState();
@@ -1859,12 +1853,6 @@ const initForm = async () => {
   updateCooldownButtonState();
 };
 
-const setSuggestionStatus = (message, isError = false) => {
-  systemSuggestionStatus.textContent = message;
-  systemSuggestionStatus.classList.toggle("is-error", isError);
-  systemSuggestionStatus.hidden = false;
-};
-
 const renderSuggestionTurnstile = () => {
   if (suggestionTurnstileId !== null) return;
   if (!window.turnstile) {
@@ -1881,13 +1869,13 @@ const renderSuggestionTurnstile = () => {
     },
     "error-callback": () => {
       suggestionCaptchaToken = "";
-      setSuggestionStatus("Captcha failed to load. Please try again.", true);
+      setFormStatus(suggestionStatus, "Captcha failed to load. Please try again.", true);
     },
   });
 };
 
 soundContributionButton.addEventListener("click", () => {
-  systemSuggestionForm.classList.add("hidden");
+  suggestionForm.classList.add("hidden");
   systemSuggestionButton.classList.remove("active");
   submitForm.classList.remove("hidden");
   soundContributionButton.classList.add("active");
@@ -1896,48 +1884,53 @@ soundContributionButton.addEventListener("click", () => {
 systemSuggestionButton.addEventListener("click", () => {
   submitForm.classList.add("hidden");
   soundContributionButton.classList.remove("active");
-  systemSuggestionForm.classList.remove("hidden");
+  suggestionForm.classList.remove("hidden");
   systemSuggestionButton.classList.add("active");
   renderSuggestionTurnstile();
 });
 
-systemSuggestionForm.addEventListener("submit", async event => {
+// SUBMIT SUGGESTION FORM
+suggestionForm.addEventListener("submit", async event => {
   event.preventDefault();
-  const suggestion = systemSuggestionInput.value.trim();
+  const suggestion = suggestionInput.value.trim();
   if (!suggestion) {
-    systemSuggestionInput.reportValidity();
+    suggestionInput.reportValidity();
     return;
   }
   if (!suggestionCaptchaToken) {
-    setSuggestionStatus("Please complete the captcha.", true);
+    setFormStatus(suggestionStatus, "Please complete the captcha.", true);
     return;
   }
 
-  systemSuggestionSubmit.disabled = true;
-  systemSuggestionSubmit.textContent = "Sending...";
-  systemSuggestionStatus.hidden = true;
+  suggestionSubmit.disabled = true;
+  suggestionSubmit.textContent = "Sending...";
+  suggestionStatus.hidden = true;
 
   try {
-    const response = await fetch(SUGGEST_SYSTEM_URL, {
+    const response = await fetch(SUGGEST_URL, {
       method: "POST",
       headers: {
         apikey: SUPABASE_ANON_KEY,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ suggestion, captcha: suggestionCaptchaToken }),
+      body: JSON.stringify({
+        suggestion,
+        captcha: suggestionCaptchaToken,
+        contact_email: el("suggestion_contact_email").value.trim() || null,
+      }),
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error || "Suggestion failed to send.");
 
-    systemSuggestionForm.reset();
+    suggestionForm.reset();
     suggestionCaptchaToken = "";
     window.turnstile.reset(suggestionTurnstileId);
-    setSuggestionStatus("Suggestion sent.");
+    setFormStatus(suggestionStatus, "Suggestion sent.");
   } catch (error) {
-    setSuggestionStatus(error.message || "Suggestion failed to send. Please try again.", true);
+    setFormStatus(suggestionStatus, error.message || "Suggestion failed to send. Please try again.", true);
   } finally {
-    systemSuggestionSubmit.disabled = false;
-    systemSuggestionSubmit.textContent = "Send Suggestion";
+    suggestionSubmit.disabled = false;
+    suggestionSubmit.textContent = "Send Suggestion";
   }
 });
 

@@ -196,7 +196,7 @@ const openAboutModal = async () => {
   body.innerHTML = `
     <div class="about-content">
       <p class="about-intro">Rail Sound Atlas documents sounds from rail systems around the world.</p>
-      <p class="about-notice">Credits are listed with each sound. For takedown requests, email <a href="mailto:info@anthonyhuang.net">info@anthonyhuang.net</a>.</p>
+      <p class="about-notice">Credits are listed with each sound. For takedown requests, email <a href="mailto:contact@railsoundatlas.org">contact@railsoundatlas.org</a>.</p>
       <div class="about-stats">
         <span>Website Stats</span>
         <strong class="about-stats-value">Loading...</strong>

@@ -41,19 +41,29 @@
             </div>
         </section>
 
-        <form id="system-suggestion-form" class="system-suggestion-form hidden">
+        <!-- SUGGESTION FORM -->
+        <form id="suggestion-form" class="suggestion-form hidden">
             <section class="form-section">
                 <h2>New Suggestion</h2>
                 <label class="required-label" for="system-suggestion">Suggestion</label>
-                <textarea
-                    id="system-suggestion"
-                    maxlength="1750"
-                    placeholder="Examples: Please add South Korea / add the Paris Metro in France / add the Picadilly Line in the London Underground in the UK / add Shinagawa Station in the JR East system in Japan / add the door chime of the Hong Kong MTR in China"
-                    required
-                ></textarea>
+                <textarea id="system-suggestion" maxlength="1750"
+                    placeholder="Examples: Please add... Please edit...
 
+• South Korea
+• Picadilly Line in the London Underground in the UK
+• Door chime of the Hong Kong MTR in China
+• Edit the rolling stock of the Doors Closing sound on the Tokyo Metro Ginza Line to be 1000 series"
+                    required></textarea>
+                <br>
+                <label for="suggestion_contact_email">Contact email (optional)</label>
+                <input type="email" id="suggestion_contact_email" name="suggestion_contact_email" maxlength="254" autocomplete="email"
+                    placeholder="you@example.com" />
+                <small>
+                    Provide your email if you'd like to receive feedback.
+                </small>
+                <br>
                 <div id="system-suggestion-turnstile"></div>
-                <p id="system-suggestion-status" class="system-suggestion-status" role="status" hidden></p>
+                <p id="system-suggestion-status" class="form-status" role="status" hidden></p>
                 <button type="submit">Send Suggestion</button>
             </section>
         </form>
@@ -76,8 +86,10 @@
                 <div id="scope-label-row" class="label-row hidden">
                     <label class="required-label">Sound Scope</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound scope?">i</button>
-                    <span class="label-info-tip">System Sound: played anywhere in the system.<br><br>Line Sound: played anywhere on specific
-                        line(s)<br><br>Station Sound: played in/mentions a specific station (e.g. Next Station/Arriving at)</span>
+                    <span class="label-info-tip">System Sound: played anywhere in the system.<br><br>Line Sound: played
+                        anywhere on specific
+                        line(s)<br><br>Station Sound: played in/mentions a specific station (e.g. Next Station/Arriving
+                        at)</span>
                 </div>
                 <select id="scope" class="hidden" disabled>
                     <option value="" selected>Select</option>
@@ -90,7 +102,8 @@
                 <div id="sound-active-label-row" class="label-row hidden">
                     <label class="required-label">Sound Active?</label>
                     <button type="button" class="label-info-btn" aria-label="What is sound active?">i</button>
-                    <span class="label-info-tip">Yes: sound is currently used.<br><br>No: historical/retired sound.<br><br>If unsure and the sound doesn't exist on the website yet, choose Yes.</span>
+                    <span class="label-info-tip">Yes: sound is currently used.<br><br>No: historical/retired
+                        sound.<br><br>If unsure and the sound doesn't exist on the website yet, choose Yes.</span>
                 </div>
                 <select id="sound-active" class="hidden" disabled required>
                     <option value="">Select</option>
@@ -178,7 +191,9 @@
                     <label>Transcription/Sound Name</label>
                     <button type="button" class="label-info-btn"
                         aria-label="What should description contain?">i</button>
-                    <span class="label-info-tip">Must be the transcription of the sound. If the sound has no speech, then use the name of the sound (if applicable, do not make up names yourself).<br><br>If there is no speech nor does the sound have a commonly known name, leave this field blank.</span>
+                    <span class="label-info-tip">Must be the transcription of the sound. If the sound has no speech,
+                        then use the name of the sound (if applicable, do not make up names yourself).<br><br>If there
+                        is no speech nor does the sound have a commonly known name, leave this field blank.</span>
                 </div>
                 <textarea id="description"></textarea>
 
@@ -211,42 +226,49 @@
 
             </section>
 
-                    <section id="audio-guidelines" class="guidelines hidden" aria-labelledby="guidelines-title">
+            <section id="audio-guidelines" class="guidelines hidden" aria-labelledby="guidelines-title">
 
-            <h2 id="guidelines-title">Audio Guidelines</h2>
+                <h2 id="guidelines-title">Audio Guidelines</h2>
 
-            <ul>
-                <li>Audio must be clear and mostly free of unrelated background noise/speech. Extremely noisy recordings may be
-                    rejected.</li>
-                <li>
-                    If the sound contains speech, the description must contain the full transcription in its original
-                    language.
-                    <ul>
-                        <li>For pure sound effects, unless there is a name for it, leave the transcription field blank.</li>
-                        <li>If a name does exist, please wrap it in the native language's quotation marks. (e.g. Vancouver's "Doo doo doo", Japan's 「三点式ドアチャイム」)</li>
-                    </ul>
-                </li>
-                <li>Trim guidelines:
-                    <ul>
-                        <li>Trim must start at the exact beginning of said sound. There must little to no background noise
-                            before the sound plays. Audios with long silences before the sound begins WILL be rejected.</li>
-                        <li>Trim must end at any reasonable time after the end of said sound, preferably around 1
-                            second.</li>
-                    </ul>
-                </li>
-            </ul>
+                <ul>
+                    <li>Audio must be clear and mostly free of unrelated background noise/speech. Extremely noisy
+                        recordings may be
+                        rejected.</li>
+                    <li>
+                        If the sound contains speech, the description must contain the full transcription in its
+                        original
+                        language.
+                        <ul>
+                            <li>For pure sound effects, unless there is a name for it, leave the transcription field
+                                blank.</li>
+                            <li>If a name does exist, please wrap it in the native language's quotation marks. (e.g.
+                                Vancouver's "Doo doo doo", Japan's 「三点式ドアチャイム」)</li>
+                        </ul>
+                    </li>
+                    <li>Trim guidelines:
+                        <ul>
+                            <li>Trim must start at the exact beginning of said sound. There must little to no background
+                                noise
+                                before the sound plays. Audios with long silences before the sound begins WILL be
+                                rejected.</li>
+                            <li>Trim must end at any reasonable time after the end of said sound, preferably around 1
+                                second.</li>
+                        </ul>
+                    </li>
+                </ul>
 
-        </section>
+            </section>
 
             <section id="file-section" class="form-section hidden">
 
-                <label class="required-label">Audio File</label>
+                <label class="required-label">Audio/Video File</label>
                 <label id="audio-dropzone" for="audio" class="audio-dropzone" tabindex="0" role="button"
                     aria-label="Upload audio file">
                     <p>Drag and drop audio/video</p>
                     <p>or click to choose a file</p>
                 </label>
-                <input type="file" id="audio" accept=".mp3,.wav,.ogg,.flac,.m4a,.aac,.mp4,.mov,.m4v,.webm,audio/*,video/*" required
+                <input type="file" id="audio"
+                    accept=".mp3,.wav,.ogg,.flac,.m4a,.aac,.mp4,.mov,.m4v,.webm,audio/*,video/*" required
                     class="audio-input" />
                 <p id="audio-warning" class="file-warning hidden" role="alert"></p>
 
@@ -265,7 +287,8 @@
                             <button id="trim-play-handle" type="button" class="trim-handle trim-handle-play"
                                 aria-label="Current playback position"></button>
                         </div>
-                        <button id="trim-play-toggle" type="button" class="secondary-btn trim-play-btn" aria-label="Play trim preview">
+                        <button id="trim-play-toggle" type="button" class="secondary-btn trim-play-btn"
+                            aria-label="Play trim preview">
                             <span class="trim-play-icon" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -275,10 +298,21 @@
                     <input id="guidelines-confirm" type="checkbox" required disabled />
                     <span class="required-label">I confirm this audio follows the Audio Guidelines.</span>
                 </label>
+                <br>
 
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACrBwHo_b4rrWkPi">
-                </div>
+                <label for="contact_email">Contact email (optional)</label>
+                <input type="email" id="contact_email" name="contact_email" maxlength="254" autocomplete="email"
+                    placeholder="you@example.com" />
+                <small>
+                    Provide your email if you'd like to receive an
+                    approval or rejection email.
+                    Your email will not be displayed publicly.
+                </small>
+                <br>
 
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAACrBwHo_b4rrWkPi"></div>
+
+                <p id="submission-status" class="form-status" role="status" hidden></p>
 
                 <button type="submit">Submit</button>
 
@@ -289,9 +323,12 @@
         <section class="guidelines" aria-labelledby="notes-title">
             <h2 id="notes-title">Notes</h2>
             <ul>
-                <li>Submissions are reviewed before they are added to the atlas. Please read all info labels carefully.</li>
-                <li>If you would like to see a country, system, line, station or sound added, choose New Suggestion above.</li>
-                <li>If you suggest something new to be added, there is no guarantee any sounds will be added unless specified. Please contribute the sounds yourself.</li>
+                <li>Submissions are reviewed before they are added to the atlas. Please read all info labels carefully.
+                </li>
+                <li>If you would like to see a country, system, line, station or sound added, choose New Suggestion
+                    above.</li>
+                <li>If you suggest something new to be added, there is no guarantee any sounds will be added unless
+                    specified. Please contribute the sounds yourself.</li>
             </ul>
         </section>
 
